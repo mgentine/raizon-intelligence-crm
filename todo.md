@@ -3,13 +3,13 @@
 - [ ] Autenticação com login, senha, recuperação de acesso e controle por perfis
 - [x] Layout autenticado com navegação para dashboard, leads, empresas, atos regulatórios, oportunidades, atividades e configurações
 - [x] Modelo canônico de empresas por CNPJ
-- [ ] Cadastro de unidades operacionais e contatos
+- [x] Cadastro de unidades operacionais e contatos
 - [x] Cadastro de licenças, processos, outorgas e evidências regulatórias
 - [x] Pipeline comercial específico da Raizon Ambiental
 - [ ] Responsáveis, próximas ações, atividades, propostas e motivos de perda
 - [x] Histórico de relacionamento por empresa e oportunidade
 - [ ] Importação assistida de bases CETESB e SP Águas
-- [ ] Normalização de CNPJ, telefones, e-mails, datas e municípios
+- [x] Normalização de CNPJ, telefones, e-mails, datas e municípios
 - [x] Deduplicação por CNPJ e identificação de conflitos
 - [x] Trilha de origem, versão da fonte e auditoria de importações
 - [x] Priorização técnica separada da prioridade comercial
@@ -30,7 +30,7 @@
 - [ ] Criar CRUD completo de unidades, contatos e atos regulatórios, incluindo evidências
 - [ ] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
 - [x] Implementar importação assistida real com mapeamento de colunas, prévia, conflitos, import_runs e revisão humana
-- [ ] Adicionar normalização de telefone, e-mail, datas e municípios
+- [x] Adicionar normalização de telefone, e-mail, datas e municípios
 - [x] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
 - [x] Construir painéis de cobertura de contato, previsão de receita e prioridades operacionais
 - [x] Construir calendário operacional de recorrência com criação e conclusão de tarefas
@@ -124,18 +124,18 @@
 
 - [ ] Validar explicitamente a tela de Importações com conflitos reais, incluindo rejeição e atualização após decisão
 - [x] Marcar todo o grupo de notificações como lido quando a ocorrência agrupada for aberta
-- [ ] Adicionar testes específicos para agrupamento de notificações e decisão reject de conflito
+- [x] Adicionar testes específicos para agrupamento de notificações e decisão reject de conflito
 
 # Gaps reabertos pela auditoria de efetividade
 
-- [ ] Implementar histórico dedicado por empresa e oportunidade com atividades relacionadas
+- [x] Implementar histórico dedicado por empresa e oportunidade com atividades relacionadas
 - [x] Adicionar painéis explícitos de cobertura de contato e prioridades operacionais no dashboard
 - [x] Gerar notificações para oportunidades paradas e falhas de importação
 - [ ] Implementar rotina periódica para processar/atualizar fontes além do recálculo atual, com bloqueio documentado quando a fonte oficial não estiver disponível
 - [x] Documentar revisão final de segurança abrangendo permissões, dados sensíveis e estados de erro
 - [x] Criar UI de mapeamento manual de colunas na importação assistida
 - [x] Documentar bloqueio externo verificável para conectores oficiais CETESB e SP Águas ou implementar quando houver endpoint autorizado
-- [ ] Adicionar teste específico para criação e conclusão de recorrências persistidas
+- [x] Adicionar teste específico para criação e conclusão de recorrências persistidas
 
 # Estados explícitos do painel operacional
 
@@ -151,3 +151,31 @@
 - [x] Bloquear confirmação quando CNPJ ou razão social não estiverem mapeados
 - [x] Exibir erro quando o remapeamento não produzir registros válidos
 - [x] Criar validação reproduzível do remapeamento antes da confirmação
+
+# Efetividade do histórico contextual
+
+- [x] Exibir empresa e oportunidade relacionada em cada linha do histórico
+- [x] Permitir registrar atividade vinculada a uma oportunidade pela UI
+- [x] Criar seções contextuais claras por empresa e oportunidade, não apenas filtro por ID
+- [ ] Validar o histórico contextual com atividade efetivamente vinculada a oportunidade sem inserir dados artificiais no banco
+
+# Seções dedicadas de histórico
+
+- [x] Exibir seções dedicadas “Histórico da empresa” e “Histórico da oportunidade” quando um contexto for selecionado
+- [x] Validar visualmente as seções dedicadas de histórico em desktop e mobile
+
+# Evidência mobile do histórico dedicado
+
+- [x] Validar visualmente as seções dedicadas de histórico em viewport mobile e registrar explicitamente a evidência
+
+# Normalização efetiva em fluxos persistidos
+
+- [x] Aplicar normalizeDateValue em atos, atividades e recorrências antes de persistir
+- [x] Aplicar normalização de município nos cadastros de empresas e unidades
+- [x] Adicionar teste de procedure/fluxo persistido usando normalização de datas
+
+# Fechamento do cadastro básico de unidades e contatos
+
+- [x] Adicionar estados explícitos de carregamento e erro nas telas de Unidades e Contatos
+- [x] Validar visualmente as telas de Unidades e Contatos também em viewport mobile
+- [x] Documentar no backlog que cadastro básico não equivale a CRUD completo com edição/exclusão

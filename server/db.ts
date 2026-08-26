@@ -231,10 +231,13 @@ export async function listUpcomingRecurring() {
   return db.select({ item: recurringItems, company: companies }).from(recurringItems).leftJoin(companies, eq(recurringItems.companyId, companies.id)).where(eq(recurringItems.status, "open")).orderBy(asc(recurringItems.dueAt)).limit(50);
 }
 
-export async function listRecentActivities() {
+export async function listRecentActivities(filters?: { companyId?: number; opportunityId?: number }) {
   const db = await getDb();
   if (!db) return [];
-  return db.select({ activity: activities, company: companies }).from(activities).leftJoin(companies, eq(activities.companyId, companies.id)).orderBy(desc(activities.happenedAt)).limit(20);
+  const conditions = [];
+  if (filters?.companyId) conditions.push(eq(activities.companyId, filters.companyId));
+  if (filters?.opportunityId) conditions.push(eq(activities.opportunityId, filters.opportunityId));
+  return db.select({ activity: activities, company: companies, opportunity: opportunities }).from(activities).leftJoin(companies, eq(activities.companyId, companies.id)).leftJoin(opportunities, eq(activities.opportunityId, opportunities.id)).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(activities.happenedAt)).limit(50);
 }
 
 export async function createCompany(input: typeof companies.$inferInsert) {

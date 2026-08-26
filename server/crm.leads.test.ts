@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { isImportConflictDecision, normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
 import { mapImportRows, validateImportMapping } from "../shared/importRules";
+import { normalizeCnpjValue, normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
 import { decorateRegulatoryActRow, groupNotifications } from "./db";
 
 describe("lead and regulatory rules", () => {
@@ -46,6 +47,18 @@ describe("lead and regulatory rules", () => {
     expect(validateImportMapping(mapping, rows)).toBeNull();
     expect(validateImportMapping({ ...mapping, cnpj: "" }, rows)).toContain("CNPJ");
     expect(validateImportMapping(mapping, [])).toContain("registros válidos");
+  });
+
+  it("normalizes imported identifiers and contact fields", () => {
+    expect(normalizeCnpjValue("12.345.678/0001-90")).toBe("12345678000190");
+    expect(normalizePhoneValue("(17) 99999-0000")).toBe("17999990000");
+    expect(normalizeEmailValue("  CONTATO@EXEMPLO.COM ")).toBe("contato@exemplo.com");
+    expect(normalizeMunicipalityValue("  Votuporanga   ")).toBe("Votuporanga");
+    expect(normalizeDateValue("2026-12-31T12:00:00Z")).toBeInstanceOf(Date);
+    const persisted = normalizePersistedDates({ dueAt: "2026-12-31T12:00:00Z", invalid: "not-a-date", title: "Renovação" }, ["dueAt", "invalid"]);
+    expect(persisted.dueAt).toBeInstanceOf(Date);
+    expect(persisted.invalid).toBeUndefined();
+    expect(persisted.title).toBe("Renovação");
   });
 
   it("accepts the reject conflict decision and rejects unknown decisions", () => {
