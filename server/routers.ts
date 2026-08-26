@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { bulkUpsertCompanies, createActivity, createCompany, createContact, createImportRun, createOpportunity, createRecurringItem, createUnit, finishImportRun, getDashboardStats, listCompanies, listContacts, listImportRuns, listNotifications, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateOpportunityStage } from "./db";
+import { bulkUpsertCompanies, createActivity, createCompany, createContact, createImportRun, createOpportunity, createRecurringItem, createRegulatoryAct, createUnit, finishImportRun, getDashboardStats, listCompanies, listContacts, listImportRuns, listNotifications, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateOpportunityStage } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
@@ -50,6 +50,7 @@ export const appRouter = router({
   }),
   regulatory: router({
     list: protectedProcedure.query(() => listRegulatoryActs()),
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), source: z.string().min(2), agency: z.string().optional(), actType: z.string().min(2), actNumber: z.string().optional(), processNumber: z.string().optional(), publishedStatus: z.string().optional(), expiresAt: z.date().optional(), evidenceUrl: z.string().url().optional(), notes: z.string().optional() })).mutation(({ input }) => createRegulatoryAct({ ...input, needsValidation: 1, collectedAt: new Date() })),
   }),
   opportunities: router({
     list: protectedProcedure.query(() => listOpportunities()),

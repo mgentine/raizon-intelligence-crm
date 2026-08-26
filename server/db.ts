@@ -156,6 +156,13 @@ export async function listCompanies(search?: string) {
   return db.select().from(companies).where(sql`${companies.legalName} like ${`%${search.trim()}%`} or ${companies.cnpj} like ${`%${search.trim()}%`}`).orderBy(desc(companies.updatedAt)).limit(100);
 }
 
+export async function createRegulatoryAct(input: typeof regulatoryActs.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(regulatoryActs).values(input);
+  return Number(result[0].insertId);
+}
+
 export async function listRegulatoryActs() {
   const db = await getDb();
   if (!db) return [];
