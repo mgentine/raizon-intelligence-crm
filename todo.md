@@ -70,7 +70,7 @@
 - [x] Implementar notificações agrupadas, severidade e deduplicação por entidade
 - [ ] Implementar conectores substituíveis para arquivo oficial, CNPJ, CETESB e SP Águas
 - [x] Implementar reprocessamento seguro e preservação da última versão válida após falha
-- [ ] Executar testes de autorização, idempotência, conflitos, status e notificações
+- [x] Executar testes de autorização, idempotência, conflitos, status e notificações
 
 # Ajustes identificados pela revisão de implementação
 
@@ -202,3 +202,12 @@
 - [x] Extrair filtragem archivedAt para helper puro e testar atos/evidências arquivados fora das views
 - [x] Ampliar testes de autorização para units.update, contacts.update e contacts.archive em perfis permitidos e proibidos, incluindo perfil autenticado sem autorização
 - [x] Adicionar contrato de listagem operacional confirmando que registros arquivados não retornam via filtros específicos de atos/evidências
+
+# Validação do callback periódico
+
+- [x] Cobrir com testes o bloqueio cron-only e o formato de erro controlado do callback regulatório
+
+# Cobertura explícita de governança
+
+- [x] Testar a regra de idempotência de notificações abertas para evitar duplicação em reexecuções
+- [x] Testar a mutation decideConflict com decisão reject, racional persistido e bloqueio para perfil comercial

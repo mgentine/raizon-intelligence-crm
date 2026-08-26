@@ -19,7 +19,7 @@ import {
   importConflicts,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
-import { normalizeRegulatoryStatus } from "../shared/crmRules";
+import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -81,16 +81,16 @@ export async function refreshUserNotifications(userId: number) {
   let created = 0;
   for (const act of acts) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "regulatory_expiry"), eq(notifications.entityId, act.id), isNull(notifications.readAt))).limit(1);
-    if (!exists.length) { const severity = act.expiresAt && act.expiresAt <= new Date(Date.now() + 30 * 86400000) ? "critical" : "warning"; await db.insert(notifications).values({ userId, type: "regulatory_expiry", severity, groupingKey: `regulatory_act:${act.id}`, title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
+    if (shouldCreateOpenNotification(exists.length)) { const severity = act.expiresAt && act.expiresAt <= new Date(Date.now() + 30 * 86400000) ? "critical" : "warning"; await db.insert(notifications).values({ userId, type: "regulatory_expiry", severity, groupingKey: `regulatory_act:${act.id}`, title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
   }
   const stalled = await db.select({ id: opportunities.id, companyId: opportunities.companyId, title: opportunities.title }).from(opportunities).where(and(sql`${opportunities.stage} not in ('won','lost','discarded')`, or(isNull(opportunities.nextActionAt), lt(opportunities.nextActionAt, sql`date_sub(now(), interval 14 day)`)))).limit(100);
   for (const opportunity of stalled) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "stalled_opportunity"), eq(notifications.entityId, opportunity.id), isNull(notifications.readAt))).limit(1);
-    if (!exists.length) { await db.insert(notifications).values({ userId, type: "stalled_opportunity", severity: "warning", groupingKey: `opportunity:${opportunity.id}`, title: "Oportunidade sem avanço", body: `${opportunity.title} não possui próxima ação recente.`, entityType: "opportunity", entityId: opportunity.id }); created++; }
+    if (shouldCreateOpenNotification(exists.length)) { await db.insert(notifications).values({ userId, type: "stalled_opportunity", severity: "warning", groupingKey: `opportunity:${opportunity.id}`, title: "Oportunidade sem avanço", body: `${opportunity.title} não possui próxima ação recente.`, entityType: "opportunity", entityId: opportunity.id }); created++; }
   }
   for (const item of overdue) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "overdue_activity"), eq(notifications.entityId, item.id), isNull(notifications.readAt))).limit(1);
-    if (!exists.length) { await db.insert(notifications).values({ userId, type: "overdue_activity", severity: "critical", groupingKey: `activity:${item.id}`, title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
+    if (shouldCreateOpenNotification(exists.length)) { await db.insert(notifications).values({ userId, type: "overdue_activity", severity: "critical", groupingKey: `activity:${item.id}`, title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
   }
   return { created };
 }
@@ -296,6 +296,13 @@ export async function createImportRun(input: { source: string; filename?: string
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   const result = await db.insert(importRuns).values({ ...input, status: "processing" });
+  return Number(result[0].insertId);
+}
+
+export async function recordBlockedSourceAttempt(source: "cetesb" | "sp_aguas", message: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(importRuns).values({ source, filename: "scheduled-source-update", status: "failed", receivedCount: 0, insertedCount: 0, updatedCount: 0, conflictCount: 0, rejectedCount: 0, errorMessage: message, finishedAt: new Date() });
   return Number(result[0].insertId);
 }
 

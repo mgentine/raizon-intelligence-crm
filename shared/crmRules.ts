@@ -66,6 +66,10 @@ export function requiresNextAction(stage: string) {
 export const importConflictDecisions = ["accept_incoming", "keep_current", "review", "reject"] as const;
 export type ImportConflictDecision = (typeof importConflictDecisions)[number];
 
+export function shouldCreateOpenNotification(existingOpenCount: number): boolean {
+  return existingOpenCount === 0;
+}
+
 export function isImportConflictDecision(value: string): value is ImportConflictDecision {
   return (importConflictDecisions as readonly string[]).includes(value);
 }

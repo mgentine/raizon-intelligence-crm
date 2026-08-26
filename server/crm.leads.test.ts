@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { isImportConflictDecision, normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
+import { isImportConflictDecision, normalizeRegulatoryStatus, shouldCreateOpenNotification, validateCommercialTransition } from "../shared/crmRules";
 import { mapImportRows, validateImportMapping } from "../shared/importRules";
 import { normalizeCnpjValue, normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
 import { decorateRegulatoryActRow, filterEvidenceRows, filterRegulatoryActRows, groupNotifications } from "./db";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
+import { getSourceUpdateReadiness } from "../shared/sourceReadiness";
 
 describe("archivedAt operational filtering", () => {
   it("removes archived rows from simple and nested operational lists", () => {
@@ -71,6 +72,17 @@ describe("lead and regulatory rules", () => {
     expect(persisted.dueAt).toBeInstanceOf(Date);
     expect(persisted.invalid).toBeUndefined();
     expect(persisted.title).toBe("Renovação");
+  });
+
+  it("expõe bloqueio explícito quando fontes oficiais não têm endpoint autorizado", () => {
+    expect(getSourceUpdateReadiness()).toEqual({ cetesb: "blocked_no_authorized_endpoint", spAguas: "blocked_no_authorized_endpoint" });
+    expect(getSourceUpdateReadiness({ cetesbAuthorizedEndpoint: true })).toEqual({ cetesb: "updated", spAguas: "blocked_no_authorized_endpoint" });
+  });
+
+  it("mantém a criação de notificações idempotente por ocorrência aberta", () => {
+    expect(shouldCreateOpenNotification(0)).toBe(true);
+    expect(shouldCreateOpenNotification(1)).toBe(false);
+    expect(shouldCreateOpenNotification(3)).toBe(false);
   });
 
   it("accepts the reject conflict decision and rejects unknown decisions", () => {
