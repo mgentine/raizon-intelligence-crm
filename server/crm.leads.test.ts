@@ -2,7 +2,19 @@ import { describe, expect, it } from "vitest";
 import { isImportConflictDecision, normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
 import { mapImportRows, validateImportMapping } from "../shared/importRules";
 import { normalizeCnpjValue, normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
-import { decorateRegulatoryActRow, groupNotifications } from "./db";
+import { decorateRegulatoryActRow, filterEvidenceRows, filterRegulatoryActRows, groupNotifications } from "./db";
+import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
+
+describe("archivedAt operational filtering", () => {
+  it("removes archived rows from simple and nested operational lists", () => {
+    const rows = [{ id: 1, archivedAt: null }, { id: 2, archivedAt: new Date("2026-01-01") }];
+    expect(onlyActive(rows)).toEqual([rows[0]]);
+    const nested = [{ act: rows[0] }, { act: rows[1] }];
+    expect(onlyActiveBy(nested, "act")).toEqual([nested[0]]);
+    expect(filterRegulatoryActRows(nested)).toEqual([nested[0]]);
+    expect(filterEvidenceRows(rows)).toEqual([rows[0]]);
+  });
+});
 
 describe("lead and regulatory rules", () => {
   it("keeps published status separate while classifying an expired act", () => {

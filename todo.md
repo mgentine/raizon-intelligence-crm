@@ -27,7 +27,7 @@
 
 - [ ] Implementar autenticação própria com login/senha, recuperação de acesso e autorização por perfis aplicada na UI e nas procedures
 - [x] Criar módulo operacional de leads separado da base de empresas
-- [ ] Criar CRUD completo de unidades, contatos e atos regulatórios, incluindo evidências
+- [x] Criar CRUD completo de unidades, contatos e atos regulatórios, incluindo evidências
 - [ ] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
 - [x] Implementar importação assistida real com mapeamento de colunas, prévia, conflitos, import_runs e revisão humana
 - [x] Adicionar normalização de telefone, e-mail, datas e municípios
@@ -179,3 +179,26 @@
 - [x] Adicionar estados explícitos de carregamento e erro nas telas de Unidades e Contatos
 - [x] Validar visualmente as telas de Unidades e Contatos também em viewport mobile
 - [x] Documentar no backlog que cadastro básico não equivale a CRUD completo com edição/exclusão
+
+# Fechamento do CRUD técnico com evidências
+
+- [x] Integrar CRUD visual de evidências regulatórias na tela de Atos: listar anexos por ato, fazer upload real via S3, vincular/desvincular evidências e refletir o resultado na UI
+- [x] Adicionar estados explícitos de carregamento/erro para a listagem de Atos regulatórios e validar visualmente edição/arquivamento em desktop/mobile
+- [x] Adicionar testes cobrindo update/archive de unidades, contatos e atos, além do vínculo e exibição de evidências no contrato/backend
+
+# Validação determinística do CRUD de Atos
+
+- [x] Adicionar modos forceActsLoading=1 e forceActsError=1 para validar estados da listagem
+- [x] Permitir validação de edição/arquivamento de ato real ou documentar bloqueio quando não houver registro populado
+- [x] Adicionar teste cobrindo regulatory.update, regulatory.archive e filtro archivedAt
+
+# Cobertura final de arquivamento técnico
+
+- [x] Adicionar testes tRPC para units.update, units.archive, contacts.update e contacts.archive, incluindo autorização por perfil
+- [x] Adicionar teste de listagem filtrada confirmando que atos e evidências com archivedAt não aparecem nas views operacionais
+
+# Efetividade dos testes de arquivamento e RBAC
+
+- [x] Extrair filtragem archivedAt para helper puro e testar atos/evidências arquivados fora das views
+- [x] Ampliar testes de autorização para units.update, contacts.update e contacts.archive em perfis permitidos e proibidos, incluindo perfil autenticado sem autorização
+- [x] Adicionar contrato de listagem operacional confirmando que registros arquivados não retornam via filtros específicos de atos/evidências

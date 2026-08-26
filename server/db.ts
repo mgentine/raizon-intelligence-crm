@@ -20,6 +20,7 @@ import {
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus } from "../shared/crmRules";
+import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -163,13 +164,13 @@ export async function getOperationalCoverage() {
 export async function listUnits(companyId?: number) {
   const db = await getDb();
   if (!db) return [];
-  return companyId ? db.select().from(units).where(eq(units.companyId, companyId)).orderBy(asc(units.name)) : db.select().from(units).orderBy(desc(units.updatedAt)).limit(100);
+  return companyId ? db.select().from(units).where(and(eq(units.companyId, companyId), isNull(units.archivedAt))).orderBy(asc(units.name)) : db.select().from(units).where(isNull(units.archivedAt)).orderBy(desc(units.updatedAt)).limit(100);
 }
 
 export async function listContacts(companyId?: number) {
   const db = await getDb();
   if (!db) return [];
-  return companyId ? db.select().from(contacts).where(eq(contacts.companyId, companyId)).orderBy(asc(contacts.name)) : db.select().from(contacts).orderBy(desc(contacts.updatedAt)).limit(100);
+  return companyId ? db.select().from(contacts).where(and(eq(contacts.companyId, companyId), isNull(contacts.archivedAt))).orderBy(asc(contacts.name)) : db.select().from(contacts).where(isNull(contacts.archivedAt)).orderBy(desc(contacts.updatedAt)).limit(100);
 }
 
 export async function createUnit(input: typeof units.$inferInsert) {
@@ -184,6 +185,30 @@ export async function createContact(input: typeof contacts.$inferInsert) {
   if (!db) throw new Error("Database unavailable");
   const result = await db.insert(contacts).values(input);
   return Number(result[0].insertId);
+}
+export async function updateUnit(id: number, input: Partial<typeof units.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(units).set({ ...input, updatedAt: new Date() }).where(eq(units.id, id));
+  return { success: true } as const;
+}
+export async function updateContact(id: number, input: Partial<typeof contacts.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(contacts).set({ ...input, updatedAt: new Date() }).where(eq(contacts.id, id));
+  return { success: true } as const;
+}
+export async function archiveUnit(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(units).set({ archivedAt: new Date(), updatedAt: new Date() }).where(eq(units.id, id));
+  return { success: true } as const;
+}
+export async function archiveContact(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(contacts).set({ archivedAt: new Date(), updatedAt: new Date() }).where(eq(contacts.id, id));
+  return { success: true } as const;
 }
 
 export async function listCompanies(search?: string) {
@@ -201,15 +226,35 @@ export async function createRegulatoryAct(input: typeof regulatoryActs.$inferIns
   return Number(result[0].insertId);
 }
 
+export async function updateRegulatoryAct(id: number, input: Partial<typeof regulatoryActs.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(regulatoryActs).set({ ...input, updatedAt: new Date() }).where(eq(regulatoryActs.id, id));
+  return { success: true } as const;
+}
+export async function archiveRegulatoryAct(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(regulatoryActs).set({ archivedAt: new Date(), updatedAt: new Date() }).where(eq(regulatoryActs.id, id));
+  return { success: true } as const;
+}
 export function decorateRegulatoryActRow<T extends { act: { publishedStatus: string | null; expiresAt: Date | null } }>(row: T, now = new Date()) {
   return { ...row, regulatoryStatus: normalizeRegulatoryStatus(row.act.publishedStatus, row.act.expiresAt, now) };
+}
+
+export function filterRegulatoryActRows<T extends { act: { archivedAt: Date | null } }>(rows: T[]): T[] {
+  return onlyActiveBy(rows, "act");
+}
+
+export function filterEvidenceRows<T extends { archivedAt: Date | null }>(rows: T[]): T[] {
+  return onlyActive(rows);
 }
 
 export async function listRegulatoryActs() {
   const db = await getDb();
   if (!db) return [];
-  const rows = await db.select({ act: regulatoryActs, company: companies }).from(regulatoryActs).leftJoin(companies, eq(regulatoryActs.companyId, companies.id)).orderBy(asc(regulatoryActs.expiresAt)).limit(100);
-  return rows.map((row) => decorateRegulatoryActRow(row));
+  const rows = await db.select({ act: regulatoryActs, company: companies }).from(regulatoryActs).leftJoin(companies, eq(regulatoryActs.companyId, companies.id)).where(isNull(regulatoryActs.archivedAt)).orderBy(asc(regulatoryActs.expiresAt)).limit(100);
+  return filterRegulatoryActRows(rows).map((row) => decorateRegulatoryActRow(row));
 }
 
 export async function listOpportunities() {
@@ -415,10 +460,18 @@ export async function listEvidenceFiles(filters: { regulatoryActId?: number; com
   const conditions = [];
   if (filters.regulatoryActId) conditions.push(eq(evidenceFiles.regulatoryActId, filters.regulatoryActId));
   if (filters.companyId) conditions.push(eq(evidenceFiles.companyId, filters.companyId));
+  conditions.push(isNull(evidenceFiles.archivedAt));
   const query = db.select().from(evidenceFiles).orderBy(desc(evidenceFiles.createdAt)).limit(100);
-  return conditions.length ? query.where(and(...conditions)) : query;
+  const rows = conditions.length ? await query.where(and(...conditions)) : await query;
+  return filterEvidenceRows(rows);
 }
 
+export async function archiveEvidenceFile(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(evidenceFiles).set({ archivedAt: new Date() }).where(eq(evidenceFiles.id, id));
+  return { success: true } as const;
+}
 export async function listPendingImportConflicts(importRunId?: number) {
   const db = await getDb();
   if (!db) return [];

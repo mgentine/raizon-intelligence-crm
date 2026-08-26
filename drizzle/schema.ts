@@ -62,6 +62,7 @@ export const units = mysqlTable("units", {
   responsibleName: varchar("responsibleName", { length: 255 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  archivedAt: timestamp("archivedAt"),
 }, (table) => ({
   companyIdx: index("units_company_idx").on(table.companyId),
 }));
@@ -82,6 +83,7 @@ export const contacts = mysqlTable("contacts", {
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  archivedAt: timestamp("archivedAt"),
 }, (table) => ({
   companyIdx: index("contacts_company_idx").on(table.companyId),
   emailIdx: index("contacts_email_idx").on(table.email),
@@ -110,6 +112,7 @@ export const regulatoryActs = mysqlTable("regulatory_acts", {
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  archivedAt: timestamp("archivedAt"),
 }, (table) => ({
   sourceActUnique: uniqueIndex("regulatory_source_act_unique").on(table.source, table.actType, table.actNumber, table.processNumber),
   companyIdx: index("regulatory_company_idx").on(table.companyId),
@@ -316,7 +319,7 @@ export const regulatoryVersions = mysqlTable("regulatory_versions", {
   publishedStatus: varchar("publishedStatus", { length: 120 }),
   expiresAt: timestamp("expiresAt"),
   evidenceUrl: varchar("evidenceUrl", { length: 700 }),
-  collectedAt: timestamp("collectedAt").notNull(),
+  collectedAt: timestamp("collectedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   actVersionUnique: uniqueIndex("regulatory_versions_act_fingerprint_unique").on(table.regulatoryActId, table.payloadFingerprint),
@@ -340,6 +343,7 @@ export const evidenceFiles = mysqlTable("evidence_files", {
   storageUrl: varchar("storageUrl", { length: 700 }).notNull(),
   source: varchar("source", { length: 80 }).default("manual").notNull(),
   collectedAt: timestamp("collectedAt"),
+  archivedAt: timestamp("archivedAt"),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
