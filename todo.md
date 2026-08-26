@@ -215,3 +215,7 @@
 # Completude do funil comercial
 
 - [x] Implementar mutation e interface de atualização de oportunidade com responsável, próxima ação, notas, valor e motivo de perda
+
+# Operação do funil na interface
+
+- [x] Adicionar seletor completo de etapa e motivo de perda no card de oportunidade, com fluxo controlado e persistência atômica

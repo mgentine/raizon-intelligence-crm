@@ -405,6 +405,13 @@ export async function updateOpportunityDetails(id: number, changes: Partial<type
   return { success: true, id } as const;
 }
 
+export async function updateOpportunityStageWithLossReason(id: number, stage: typeof opportunities.$inferInsert.stage, lossReason?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(opportunities).set({ stage, lossReason: stage === "lost" ? lossReason : undefined }).where(eq(opportunities.id, id));
+  return { success: true, id, stage } as const;
+}
+
 export async function getCetesbLeadStatus() {
   const db = await getDb();
   if (!db) return [];

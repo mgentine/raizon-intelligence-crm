@@ -14,10 +14,11 @@ const updateContactMock = vi.hoisted(() => vi.fn(async (id: number, input: unkno
 const archiveContactMock = vi.hoisted(() => vi.fn(async (id: number) => ({ success: true, id })));
 const decideImportConflictMock = vi.hoisted(() => vi.fn(async (id: number, userId: number, decision: string, rationale?: string) => ({ success: true, id, userId, decision, rationale })));
 const updateOpportunityDetailsMock = vi.hoisted(() => vi.fn(async (id: number, changes: unknown) => ({ success: true, id, changes })));
+const updateOpportunityStageWithLossReasonMock = vi.hoisted(() => vi.fn(async (id: number, stage: string, lossReason?: string) => ({ success: true, id, stage, lossReason })));
 
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock };
+  return { ...actual, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock, updateOpportunityStageWithLossReason: updateOpportunityStageWithLossReasonMock };
 });
 
 import { appRouter } from "./routers";
@@ -98,6 +99,15 @@ describe("normalização nas mutations", () => {
     expect(updateOpportunityDetailsMock).toHaveBeenCalledWith(91, expect.objectContaining({ ownerId: 88, estimatedValue: "12500.00", nextAction: "Enviar proposta técnica", nextActionAt, notes: "Escopo preliminar" }));
     const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
     await expect(technicalCaller.opportunities.updateDetails({ id: 91, notes: "Sem permissão" })).rejects.toThrow();
+  });
+
+  it("permite mudar etapa pelo contrato comercial e bloqueia perfil técnico", async () => {
+    updateOpportunityStageWithLossReasonMock.mockClear();
+    const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
+    await expect(commercialCaller.opportunities.updateStage({ id: 91, stage: "lost", lossReason: "Orçamento incompatível" })).resolves.toEqual({ success: true, id: 91, stage: "lost", lossReason: "Orçamento incompatível" });
+    expect(updateOpportunityStageWithLossReasonMock).toHaveBeenCalledWith(91, "lost", "Orçamento incompatível");
+    const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
+    await expect(technicalCaller.opportunities.updateStage({ id: 91, stage: "proposal" })).rejects.toThrow();
   });
 
   it("rejeita data inválida no contrato antes de persistir", async () => {
