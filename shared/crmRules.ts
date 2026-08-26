@@ -36,3 +36,10 @@ export function classifyCommercialPriority(input: { urgency: number; fit: number
   if (score >= 6) return "C" as const;
   return "D" as const;
 }
+
+export type RecurringStatus = "open" | "in_progress" | "done" | "dismissed";
+
+export function completeRecurringStatus(status: RecurringStatus): "done" {
+  if (status === "done" || status === "dismissed") throw new Error("Item recorrente já encerrado");
+  return "done";
+}

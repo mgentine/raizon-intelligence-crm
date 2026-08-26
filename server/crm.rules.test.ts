@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyCommercialPriority, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
+import { classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
 
 describe("CRM rules", () => {
   it("normalizes formatted CNPJ and validates length", () => {
@@ -17,6 +17,13 @@ describe("CRM rules", () => {
     expect(result).toHaveLength(1);
     expect(result[0]?.sources).toEqual(["cetesb", "sp_aguas"]);
     expect(result[0]?.conflict).toBe(true);
+  });
+
+  it("allows completing open and in-progress recurring items but rejects closed ones", () => {
+    expect(completeRecurringStatus("open")).toBe("done");
+    expect(completeRecurringStatus("in_progress")).toBe("done");
+    expect(() => completeRecurringStatus("done")).toThrow("já encerrado");
+    expect(() => completeRecurringStatus("dismissed")).toThrow("já encerrado");
   });
 
   it("classifies commercial priority independently from technical status", () => {

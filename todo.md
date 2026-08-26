@@ -44,6 +44,6 @@
 - [x] Criar registro curto da revisão responsiva por tela das sete views principais
 - [x] Implementar sidebar mobile realmente colapsável com toggle/drawer e validar em desktop/mobile
 - [x] Revalidar a correção responsiva após comprovar sidebar colapsável e grade adaptável
-- [ ] Implementar conclusão de itens recorrentes com status persistido no backend e ação na UI para marcar recorrência/tarefa como concluída
+- [x] Implementar conclusão de itens recorrentes com status persistido no backend e ação na UI para marcar recorrência/tarefa como concluída
 - [ ] Adicionar testes para criação e conclusão de recorrências, incluindo estados aberto/concluído
 - [ ] Validar visualmente a agenda recorrente com fluxo completo: criar, listar, concluir e refletir no dashboard
