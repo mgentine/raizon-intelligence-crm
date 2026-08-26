@@ -19,7 +19,7 @@
 - [ ] Estrutura de provedor para consulta cadastral de CNPJ
 - [ ] Estrutura de ingestão controlada para fontes públicas CETESB e SP Águas
 - [ ] Rotinas periódicas idempotentes para processamento de arquivos e recálculo de filas
-- [ ] Testes unitários do domínio e das regras de deduplicação/prioridade
+- [x] Testes unitários do domínio e das regras de deduplicação/prioridade
 - [ ] Verificação visual e responsiva das telas principais
 - [ ] Revisão final de segurança, permissões e estados vazios/erro
 
@@ -31,7 +31,7 @@
 - [ ] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
 - [ ] Implementar importação assistida real com mapeamento de colunas, prévia, conflitos, import_runs e revisão humana
 - [ ] Adicionar normalização de telefone, e-mail, datas e municípios
-- [ ] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
+- [x] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
 - [ ] Construir painéis de cobertura de contato, previsão de receita e prioridades operacionais
 - [ ] Construir calendário operacional de recorrência com criação e conclusão de tarefas
 - [ ] Implementar notificações internas e por e-mail
