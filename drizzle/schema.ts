@@ -212,3 +212,21 @@ export const importRuns = mysqlTable("import_runs", {
 
 export type ImportRun = typeof importRuns.$inferSelect;
 export type InsertImportRun = typeof importRuns.$inferInsert;
+
+export const notifications = mysqlTable("notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  type: varchar("type", { length: 80 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  body: text("body"),
+  readAt: timestamp("readAt"),
+  entityType: varchar("entityType", { length: 80 }),
+  entityId: int("entityId"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index("notifications_user_idx").on(table.userId),
+  unreadIdx: index("notifications_unread_idx").on(table.userId, table.readAt),
+}));
+
+export type Notification = typeof notifications.$inferSelect;
+export type InsertNotification = typeof notifications.$inferInsert;

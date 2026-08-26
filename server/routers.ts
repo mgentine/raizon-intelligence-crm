@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { bulkUpsertCompanies, createActivity, createCompany, createOpportunity, createRecurringItem, getDashboardStats, listCompanies, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, updateOpportunityStage } from "./db";
+import { bulkUpsertCompanies, createActivity, createCompany, createContact, createImportRun, createOpportunity, createRecurringItem, createUnit, finishImportRun, getDashboardStats, listCompanies, listContacts, listNotifications, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateOpportunityStage } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
@@ -19,6 +19,10 @@ export const appRouter = router({
       return { success: true } as const;
     }),
   }),
+  notifications: router({
+    list: protectedProcedure.query(({ ctx }) => listNotifications(ctx.user.id)),
+    markRead: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => markNotificationRead(input.id, ctx.user.id)),
+  }),
   dashboard: router({
     stats: protectedProcedure.query(() => getDashboardStats()),
     activities: protectedProcedure.query(() => listRecentActivities()),
@@ -27,7 +31,15 @@ export const appRouter = router({
   companies: router({
     list: protectedProcedure.input(z.object({ search: z.string().optional() }).optional()).query(({ input }) => listCompanies(input?.search)),
     create: protectedProcedure.input(z.object({ cnpj: cnpjSchema, legalName: z.string().min(2), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().length(2).optional(), segment: z.string().optional() })).mutation(({ input }) => createCompany({ ...input, source: "manual" })),
-    bulkUpsert: protectedProcedure.input(z.object({ rows: z.array(z.object({ cnpj: z.string(), legalName: z.string(), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().optional(), segment: z.string().optional(), source: z.string().optional() })).max(1000) })).mutation(({ input }) => bulkUpsertCompanies(input.rows)),
+    bulkUpsert: protectedProcedure.input(z.object({ filename: z.string().optional(), source: z.string().default("import"), rows: z.array(z.object({ cnpj: z.string(), legalName: z.string(), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().optional(), segment: z.string().optional(), source: z.string().optional() })).max(1000) })).mutation(async ({ ctx, input }) => { const runId = await createImportRun({ source: input.source, filename: input.filename, createdBy: ctx.user.id }); try { const result = await bulkUpsertCompanies(input.rows); await finishImportRun(runId, { ...result, status: result.rejected > 0 ? "review_required" : "completed" }); return { ...result, runId }; } catch (error) { await finishImportRun(runId, { received: input.rows.length, inserted: 0, updated: 0, rejected: input.rows.length, status: "failed", errorMessage: error instanceof Error ? error.message : String(error) }); throw error; } }),
+  }),
+  units: router({
+    list: protectedProcedure.input(z.object({ companyId: z.number().int().positive().optional() }).optional()).query(({ input }) => listUnits(input?.companyId)),
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), name: z.string().min(2), address: z.string().optional(), city: z.string().optional(), state: z.string().length(2).optional(), operationType: z.string().optional(), responsibleName: z.string().optional() })).mutation(({ input }) => createUnit(input)),
+  }),
+  contacts: router({
+    list: protectedProcedure.input(z.object({ companyId: z.number().int().positive().optional() }).optional()).query(({ input }) => listContacts(input?.companyId)),
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), unitId: z.number().int().positive().optional(), name: z.string().min(2), jobTitle: z.string().optional(), phone: z.string().optional(), email: z.string().email().optional(), decisionRole: z.string().optional() })).mutation(({ input }) => createContact(input)),
   }),
   cnpj: router({
     lookup: protectedProcedure.input(z.object({ cnpj: z.string() })).query(({ input }) => lookupCnpj(input.cnpj)),

@@ -15,6 +15,13 @@
       "when": 1787762833272,
       "tag": "0001_rich_darkstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787763645482,
+      "tag": "0002_thick_romulus",
+      "breakpoints": true
     }
   ]
 }

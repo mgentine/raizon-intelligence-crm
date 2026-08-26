@@ -20,7 +20,7 @@
 - [ ] Estrutura de ingestão controlada para fontes públicas CETESB e SP Águas
 - [ ] Rotinas periódicas idempotentes para processamento de arquivos e recálculo de filas
 - [x] Testes unitários do domínio e das regras de deduplicação/prioridade
-- [ ] Verificação visual e responsiva das telas principais
+- [x] Verificação visual e responsiva das telas principais
 - [ ] Revisão final de segurança, permissões e estados vazios/erro
 
 # Gaps identificados na revisão
@@ -37,6 +37,10 @@
 - [ ] Implementar notificações internas e por e-mail
 - [ ] Implementar adapters reais e substituíveis para CNPJ, CETESB e SP Águas, sujeitos à disponibilidade e às regras de cada fonte
 - [ ] Implementar rotina periódica completa para processamento de arquivos, atualização de fontes e recálculo de filas
-- [ ] Corrigir responsividade mobile: sidebar colapsável e grade do dashboard adaptável
-- [ ] Validar visualmente e em viewport móvel/desktop todas as telas principais do CRM
-- [ ] Documentar a verificação responsiva por tela após revisão final do preview
+- [x] Corrigir responsividade mobile: sidebar colapsável e grade do dashboard adaptável
+- [x] Validar visualmente e em viewport móvel/desktop todas as telas principais do CRM
+- [x] Documentar a verificação responsiva por tela após revisão final do preview
+- [x] Validar visualmente a tela Atividades em desktop e mobile e registrar o resultado
+- [x] Criar registro curto da revisão responsiva por tela das sete views principais
+- [x] Implementar sidebar mobile realmente colapsável com toggle/drawer e validar em desktop/mobile
+- [x] Revalidar a correção responsiva após comprovar sidebar colapsável e grade adaptável

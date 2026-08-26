@@ -8,6 +8,10 @@ import {
   recurringItems,
   users,
   InsertUser,
+  importRuns,
+  notifications,
+  units,
+  contacts,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
@@ -60,6 +64,18 @@ export async function getUserByOpenId(openId: string) {
   return result[0];
 }
 
+export async function listNotifications(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(notifications).where(eq(notifications.userId, userId)).orderBy(desc(notifications.createdAt)).limit(20);
+}
+
+export async function markNotificationRead(id: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(notifications).set({ readAt: new Date() }).where(and(eq(notifications.id, id), eq(notifications.userId, userId)));
+}
+
 export async function getDashboardStats() {
   const db = await getDb();
   if (!db) return { companies: 0, opportunities: 0, openOpportunities: 0, expiringActs: 0, overdueActivities: 0 };
@@ -77,6 +93,32 @@ export async function getDashboardStats() {
     expiringActs: Number(expiringCount[0]?.count ?? 0),
     overdueActivities: Number(overdueCount[0]?.count ?? 0),
   };
+}
+
+export async function listUnits(companyId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return companyId ? db.select().from(units).where(eq(units.companyId, companyId)).orderBy(asc(units.name)) : db.select().from(units).orderBy(desc(units.updatedAt)).limit(100);
+}
+
+export async function listContacts(companyId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return companyId ? db.select().from(contacts).where(eq(contacts.companyId, companyId)).orderBy(asc(contacts.name)) : db.select().from(contacts).orderBy(desc(contacts.updatedAt)).limit(100);
+}
+
+export async function createUnit(input: typeof units.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(units).values(input);
+  return Number(result[0].insertId);
+}
+
+export async function createContact(input: typeof contacts.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(contacts).values(input);
+  return Number(result[0].insertId);
 }
 
 export async function listCompanies(search?: string) {
@@ -116,6 +158,19 @@ export async function createCompany(input: typeof companies.$inferInsert) {
   if (!db) throw new Error("Database unavailable");
   const result = await db.insert(companies).values(input);
   return result[0].insertId;
+}
+
+export async function createImportRun(input: { source: string; filename?: string; createdBy?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(importRuns).values({ ...input, status: "processing" });
+  return Number(result[0].insertId);
+}
+
+export async function finishImportRun(id: number, result: { received: number; inserted: number; updated: number; rejected: number; conflictCount?: number; status?: "completed" | "failed" | "review_required"; errorMessage?: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(importRuns).set({ ...result, conflictCount: result.conflictCount ?? 0, finishedAt: new Date() }).where(eq(importRuns.id, id));
 }
 
 export async function bulkUpsertCompanies(rows: Array<{ cnpj: string; legalName: string; tradeName?: string; city?: string; state?: string; segment?: string; source?: string }>) {
