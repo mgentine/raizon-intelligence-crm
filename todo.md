@@ -211,3 +211,7 @@
 
 - [x] Testar a regra de idempotência de notificações abertas para evitar duplicação em reexecuções
 - [x] Testar a mutation decideConflict com decisão reject, racional persistido e bloqueio para perfil comercial
+
+# Completude do funil comercial
+
+- [x] Implementar mutation e interface de atualização de oportunidade com responsável, próxima ação, notas, valor e motivo de perda

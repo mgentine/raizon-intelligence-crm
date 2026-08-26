@@ -398,6 +398,13 @@ export async function updateOpportunityStage(id: number, stage: typeof opportuni
   await db.update(opportunities).set({ stage }).where(eq(opportunities.id, id));
 }
 
+export async function updateOpportunityDetails(id: number, changes: Partial<typeof opportunities.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(opportunities).set(changes).where(eq(opportunities.id, id));
+  return { success: true, id } as const;
+}
+
 export async function getCetesbLeadStatus() {
   const db = await getDb();
   if (!db) return [];
