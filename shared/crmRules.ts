@@ -63,6 +63,13 @@ export function requiresNextAction(stage: string) {
   return !["won", "lost", "discarded"].includes(stage);
 }
 
+export const importConflictDecisions = ["accept_incoming", "keep_current", "review", "reject"] as const;
+export type ImportConflictDecision = (typeof importConflictDecisions)[number];
+
+export function isImportConflictDecision(value: string): value is ImportConflictDecision {
+  return (importConflictDecisions as readonly string[]).includes(value);
+}
+
 export function validateCommercialTransition(stage: string, nextAction?: string | null, requirements?: { hasValidContact?: boolean; hasDiagnosis?: boolean; hasProposal?: boolean; lossReason?: string | null }) {
   if (requiresNextAction(stage) && !nextAction?.trim()) throw new Error("Etapas comerciais abertas exigem próxima ação definida");
   if (["contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved"].includes(stage) && requirements?.hasValidContact !== true) throw new Error("A etapa exige contato válido registrado");

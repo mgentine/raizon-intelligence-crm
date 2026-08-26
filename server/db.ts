@@ -82,6 +82,11 @@ export async function refreshUserNotifications(userId: number) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "regulatory_expiry"), eq(notifications.entityId, act.id), isNull(notifications.readAt))).limit(1);
     if (!exists.length) { const severity = act.expiresAt && act.expiresAt <= new Date(Date.now() + 30 * 86400000) ? "critical" : "warning"; await db.insert(notifications).values({ userId, type: "regulatory_expiry", severity, groupingKey: `regulatory_act:${act.id}`, title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
   }
+  const stalled = await db.select({ id: opportunities.id, companyId: opportunities.companyId, title: opportunities.title }).from(opportunities).where(and(sql`${opportunities.stage} not in ('won','lost','discarded')`, or(isNull(opportunities.nextActionAt), lt(opportunities.nextActionAt, sql`date_sub(now(), interval 14 day)`)))).limit(100);
+  for (const opportunity of stalled) {
+    const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "stalled_opportunity"), eq(notifications.entityId, opportunity.id), isNull(notifications.readAt))).limit(1);
+    if (!exists.length) { await db.insert(notifications).values({ userId, type: "stalled_opportunity", severity: "warning", groupingKey: `opportunity:${opportunity.id}`, title: "Oportunidade sem avanço", body: `${opportunity.title} não possui próxima ação recente.`, entityType: "opportunity", entityId: opportunity.id }); created++; }
+  }
   for (const item of overdue) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "overdue_activity"), eq(notifications.entityId, item.id), isNull(notifications.readAt))).limit(1);
     if (!exists.length) { await db.insert(notifications).values({ userId, type: "overdue_activity", severity: "critical", groupingKey: `activity:${item.id}`, title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
@@ -140,6 +145,19 @@ export async function getDashboardStats() {
     overdueActivities: Number(overdueCount[0]?.count ?? 0),
     forecastRevenue: Number(forecast[0]?.value ?? 0),
   };
+}
+
+export async function getOperationalCoverage() {
+  const db = await getDb();
+  if (!db) return { companiesWithContact: 0, companiesWithoutContact: 0, priorityA: 0, priorityB: 0, priorityC: 0, priorityD: 0 };
+  const [coverage, priorities] = await Promise.all([
+    db.select({ covered: sql<number>`count(distinct ${contacts.companyId})` }).from(contacts),
+    db.select({ priority: opportunities.commercialPriority, count: sql<number>`count(*)` }).from(opportunities).where(sql`${opportunities.stage} not in ('won','lost','discarded')`).groupBy(opportunities.commercialPriority),
+  ]);
+  const total = Number((await db.select({ count: sql<number>`count(*)` }).from(companies))[0]?.count ?? 0);
+  const covered = Number(coverage[0]?.covered ?? 0);
+  const counts = Object.fromEntries(priorities.map((item) => [item.priority, Number(item.count)]));
+  return { companiesWithContact: covered, companiesWithoutContact: Math.max(total - covered, 0), priorityA: counts.A || 0, priorityB: counts.B || 0, priorityC: counts.C || 0, priorityD: counts.D || 0 };
 }
 
 export async function listUnits(companyId?: number) {

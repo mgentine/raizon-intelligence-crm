@@ -5,7 +5,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { bulkUpsertCompanies, createActivity, createCompany, createContact, createEvidenceFile, createImportRun, decideImportConflict, completeRecurringItem, createLead, createOpportunity, createRecurringItem, createRegulatoryAct, createUnit, finishImportRun, getCommercialFunnelSummary, getDashboardStats, getLeadTransitionEvidence, getCetesbLeadStatus, listCompanies, listContacts, listEvidenceFiles, listImportRuns, listPendingImportConflicts, listLeads, listNotifications, listOpportunities, listOperationalQueue, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateLeadCommercialStatus, updateOpportunityStage } from "./db";
+import { bulkUpsertCompanies, createActivity, createCompany, createContact, createEvidenceFile, createImportRun, decideImportConflict, completeRecurringItem, createLead, createOpportunity, createRecurringItem, createRegulatoryAct, createUnit, finishImportRun, getCommercialFunnelSummary, getDashboardStats, getLeadTransitionEvidence, getOperationalCoverage, getCetesbLeadStatus, listCompanies, listContacts, listEvidenceFiles, listImportRuns, listPendingImportConflicts, listLeads, listNotifications, listOpportunities, listOperationalQueue, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateLeadCommercialStatus, updateOpportunityStage } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 import { storagePut } from "./storage";
 
@@ -36,6 +36,7 @@ export const appRouter = router({
     recurring: protectedProcedure.query(() => listUpcomingRecurring()),
     cetesbLeadStatus: protectedProcedure.query(() => getCetesbLeadStatus()),
     commercialFunnel: protectedProcedure.query(() => getCommercialFunnelSummary()),
+    operationalCoverage: protectedProcedure.query(() => getOperationalCoverage()),
     myQueue: protectedProcedure.query(({ ctx }) => listOperationalQueue(ctx.user.id)),
   }),
   leads: router({

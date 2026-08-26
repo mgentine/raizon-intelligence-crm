@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
+import { isImportConflictDecision, normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
 import { decorateRegulatoryActRow, groupNotifications } from "./db";
 
 describe("lead and regulatory rules", () => {
@@ -36,6 +36,11 @@ describe("lead and regulatory rules", () => {
       { id: 4, type: "overdue_activity", entityType: "activity", entityId: 4, groupingKey: "activity:4", readAt: new Date("2026-08-26T12:01:00Z"), severity: "critical" },
     ]);
     expect(allRead[0].readAt).not.toBeNull();
+  });
+
+  it("accepts the reject conflict decision and rejects unknown decisions", () => {
+    expect(isImportConflictDecision("reject")).toBe(true);
+    expect(isImportConflictDecision("delete_everything")).toBe(false);
   });
 
   it("requires next action for open commercial stages", () => {
