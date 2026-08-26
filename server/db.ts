@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, isNotNull, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull, isNull, lt, lte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   activities,
@@ -62,6 +62,25 @@ export async function getUserByOpenId(openId: string) {
   if (!db) return undefined;
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
   return result[0];
+}
+
+export async function refreshUserNotifications(userId: number) {
+  const db = await getDb();
+  if (!db) return { created: 0 };
+  const [acts, overdue] = await Promise.all([
+    db.select({ id: regulatoryActs.id, expiresAt: regulatoryActs.expiresAt, companyId: regulatoryActs.companyId }).from(regulatoryActs).where(and(isNotNull(regulatoryActs.expiresAt), lte(regulatoryActs.expiresAt, sql`date_add(now(), interval 90 day)`))).limit(100),
+    db.select({ id: activities.id, nextActionAt: activities.nextActionAt, companyId: activities.companyId }).from(activities).where(and(isNotNull(activities.nextActionAt), lt(activities.nextActionAt, sql`now()`))).limit(100),
+  ]);
+  let created = 0;
+  for (const act of acts) {
+    const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "regulatory_expiry"), eq(notifications.entityId, act.id), isNull(notifications.readAt))).limit(1);
+    if (!exists.length) { await db.insert(notifications).values({ userId, type: "regulatory_expiry", title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
+  }
+  for (const item of overdue) {
+    const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "overdue_activity"), eq(notifications.entityId, item.id), isNull(notifications.readAt))).limit(1);
+    if (!exists.length) { await db.insert(notifications).values({ userId, type: "overdue_activity", title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
+  }
+  return { created };
 }
 
 export async function listNotifications(userId: number) {
