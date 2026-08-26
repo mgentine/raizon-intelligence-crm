@@ -4,7 +4,7 @@ import { mapImportRows, validateImportMapping } from "../shared/importRules";
 import { normalizeCnpjValue, normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
 import { decorateRegulatoryActRow, filterEvidenceRows, filterRegulatoryActRows, groupNotifications } from "./db";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
-import { getSourceUpdateReadiness } from "../shared/sourceReadiness";
+import { buildBlockedSourceAttempt, getSourceUpdateReadiness } from "../shared/sourceReadiness";
 
 describe("archivedAt operational filtering", () => {
   it("removes archived rows from simple and nested operational lists", () => {
@@ -77,6 +77,7 @@ describe("lead and regulatory rules", () => {
   it("expõe bloqueio explícito quando fontes oficiais não têm endpoint autorizado", () => {
     expect(getSourceUpdateReadiness()).toEqual({ cetesb: "blocked_no_authorized_endpoint", spAguas: "blocked_no_authorized_endpoint" });
     expect(getSourceUpdateReadiness({ cetesbAuthorizedEndpoint: true })).toEqual({ cetesb: "updated", spAguas: "blocked_no_authorized_endpoint" });
+    expect(buildBlockedSourceAttempt("sp_aguas", "sem endpoint")).toEqual(expect.objectContaining({ source: "sp_aguas", filename: "scheduled-source-update", status: "failed", receivedCount: 0, insertedCount: 0, updatedCount: 0, conflictCount: 0, rejectedCount: 0, errorMessage: "sem endpoint" }));
   });
 
   it("mantém a criação de notificações idempotente por ocorrência aberta", () => {

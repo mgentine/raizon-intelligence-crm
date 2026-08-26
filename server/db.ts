@@ -21,6 +21,7 @@ import {
 import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
+import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -302,7 +303,7 @@ export async function createImportRun(input: { source: string; filename?: string
 export async function recordBlockedSourceAttempt(source: "cetesb" | "sp_aguas", message: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const result = await db.insert(importRuns).values({ source, filename: "scheduled-source-update", status: "failed", receivedCount: 0, insertedCount: 0, updatedCount: 0, conflictCount: 0, rejectedCount: 0, errorMessage: message, finishedAt: new Date() });
+  const result = await db.insert(importRuns).values({ ...buildBlockedSourceAttempt(source, message), finishedAt: new Date() });
   return Number(result[0].insertId);
 }
 

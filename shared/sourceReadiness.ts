@@ -11,3 +11,17 @@ export function getSourceUpdateReadiness(input: { cetesbAuthorizedEndpoint?: boo
     spAguas: input.spAguasAuthorizedEndpoint ? "updated" : "blocked_no_authorized_endpoint",
   };
 }
+
+export function buildBlockedSourceAttempt(source: "cetesb" | "sp_aguas", message: string) {
+  return {
+    source,
+    filename: "scheduled-source-update",
+    status: "failed" as const,
+    receivedCount: 0,
+    insertedCount: 0,
+    updatedCount: 0,
+    conflictCount: 0,
+    rejectedCount: 0,
+    errorMessage: message,
+  };
+}
