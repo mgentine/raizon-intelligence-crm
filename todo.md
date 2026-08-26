@@ -226,3 +226,7 @@
 - [x] Integrar envio de alertas sem duplicação e com falha observável
 - [x] Adicionar testes do contrato de e-mail sem enviar mensagem real
 - [x] Documentar parâmetros necessários e procedimento de teste operacional em docs/titan-smtp.md
+
+# Validação do transporte Titan
+
+- [x] Validar remetente, destinatários, assunto e redaction com Nodemailer mockado, sem conexão SMTP real
