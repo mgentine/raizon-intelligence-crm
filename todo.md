@@ -62,11 +62,11 @@
 - [x] Criar armazenamento de metadados e upload de evidências regulatórias em S3
 - [x] Implementar fila Minha agenda de hoje com leads, follow-ups, vencimentos e oportunidades paradas
 - [x] Implementar transições controladas do pipeline com critérios mínimos e próxima ação
-- [ ] Implementar tela de revisão de conflitos com decisões aceitar/manter/revisar/rejeitar
+- [x] Implementar tela de revisão de conflitos com decisões aceitar/manter/revisar/rejeitar
 - [x] Implementar status regulatório normalizado sem sobrescrever o valor publicado bruto
 - [x] Implementar status comercial independente e gráfico comercial separado do gráfico regulatório
 - [x] Aplicar autorização backend por perfil administrador, comercial e técnico
-- [ ] Implementar painel de saúde das fontes e idade da última carga válida
+- [x] Implementar painel de saúde das fontes e idade da última carga válida
 - [x] Implementar notificações agrupadas, severidade e deduplicação por entidade
 - [ ] Implementar conectores substituíveis para arquivo oficial, CNPJ, CETESB e SP Águas
 - [x] Implementar reprocessamento seguro e preservação da última versão válida após falha
@@ -79,7 +79,7 @@
 - [x] Integrar o status regulatório normalizado ao modelo, queries e UI sem perder o valor bruto publicado
 - [x] Renderizar gráfico comercial separado usando o resumo do funil
 - [x] Expandir autorização por perfil para todas as procedures e mutations sensíveis
-- [ ] Adicionar severidade e agrupamento às notificações no schema, backend e UI
+- [x] Adicionar severidade e agrupamento às notificações no schema, backend e UI
 - [ ] Implementar reprocessamento transacional/seguro com preservação explícita da última versão válida
 
 # Ressalvas finais antes do checkpoint
@@ -113,3 +113,15 @@
 - [ ] Validar visualmente a tela de Atos regulatórios com registros reais/populados exibindo regulatoryStatus normalizado ao lado do vencimento
 - [x] Capturar e registrar explicitamente o estado de erro do funil comercial em mobile usando ?forceChartError=1
 - [x] Adicionar teste de integração/unidade do contrato de listRegulatoryActs confirmando regulatoryStatus normalizado
+
+# Correções de efetividade da governança
+
+- [x] Adicionar ação explícita de rejeitar na tela de conflitos e validar o fluxo completo
+- [x] Calcular e exibir idade da última carga válida por fonte usando import_runs concluídos
+- [x] Implementar agrupamento real de notificações por groupingKey no backend e na UI
+
+# Fechamento de governança
+
+- [ ] Validar explicitamente a tela de Importações com conflitos reais, incluindo rejeição e atualização após decisão
+- [x] Marcar todo o grupo de notificações como lido quando a ocorrência agrupada for aberta
+- [ ] Adicionar testes específicos para agrupamento de notificações e decisão reject de conflito

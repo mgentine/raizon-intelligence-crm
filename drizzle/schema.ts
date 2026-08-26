@@ -217,6 +217,8 @@ export const notifications = mysqlTable("notifications", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
   type: varchar("type", { length: 80 }).notNull(),
+  severity: mysqlEnum("severity", ["critical", "warning", "info"]).default("info").notNull(),
+  groupingKey: varchar("groupingKey", { length: 180 }),
   title: varchar("title", { length: 255 }).notNull(),
   body: text("body"),
   readAt: timestamp("readAt"),
@@ -226,6 +228,7 @@ export const notifications = mysqlTable("notifications", {
 }, (table) => ({
   userIdx: index("notifications_user_idx").on(table.userId),
   unreadIdx: index("notifications_unread_idx").on(table.userId, table.readAt),
+  groupingIdx: index("notifications_grouping_idx").on(table.userId, table.groupingKey),
 }));
 
 export type Notification = typeof notifications.$inferSelect;

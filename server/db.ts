@@ -80,11 +80,11 @@ export async function refreshUserNotifications(userId: number) {
   let created = 0;
   for (const act of acts) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "regulatory_expiry"), eq(notifications.entityId, act.id), isNull(notifications.readAt))).limit(1);
-    if (!exists.length) { await db.insert(notifications).values({ userId, type: "regulatory_expiry", title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
+    if (!exists.length) { const severity = act.expiresAt && act.expiresAt <= new Date(Date.now() + 30 * 86400000) ? "critical" : "warning"; await db.insert(notifications).values({ userId, type: "regulatory_expiry", severity, groupingKey: `regulatory_act:${act.id}`, title: "Ato regulatório próximo do vencimento", body: `Verifique o ato vinculado à empresa ${act.companyId}.`, entityType: "regulatory_act", entityId: act.id }); created++; }
   }
   for (const item of overdue) {
     const exists = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.type, "overdue_activity"), eq(notifications.entityId, item.id), isNull(notifications.readAt))).limit(1);
-    if (!exists.length) { await db.insert(notifications).values({ userId, type: "overdue_activity", title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
+    if (!exists.length) { await db.insert(notifications).values({ userId, type: "overdue_activity", severity: "critical", groupingKey: `activity:${item.id}`, title: "Atividade atrasada", body: `Existe uma próxima ação vencida para a empresa ${item.companyId}.`, entityType: "activity", entityId: item.id }); created++; }
   }
   return { created };
 }
@@ -95,16 +95,30 @@ export async function listImportRuns() {
   return db.select().from(importRuns).orderBy(desc(importRuns.createdAt)).limit(30);
 }
 
+export function groupNotifications<T extends { id: number; type: string; entityType: string | null; entityId: number | null; groupingKey: string | null; readAt: Date | null; severity: "critical" | "warning" | "info" }>(rows: T[]) {
+  const grouped = new Map<string, T & { groupingCount: number }>();
+  for (const row of rows) {
+    const key = row.groupingKey || `${row.type}:${row.entityType || "none"}:${row.entityId || row.id}`;
+    const current = grouped.get(key);
+    if (!current) grouped.set(key, { ...row, groupingCount: 1 });
+    else { current.groupingCount += 1; current.readAt = current.readAt && row.readAt ? current.readAt : null; if (row.severity === "critical") current.severity = "critical"; else if (row.severity === "warning" && current.severity === "info") current.severity = "warning"; }
+  }
+  return Array.from(grouped.values()).slice(0, 20);
+}
+
 export async function listNotifications(userId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(notifications).where(eq(notifications.userId, userId)).orderBy(desc(notifications.createdAt)).limit(20);
+  const rows = await db.select().from(notifications).where(eq(notifications.userId, userId)).orderBy(desc(notifications.createdAt)).limit(100);
+  return groupNotifications(rows);
 }
 
 export async function markNotificationRead(id: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(notifications).set({ readAt: new Date() }).where(and(eq(notifications.id, id), eq(notifications.userId, userId)));
+  const selected = await db.select({ groupingKey: notifications.groupingKey }).from(notifications).where(and(eq(notifications.id, id), eq(notifications.userId, userId))).limit(1);
+  const groupingKey = selected[0]?.groupingKey;
+  await db.update(notifications).set({ readAt: new Date() }).where(groupingKey ? and(eq(notifications.userId, userId), eq(notifications.groupingKey, groupingKey)) : and(eq(notifications.id, id), eq(notifications.userId, userId)));
 }
 
 export async function getDashboardStats() {

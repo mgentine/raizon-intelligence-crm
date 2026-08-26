@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
-import { decorateRegulatoryActRow } from "./db";
+import { decorateRegulatoryActRow, groupNotifications } from "./db";
 
 describe("lead and regulatory rules", () => {
   it("keeps published status separate while classifying an expired act", () => {
@@ -20,6 +20,22 @@ describe("lead and regulatory rules", () => {
     const row = decorateRegulatoryActRow({ act: { publishedStatus: "Vigente", expiresAt: new Date("2026-08-01T12:00:00Z") } }, new Date("2026-08-26T12:00:00Z"));
     expect(row.act.publishedStatus).toBe("Vigente");
     expect(row.regulatoryStatus).toBe("expired");
+  });
+
+  it("groups notifications by key and keeps the highest severity", () => {
+    const grouped = groupNotifications([
+      { id: 1, type: "regulatory_expiry", entityType: "regulatory_act", entityId: 9, groupingKey: "regulatory_act:9", readAt: null, severity: "warning" },
+      { id: 2, type: "regulatory_expiry", entityType: "regulatory_act", entityId: 9, groupingKey: "regulatory_act:9", readAt: new Date("2026-08-26T12:00:00Z"), severity: "critical" },
+    ]);
+    expect(grouped).toHaveLength(1);
+    expect(grouped[0].groupingCount).toBe(2);
+    expect(grouped[0].severity).toBe("critical");
+    expect(grouped[0].readAt).toBeNull();
+    const allRead = groupNotifications([
+      { id: 3, type: "overdue_activity", entityType: "activity", entityId: 4, groupingKey: "activity:4", readAt: new Date("2026-08-26T12:00:00Z"), severity: "critical" },
+      { id: 4, type: "overdue_activity", entityType: "activity", entityId: 4, groupingKey: "activity:4", readAt: new Date("2026-08-26T12:01:00Z"), severity: "critical" },
+    ]);
+    expect(allRead[0].readAt).not.toBeNull();
   });
 
   it("requires next action for open commercial stages", () => {
