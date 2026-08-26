@@ -219,3 +219,10 @@
 # Operação do funil na interface
 
 - [x] Adicionar seletor completo de etapa e motivo de perda no card de oportunidade, com fluxo controlado, persistência atômica e regra pura testada
+
+# Notificações por e-mail via Titan/HostGator
+
+- [x] Configurar adapter SMTP do Titan com remetente, destinatários e variáveis seguras
+- [x] Integrar envio de alertas sem duplicação e com falha observável
+- [x] Adicionar testes do contrato de e-mail sem enviar mensagem real
+- [x] Documentar parâmetros necessários e procedimento de teste operacional em docs/titan-smtp.md

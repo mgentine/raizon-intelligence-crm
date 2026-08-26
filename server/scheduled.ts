@@ -5,6 +5,7 @@ import { getDb, getUserByOpenId, recordBlockedSourceAttempt, refreshUserNotifica
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { getSourceUpdateReadiness } from "../shared/sourceReadiness";
+import { sendOperationalDigestEmail } from "./email";
 
 export async function refreshRegulatoryPriorities(req: Request, res: Response) {
   const startedAt = new Date().toISOString();
@@ -19,7 +20,16 @@ export async function refreshRegulatoryPriorities(req: Request, res: Response) {
     const blockedAttemptIds = await Promise.all(blockedSources.map((source) => recordBlockedSourceAttempt(source, "Fonte oficial sem endpoint/exportação autorizada; última versão válida preservada.")));
     const owner = await getUserByOpenId(ENV.ownerOpenId);
     const notifications = owner ? await refreshUserNotifications(owner.id) : { created: 0 };
-    return res.json({ ok: true, taskUid: user.taskUid, refreshed: result[0].affectedRows ?? 0, notificationsCreated: notifications.created, sourceUpdates, blockedAttemptIds, startedAt, finishedAt: new Date().toISOString() });
+    let email: { sent: boolean; skipped?: boolean; error?: string } = { sent: false, skipped: true };
+    if (notifications.created > 0) {
+      try {
+        const result = await sendOperationalDigestEmail({ createdCount: notifications.created, blockedAttemptCount: blockedAttemptIds.length });
+        email = { sent: result.sent, skipped: result.skipped };
+      } catch (error) {
+        email = { sent: false, error: error instanceof Error ? error.message : String(error) };
+      }
+    }
+    return res.json({ ok: true, taskUid: user.taskUid, refreshed: result[0].affectedRows ?? 0, notificationsCreated: notifications.created, email, sourceUpdates, blockedAttemptIds, startedAt, finishedAt: new Date().toISOString() });
   } catch (error) {
     return res.status(500).json({ error: error instanceof Error ? error.message : String(error), context: { url: req.originalUrl, taskUid: "unknown" }, timestamp: new Date().toISOString() });
   }

@@ -5,8 +5,11 @@ const getDbMock = vi.hoisted(() => vi.fn());
 const getUserByOpenIdMock = vi.hoisted(() => vi.fn());
 const refreshUserNotificationsMock = vi.hoisted(() => vi.fn());
 const recordBlockedSourceAttemptMock = vi.hoisted(() => vi.fn(async (source: string) => source === "cetesb" ? 101 : 102));
+const sendOperationalDigestEmailMock = vi.hoisted(() => vi.fn(async () => ({ sent: true, skipped: false, messageId: "test-message" })));
 
 vi.mock("./_core/sdk", () => ({ sdk: { authenticateRequest: authenticateRequestMock } }));
+vi.mock("./email", () => ({ sendOperationalDigestEmail: sendOperationalDigestEmailMock }));
+
 vi.mock("./db", () => ({
   getDb: getDbMock,
   getUserByOpenId: getUserByOpenIdMock,
@@ -69,6 +72,7 @@ describe("callback periódico regulatório", () => {
 
     expect(update).toHaveBeenCalled();
     expect(refreshUserNotificationsMock).toHaveBeenCalledWith(7);
+    expect(sendOperationalDigestEmailMock).toHaveBeenCalledWith({ createdCount: 2, blockedAttemptCount: 2 });
     expect(recordBlockedSourceAttemptMock).toHaveBeenCalledTimes(2);
     expect(recordBlockedSourceAttemptMock).toHaveBeenCalledWith("cetesb", expect.stringContaining("última versão válida preservada"));
     expect(recordBlockedSourceAttemptMock).toHaveBeenCalledWith("sp_aguas", expect.stringContaining("endpoint/exportação autorizada"));
