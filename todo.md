@@ -34,7 +34,7 @@
 - [x] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
 - [x] Construir painéis de cobertura de contato, previsão de receita e prioridades operacionais
 - [x] Construir calendário operacional de recorrência com criação e conclusão de tarefas
-- [ ] Implementar notificações internas e por e-mail
+- [x] Implementar notificações internas e por e-mail
 - [x] Implementar adapters reais e substituíveis para CNPJ, CETESB e SP Águas, sujeitos à disponibilidade e às regras de cada fonte
 - [ ] Implementar rotina periódica completa para processamento de arquivos, atualização de fontes e recálculo de filas
 - [x] Corrigir responsividade mobile: sidebar colapsável e grade do dashboard adaptável
