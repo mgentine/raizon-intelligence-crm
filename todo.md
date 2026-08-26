@@ -238,3 +238,8 @@
 # Interface de teste SMTP
 
 - [x] Adicionar botão de teste SMTP na tela de Configurações, visível somente para administrador
+
+# Correção do erro SMTP 535
+
+- [x] Tratar falha de autenticação Titan 535 com erro operacional seguro e orientado
+- [x] Adicionar teste do mapeamento de erro SMTP sem expor usuário ou senha, incluindo erro bruto do transporte
