@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { bulkUpsertCompanies, createActivity, createCompany, createContact, createImportRun, createOpportunity, createRecurringItem, createUnit, finishImportRun, getDashboardStats, listCompanies, listContacts, listNotifications, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateOpportunityStage } from "./db";
+import { bulkUpsertCompanies, createActivity, createCompany, createContact, createImportRun, createOpportunity, createRecurringItem, createUnit, finishImportRun, getDashboardStats, listCompanies, listContacts, listImportRuns, listNotifications, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateOpportunityStage } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
@@ -46,6 +46,7 @@ export const appRouter = router({
   }),
   imports: router({
     capabilities: protectedProcedure.query(() => ({ cnpj: "provider-ready", cetesb: "controlled-public-source", spAguas: "controlled-public-source" })),
+    history: protectedProcedure.query(() => listImportRuns()),
   }),
   regulatory: router({
     list: protectedProcedure.query(() => listRegulatoryActs()),

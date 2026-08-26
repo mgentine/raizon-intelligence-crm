@@ -83,6 +83,12 @@ export async function refreshUserNotifications(userId: number) {
   return { created };
 }
 
+export async function listImportRuns() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(importRuns).orderBy(desc(importRuns.createdAt)).limit(30);
+}
+
 export async function listNotifications(userId: number) {
   const db = await getDb();
   if (!db) return [];
