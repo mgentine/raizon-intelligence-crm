@@ -234,3 +234,7 @@
 # Teste operacional de SMTP
 
 - [x] Adicionar mutation protegida para teste manual de e-mail Titan, restrita a administrador e sem disparo automático
+
+# Interface de teste SMTP
+
+- [x] Adicionar botão de teste SMTP na tela de Configurações, visível somente para administrador
