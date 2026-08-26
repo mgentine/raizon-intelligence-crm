@@ -47,3 +47,4 @@
 - [x] Implementar conclusão de itens recorrentes com status persistido no backend e ação na UI para marcar recorrência/tarefa como concluída
 - [ ] Adicionar testes para criação e conclusão de recorrências, incluindo estados aberto/concluído
 - [ ] Validar visualmente a agenda recorrente com fluxo completo: criar, listar, concluir e refletir no dashboard
+- [x] Aplicar o logotipo oficial da Raizon Ambiental no sidebar, cabeçalho, favicon/metadados e validar desktop/mobile
