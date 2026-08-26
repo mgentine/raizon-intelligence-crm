@@ -25,3 +25,9 @@ Esta revisão demonstra estabilidade estrutural e responsividade nos estados vaz
 ## Minha agenda — validação adicional
 
 A agenda foi revisada em desktop 1280×720 e mobile 390×844. O estado vazio exibe a fila de leads/oportunidades e o painel escuro de rotinas/atividades sem sobreposição; no mobile, as seções empilham verticalmente e o CTA permanece acessível. O fluxo completo criar → listar → concluir → refletir no dashboard não foi executado nesta sessão porque não há item recorrente real/populado disponível e não foram inseridos dados artificiais.
+
+## Cadastro de cliente por CNPJ
+
+Em 26/08/2026, a view `/?view=Empresas` foi revisada em desktop. O botão **Cadastrar cliente**, a busca por CNPJ/nome e o filtro de relacionamentos aparecem alinhados; com banco vazio, a tela exibe estado vazio sem fabricar registros. O formulário de CNPJ é aberto após ação do usuário e contém estados de consulta, encontrado e falha para o preenchimento automático. A validação populada com retorno real do provider ainda depende de uma execução controlada com CNPJ válido.
+
+- **Mobile 390×844, `/?view=Empresas`:** menu colapsado, título, botão **Cadastrar cliente**, busca, filtro de relacionamento e estado vazio renderizados sem sobreposição; o layout permanece legível e linear. A captura não abriu o formulário, portanto a validação visual do estado preenchido segue dependente de interação manual ou dados reais.
