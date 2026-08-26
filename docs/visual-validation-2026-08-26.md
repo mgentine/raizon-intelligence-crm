@@ -15,3 +15,9 @@ A validação foi executada no preview do CRM em desktop (1280×720) e mobile (3
 ## Limite da evidência
 
 Esta revisão demonstra estabilidade estrutural e responsividade nos estados vazios e controlados. Ela **não substitui** a inspeção de registros reais, especialmente para nomes longos, múltiplos atos por empresa, evidências anexadas, conflitos e status regulatório normalizado ao lado do vencimento.
+
+## Oportunidades — validação adicional
+
+- **Desktop 1280×720, `/?view=Oportunidades`:** cabeçalho, CTA e quatro colunas do funil (`Novas`, `Qualificadas`, `Propostas`, `Ganhas`) renderizados sem corte; estado vazio aparece como colunas limpas com contadores zero.
+- **Mobile 390×844, `/?view=Oportunidades`:** sidebar colapsada, título e CTA acessíveis; as colunas são empilhadas verticalmente e permanecem utilizáveis, sem overflow horizontal observado. A tela fica longa, mas a leitura segue linear.
+- **Limitação:** não há registros reais/populados no banco desta sessão; edição, mudança de etapa e perda foram validadas por contrato/regra, não por interação visual com registro persistido.
