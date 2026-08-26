@@ -48,3 +48,5 @@
 - [ ] Adicionar testes para criação e conclusão de recorrências, incluindo estados aberto/concluído
 - [ ] Validar visualmente a agenda recorrente com fluxo completo: criar, listar, concluir e refletir no dashboard
 - [x] Aplicar o logotipo oficial da Raizon Ambiental no sidebar, cabeçalho, favicon/metadados e validar desktop/mobile
+- [x] Remover fundo branco do logo oficial, melhorar resolução e substituir o asset no CRM
+- [x] Validar visualmente o logo otimizado em desktop e mobile
