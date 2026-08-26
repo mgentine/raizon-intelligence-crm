@@ -1,33 +1,93 @@
+import { ChangeEvent, useMemo, useState } from "react";
+import * as XLSX from "xlsx";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { startLogin } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { trpc } from "@/lib/trpc";
+import { BarChart3, Bell, Building2, CalendarClock, ChevronRight, CircleAlert, FileText, LayoutDashboard, LogOut, Plus, Search, Settings, ShieldCheck, Target, Upload, Users, Zap } from "lucide-react";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Workflow, Frontend Best Practices, Design Guide and Common Pitfalls
- */
-export default function Home() {
-  // The useAuth hook provides authentication state.
-  // To implement login/logout, call logout(), or start login from an event
-  // handler: onClick={() => startLogin()} (imported from "@/const"). Never call
-  // startLogin() during render (no href={startLogin()}) — it mints a one-time
-  // nonce cookie and must run only at the moment of navigation.
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
+const navItems = [
+  { label: "Visão geral", icon: LayoutDashboard },
+  { label: "Empresas", icon: Building2 },
+  { label: "Oportunidades", icon: Target },
+  { label: "Atos regulatórios", icon: FileText },
+  { label: "Atividades", icon: CalendarClock },
+  { label: "Importações", icon: Upload },
+  { label: "Configurações", icon: Settings },
+];
 
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
-  return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
-    </div>
-  );
+function formatDate(date: Date | string | null | undefined) {
+  if (!date) return "—";
+  return new Date(date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }).replace(" de ", " ");
 }
+
+export default function Home() {
+  const { user, loading, isAuthenticated, logout } = useAuth();
+  const [activeNav, setActiveNav] = useState("Visão geral");
+  const [search, setSearch] = useState("");
+  const [importStatus, setImportStatus] = useState<string>("");
+  const stats = trpc.dashboard.stats.useQuery(undefined, { enabled: isAuthenticated });
+  const activities = trpc.dashboard.activities.useQuery(undefined, { enabled: isAuthenticated });
+  const recurring = trpc.dashboard.recurring.useQuery(undefined, { enabled: isAuthenticated });
+  const companies = trpc.companies.list.useQuery({ search }, { enabled: isAuthenticated && activeNav === "Empresas" });
+  const opportunities = trpc.opportunities.list.useQuery(undefined, { enabled: isAuthenticated && activeNav === "Oportunidades" });
+  const acts = trpc.regulatory.list.useQuery(undefined, { enabled: isAuthenticated && activeNav === "Atos regulatórios" });
+  const importCompanies = trpc.companies.bulkUpsert.useMutation({ onSuccess: (result) => setImportStatus(`${result.received} registros processados · ${result.inserted} incluídos · ${result.updated} atualizados · ${result.rejected} rejeitados.`), onError: (error) => setImportStatus(`Falha na importação: ${error.message}`) });
+  async function handleImport(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setImportStatus("Lendo planilha e preparando revisão…");
+    const buffer = await file.arrayBuffer();
+    const workbook = XLSX.read(buffer, { type: "array", cellDates: true });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+    const key = (row: Record<string, unknown>, terms: string[]) => Object.keys(row).find(k => terms.some(term => k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(term))) || "";
+    const rows = raw.map(row => {
+      const cnpjKey = key(row, ["cnpj"]); const nameKey = key(row, ["razao social", "razao", "nome empresa", "requerente", "empresa"]); const cityKey = key(row, ["municipio", "cidade"]); const stateKey = key(row, ["uf", "estado"]); const segmentKey = key(row, ["segmento", "atividade", "cnae"]);
+      return { cnpj: String(row[cnpjKey] || ""), legalName: String(row[nameKey] || ""), city: String(row[cityKey] || "") || undefined, state: String(row[stateKey] || "").slice(0, 2).toUpperCase() || undefined, segment: String(row[segmentKey] || "") || undefined, source: file.name.toLowerCase().includes("outorga") ? "sp_aguas" : "cetesb" };
+    }).filter(row => row.cnpj || row.legalName).slice(0, 1000);
+    if (!rows.length) { setImportStatus("Nenhum registro reconhecível. Verifique se a primeira aba possui CNPJ e razão social/requerente."); return; }
+    importCompanies.mutate({ rows });
+  }
+
+  const initials = useMemo(() => (user?.name || "MG").split(" ").map(part => part[0]).slice(0, 2).join("").toUpperCase(), [user?.name]);
+
+  if (loading) return <div className="min-h-screen bg-[#f7f8f6] flex items-center justify-center text-[#16221f]">Carregando ambiente seguro…</div>;
+  if (!isAuthenticated) {
+    return <main className="min-h-screen bg-[#f7f8f6] flex items-center justify-center p-6"><div className="w-full max-w-lg bg-white border border-[#dfe5e0] p-10"><div className="flex items-center gap-3 mb-10"><div className="h-10 w-10 bg-[#e13b32] grid place-items-center text-white font-black">R</div><div><div className="font-black tracking-tight text-xl">RAIZON</div><div className="text-[10px] tracking-[.24em] text-[#68756f]">INTELLIGENCE CRM</div></div></div><div className="h-1 w-16 bg-[#e13b32] mb-7"/><h1 className="text-4xl font-black tracking-tight text-[#16221f]">Inteligência regulatória aplicada à venda.</h1><p className="mt-5 text-[#68756f] leading-relaxed">Centralize empresas, licenças, outorgas, oportunidades e rotinas comerciais em um único ambiente operacional.</p><Button className="mt-8 w-full h-12 bg-[#16221f] hover:bg-[#273832] text-white" onClick={() => startLogin()}>Entrar na plataforma <ChevronRight className="ml-2 h-4 w-4"/></Button><p className="mt-6 text-xs text-[#87918c]">Acesso protegido por autenticação corporativa.</p></div></main>;
+  }
+
+  const pageTitle = activeNav === "Visão geral" ? "Visão geral" : activeNav;
+  return <div className="min-h-screen bg-[#f7f8f6] text-[#16221f] flex">
+    <aside className="w-[72px] lg:w-[248px] shrink-0 bg-[#16221f] text-white min-h-screen flex flex-col">
+      <div className="px-7 pt-8 pb-10"><div className="flex items-center gap-3"><div className="h-9 w-9 bg-[#e13b32] grid place-items-center font-black">R</div><div><div className="font-black tracking-tight text-lg hidden lg:block">RAIZON</div><div className="text-[9px] tracking-[.22em] text-[#9da9a3] hidden lg:block">INTELLIGENCE CRM</div></div></div></div>
+      <div className="px-4 text-[10px] tracking-[.18em] text-[#7f9188] uppercase mb-3 hidden lg:block">Operação</div>
+      <nav className="px-3 space-y-1">{navItems.map(({ label, icon: Icon }) => <button key={label} title={label} onClick={() => setActiveNav(label)} className={`w-full flex items-center gap-3 px-4 py-3 text-sm text-left transition-colors ${activeNav === label ? "bg-[#e13b32] text-white" : "text-[#b9c5be] hover:bg-[#24332d] hover:text-white"}`}><Icon className="h-[17px] w-[17px] shrink-0"/><span className="hidden lg:inline">{label}</span></button>)}</nav>
+      <div className="mt-auto p-5 border-t border-[#2b3a34]"><div className="flex items-center gap-3"><div className="h-9 w-9 bg-[#dbe4dd] text-[#16221f] grid place-items-center text-xs font-bold">{initials}</div><div className="min-w-0 hidden lg:block"><div className="text-sm truncate">{user?.name || "Usuário"}</div><div className="text-xs text-[#819189]">{user?.role === "admin" ? "Administrador" : user?.profile === "technical" ? "Técnico" : "Comercial"}</div></div><button aria-label="Sair" className="ml-auto text-[#819189] hover:text-white" onClick={() => logout()}><LogOut className="h-4 w-4"/></button></div></div>
+    </aside>
+    <main className="flex-1 min-w-0">
+      <header className="h-[76px] border-b border-[#dfe5e0] bg-white flex items-center justify-between px-8"><div><div className="text-[10px] text-[#839089] tracking-[.16em] uppercase">Raizon Ambiental / CRM</div><h1 className="text-2xl font-black tracking-tight mt-1">{pageTitle}</h1></div><div className="flex items-center gap-5"><button className="relative text-[#65736c]" aria-label="Notificações"><Bell className="h-5 w-5"/><span className="absolute -right-1 -top-1 h-2 w-2 bg-[#e13b32]"/></button><div className="h-9 w-9 bg-[#e13b32] text-white grid place-items-center text-xs font-bold">{initials}</div></div></header>
+      <div className="p-4 md:p-8 max-w-[1500px]">
+        {activeNav === "Visão geral" && <>
+          <div className="flex items-end justify-between mb-8"><div><p className="text-[#65736c] text-sm">Bom trabalho, {user?.name?.split(" ")[0] || "Miguel"}. Aqui está o pulso da operação.</p></div><Button className="bg-[#e13b32] hover:bg-[#c72e26] text-white"><Plus className="h-4 w-4 mr-2"/> Nova oportunidade</Button></div>
+          <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">{[
+            { label: "Empresas", value: stats.data?.companies ?? 0, Icon: Building2, note: "base canônica" }, { label: "Pipeline aberto", value: stats.data?.openOpportunities ?? 0, Icon: Target, note: "oportunidades" }, { label: "Atos a vencer", value: stats.data?.expiringActs ?? 0, Icon: CircleAlert, note: "próximos 90 dias" }, { label: "Ações atrasadas", value: stats.data?.overdueActivities ?? 0, Icon: CalendarClock, note: "exigem resposta" }, { label: "Total oportunidades", value: stats.data?.opportunities ?? 0, Icon: BarChart3, note: "no histórico" }
+          ].map(({ label, value, Icon, note }) => <div key={label} className="bg-white border border-[#dfe5e0] p-5"><div className="flex items-center justify-between"><span className="text-xs text-[#65736c] uppercase tracking-[.12em]">{label}</span><Icon className="h-4 w-4 text-[#e13b32]"/></div><div className="text-3xl font-black mt-5">{value}</div><div className="text-xs text-[#87918c] mt-2">{note}</div></div>)}</section>
+          <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_1fr] gap-6"><section className="bg-white border border-[#dfe5e0]"><div className="px-6 py-5 border-b border-[#e8ece9] flex items-center justify-between"><div><h2 className="font-black text-lg">Atividade recente</h2><p className="text-xs text-[#87918c] mt-1">Últimos movimentos registrados</p></div><Zap className="h-5 w-5 text-[#e13b32]"/></div><div className="divide-y divide-[#edf0ee]">{(activities.data || []).slice(0, 5).map((row: any) => <div key={row.activity.id} className="px-6 py-4 flex items-start gap-4"><div className="h-8 w-8 bg-[#fbe5e3] text-[#e13b32] grid place-items-center shrink-0"><Users className="h-4 w-4"/></div><div className="min-w-0 flex-1"><div className="text-sm font-semibold truncate">{row.company?.legalName || "Empresa sem nome"}</div><div className="text-xs text-[#65736c] mt-1">{row.activity.channel} · {row.activity.outcome || row.activity.objective || "Interação registrada"}</div></div><span className="text-[11px] text-[#87918c]">{formatDate(row.activity.happenedAt)}</span></div>)}{!activities.data?.length && <div className="px-6 py-12 text-center text-sm text-[#87918c]">Nenhuma atividade registrada ainda.</div>}</div></section>
+          <section className="bg-[#16221f] text-white"><div className="px-6 py-5 border-b border-[#304039] flex items-center justify-between"><div><h2 className="font-black text-lg">Agenda regulatória</h2><p className="text-xs text-[#a5b3aa] mt-1">Próximos itens recorrentes</p></div><CalendarClock className="h-5 w-5 text-[#e13b32]"/></div><div className="p-6 space-y-5">{(recurring.data || []).slice(0, 5).map((row: any) => <div key={row.item.id} className="flex gap-4"><div className="text-[#e13b32] font-black text-sm w-12">{formatDate(row.item.dueAt)}</div><div><div className="text-sm font-semibold">{row.item.title}</div><div className="text-xs text-[#9eaca4] mt-1">{row.company?.legalName || "Empresa"} · {row.item.recurrenceType}</div></div></div>)}{!recurring.data?.length && <div className="text-sm text-[#9eaca4]">Cadastre vencimentos e recorrências para visualizar a agenda.</div>}</div><div className="px-6 pb-6"><Button variant="outline" className="border-[#53635b] text-white bg-transparent hover:bg-[#24332d] hover:text-white w-full" onClick={() => setActiveNav("Atos regulatórios")}>Ver agenda completa <ChevronRight className="h-4 w-4 ml-auto"/></Button></div></section></div>
+        </>}
+        {activeNav === "Empresas" && <ListPage title="Empresas" subtitle="Base canônica consolidada por CNPJ" search={search} setSearch={setSearch}><div className="bg-white border border-[#dfe5e0] divide-y divide-[#edf0ee]">{(companies.data || []).map((company: any) => <div className="p-5 flex items-center gap-5" key={company.id}><div className="h-10 w-10 bg-[#e8efea] grid place-items-center"><Building2 className="h-5 w-5 text-[#315349]"/></div><div className="flex-1"><div className="font-bold">{company.legalName}</div><div className="text-xs text-[#65736c] mt-1">CNPJ {company.cnpj} · {company.city || "Município não informado"}/{company.state || "—"}</div></div><Badge variant="outline">{company.segment || "Sem segmento"}</Badge><ChevronRight className="h-4 w-4 text-[#9aa59f]"/></div>)}{!companies.data?.length && <Empty text="Nenhuma empresa encontrada. Importe sua base ou cadastre a primeira empresa."/>}</div></ListPage>}
+        {activeNav === "Oportunidades" && <ListPage title="Oportunidades" subtitle="Funil comercial específico da Raizon"><div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">{["new","qualified","proposal","won"].map(stage => <div key={stage} className="bg-[#eef2ee] p-4 min-h-[420px]"><div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[.12em]">{stage === "new" ? "Novas" : stage === "qualified" ? "Qualificadas" : stage === "proposal" ? "Propostas" : "Ganhas"}</span><span className="text-xs text-[#87918c]">{(opportunities.data || []).filter((row: any) => row.opportunity.stage === stage).length}</span></div><div className="space-y-3">{(opportunities.data || []).filter((row: any) => row.opportunity.stage === stage).map((row: any) => <div key={row.opportunity.id} className="bg-white border border-[#dfe5e0] p-4"><div className="text-sm font-bold">{row.opportunity.title}</div><div className="text-xs text-[#65736c] mt-2">{row.company?.legalName}</div><div className="flex items-center justify-between mt-4"><Badge className="bg-[#fbe5e3] text-[#c7322b] hover:bg-[#fbe5e3]">Prioridade {row.opportunity.commercialPriority}</Badge><span className="text-xs text-[#87918c]">{row.opportunity.nextActionAt ? formatDate(row.opportunity.nextActionAt) : "Sem ação"}</span></div></div>)}</div></div>)}</div></ListPage>}
+        {activeNav === "Atos regulatórios" && <ListPage title="Atos regulatórios" subtitle="Licenças, processos e outorgas vinculados às empresas"><div className="bg-white border border-[#dfe5e0] divide-y divide-[#edf0ee]">{(acts.data || []).map((row: any) => <div className="p-5 flex items-center gap-5" key={row.act.id}><div className="h-10 w-10 bg-[#fbe5e3] grid place-items-center"><ShieldCheck className="h-5 w-5 text-[#e13b32]"/></div><div className="flex-1"><div className="font-bold">{row.act.actType} {row.act.actNumber || ""}</div><div className="text-xs text-[#65736c] mt-1">{row.company?.legalName || "Empresa"} · fonte {row.act.source}</div></div><div className="text-right"><div className="text-xs text-[#65736c]">Vencimento</div><div className="font-bold text-sm">{formatDate(row.act.expiresAt)}</div></div><Badge variant={row.act.needsValidation ? "destructive" : "outline"}>{row.act.needsValidation ? "Validar" : "Conferido"}</Badge></div>)}{!acts.data?.length && <Empty text="Nenhum ato regulatório cadastrado. A importação assistida aparecerá aqui."/>}</div></ListPage>}
+        {activeNav === "Atividades" && <ListPage title="Atividades" subtitle="Próximas ações e histórico de relacionamento"><Empty text="A visão operacional de atividades está pronta para receber os registros do seu piloto comercial."/></ListPage>}
+        {activeNav === "Importações" && <ListPage title="Importações" subtitle="Carga assistida de bases públicas e internas"><div className="grid grid-cols-[1.1fr_1fr] gap-6"><div className="bg-white border border-[#dfe5e0] p-7"><div className="h-12 w-12 bg-[#fbe5e3] text-[#e13b32] grid place-items-center mb-6"><Upload className="h-5 w-5"/></div><h2 className="text-xl font-black">Importar base de leads</h2><p className="text-sm text-[#65736c] leading-relaxed mt-3">Selecione uma planilha XLSX. A primeira aba será lida, os campos serão normalizados e os registros serão consolidados por CNPJ.</p><label className="mt-7 flex items-center justify-center gap-2 border border-dashed border-[#b9c7be] h-28 cursor-pointer hover:bg-[#f7f8f6] text-sm font-bold"><Upload className="h-4 w-4 text-[#e13b32]"/> Selecionar XLSX<input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleImport}/></label>{importStatus && <div className="mt-5 text-sm border-t border-[#edf0ee] pt-4 text-[#315349]">{importStatus}</div>}</div><div className="bg-[#16221f] text-white p-7"><div className="text-[10px] tracking-[.18em] text-[#e13b32] uppercase">Governança da carga</div><h2 className="text-xl font-black mt-3">O que o sistema preserva</h2><div className="mt-6 space-y-5 text-sm text-[#bdc9c1]"><div><div className="text-white font-bold">CNPJ canônico</div><div className="mt-1">Empresas repetidas são atualizadas, não duplicadas.</div></div><div><div className="text-white font-bold">Fonte identificada</div><div className="mt-1">O arquivo é marcado como CETESB ou SP Águas.</div></div><div><div className="text-white font-bold">Limite seguro</div><div className="mt-1">A carga inicial é limitada a 1.000 registros por lote para revisão.</div></div></div></div></div></ListPage>}
+        {activeNav === "Configurações" && <ListPage title="Configurações" subtitle="Governança, integrações e perfis de acesso"><div className="grid grid-cols-1 md:grid-cols-3 gap-4">{[{ title: "Perfis de acesso", desc: "Administrador, comercial e técnico", Icon: Users }, { title: "Integrações", desc: "CNPJ, CETESB e SP Águas", Icon: ShieldCheck }, { title: "Rotinas", desc: "Importações e alertas periódicos", Icon: Zap }].map(({ title, desc, Icon }) => <div key={title} className="bg-white border border-[#dfe5e0] p-6"><Icon className="h-5 w-5 text-[#e13b32] mb-5"/><div className="font-bold">{title}</div><div className="text-sm text-[#65736c] mt-2">{desc}</div><Button variant="outline" className="mt-6 w-full">Configurar</Button></div>)}</div></ListPage>}
+      </div>
+    </main>
+  </div>;
+}
+
+function ListPage({ title, subtitle, search, setSearch, children }: any) { return <><div className="flex items-end justify-between mb-7"><div><p className="text-[#65736c] text-sm">{subtitle}</p></div><div className="flex gap-3">{setSearch && <div className="relative"><Search className="h-4 w-4 absolute left-3 top-3 text-[#87918c]"/><Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por CNPJ ou nome" className="pl-9 w-64 bg-white"/></div>}<Button className="bg-[#e13b32] hover:bg-[#c72e26] text-white"><Plus className="h-4 w-4 mr-2"/> Novo registro</Button></div></div>{children}</> }
+function Empty({ text }: { text: string }) { return <div className="bg-white border border-dashed border-[#cbd5ce] px-8 py-16 text-center text-sm text-[#65736c]">{text}</div> }

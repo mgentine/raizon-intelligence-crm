@@ -1,28 +1,54 @@
+import { z } from "zod";
+import { normalizeCnpj } from "../shared/crmRules";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { bulkUpsertCompanies, createActivity, createCompany, createOpportunity, createRecurringItem, getDashboardStats, listCompanies, listOpportunities, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, updateOpportunityStage } from "./db";
+import { lookupCnpj } from "./integrations/cnpj";
+
+const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      return { success: true } as const;
     }),
   }),
-
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  dashboard: router({
+    stats: protectedProcedure.query(() => getDashboardStats()),
+    activities: protectedProcedure.query(() => listRecentActivities()),
+    recurring: protectedProcedure.query(() => listUpcomingRecurring()),
+  }),
+  companies: router({
+    list: protectedProcedure.input(z.object({ search: z.string().optional() }).optional()).query(({ input }) => listCompanies(input?.search)),
+    create: protectedProcedure.input(z.object({ cnpj: cnpjSchema, legalName: z.string().min(2), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().length(2).optional(), segment: z.string().optional() })).mutation(({ input }) => createCompany({ ...input, source: "manual" })),
+    bulkUpsert: protectedProcedure.input(z.object({ rows: z.array(z.object({ cnpj: z.string(), legalName: z.string(), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().optional(), segment: z.string().optional(), source: z.string().optional() })).max(1000) })).mutation(({ input }) => bulkUpsertCompanies(input.rows)),
+  }),
+  cnpj: router({
+    lookup: protectedProcedure.input(z.object({ cnpj: z.string() })).query(({ input }) => lookupCnpj(input.cnpj)),
+  }),
+  imports: router({
+    capabilities: protectedProcedure.query(() => ({ cnpj: "provider-ready", cetesb: "controlled-public-source", spAguas: "controlled-public-source" })),
+  }),
+  regulatory: router({
+    list: protectedProcedure.query(() => listRegulatoryActs()),
+  }),
+  opportunities: router({
+    list: protectedProcedure.query(() => listOpportunities()),
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), title: z.string().min(2), serviceType: z.string().min(2), source: z.string().optional(), technicalPriority: z.enum(["A", "B", "C", "D"]).default("C"), commercialPriority: z.enum(["A", "B", "C", "D"]).default("B"), estimatedValue: z.string().optional(), criticalDate: z.date().optional(), nextAction: z.string().optional(), nextActionAt: z.date().optional() })).mutation(({ ctx, input }) => createOpportunity({ ...input, ownerId: ctx.user.id, probability: 20 })),
+    updateStage: protectedProcedure.input(z.object({ id: z.number().int().positive(), stage: z.enum(["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"]) })).mutation(({ input }) => updateOpportunityStage(input.id, input.stage)),
+  }),
+  activities: router({
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), opportunityId: z.number().int().positive().optional(), channel: z.string().min(2), objective: z.string().optional(), outcome: z.string().optional(), nextAction: z.string().optional(), nextActionAt: z.date().optional() })).mutation(({ ctx, input }) => createActivity({ ...input, ownerId: ctx.user.id })),
+  }),
+  recurring: router({
+    create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), title: z.string().min(2), recurrenceType: z.string().min(2), dueAt: z.date(), regulatoryActId: z.number().int().positive().optional() })).mutation(({ ctx, input }) => createRecurringItem({ ...input, ownerId: ctx.user.id })),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
