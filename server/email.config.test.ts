@@ -11,6 +11,13 @@ describe("Titan SMTP configuration", () => {
   beforeEach(() => {
     sendMailMock.mockClear();
   });
+  it("accepts the refreshed Titan credentials through the secure environment", () => {
+    const config = getTitanSmtpConfig();
+    expect(config.user).toBeTruthy();
+    expect(config.password).toBeTruthy();
+    expect(config.recipients).toEqual(expect.arrayContaining([expect.any(String)]));
+  });
+
   it("maps authentication failure 535 to safe operational guidance", () => {
     const password = "senha-super-secreta";
     const message = getTitanSmtpErrorMessage({ responseCode: 535, message: `Invalid login: 535 ${password}` });

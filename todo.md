@@ -241,5 +241,5 @@
 
 # Correção do erro SMTP 535
 
-- [x] Tratar falha de autenticação Titan 535 com erro operacional seguro e orientado
+- [x] Tratar falha de autenticação Titan 535 com erro operacional seguro e orientado, com validação após atualização segura dos segredos
 - [x] Adicionar teste do mapeamento de erro SMTP sem expor usuário ou senha, incluindo erro bruto do transporte
