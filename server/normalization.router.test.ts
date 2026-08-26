@@ -15,6 +15,9 @@ const archiveContactMock = vi.hoisted(() => vi.fn(async (id: number) => ({ succe
 const decideImportConflictMock = vi.hoisted(() => vi.fn(async (id: number, userId: number, decision: string, rationale?: string) => ({ success: true, id, userId, decision, rationale })));
 const updateOpportunityDetailsMock = vi.hoisted(() => vi.fn(async (id: number, changes: unknown) => ({ success: true, id, changes })));
 const updateOpportunityStageWithLossReasonMock = vi.hoisted(() => vi.fn(async (id: number, stage: string, lossReason?: string) => ({ success: true, id, stage, lossReason })));
+const sendTitanEmailMock = vi.hoisted(() => vi.fn(async () => ({ messageId: "admin-test-message" })));
+
+vi.mock("./email", () => ({ sendTitanEmail: sendTitanEmailMock }));
 
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
@@ -24,6 +27,14 @@ vi.mock("./db", async () => {
 import { appRouter } from "./routers";
 
 describe("normalização nas mutations", () => {
+  it("permite teste SMTP somente para administrador", async () => {
+    sendTitanEmailMock.mockClear();
+    const adminCaller = appRouter.createCaller({ user: { id: 1, role: "admin", profile: "commercial" } } as any);
+    await expect(adminCaller.notifications.sendTestEmail({ subject: "Teste controlado" })).resolves.toEqual({ sent: true, messageId: "admin-test-message" });
+    expect(sendTitanEmailMock).toHaveBeenCalledWith(expect.objectContaining({ subject: "Teste controlado" }));
+    const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
+    await expect(commercialCaller.notifications.sendTestEmail({ subject: "Sem permissão" })).rejects.toThrow();
+  });
   it("persiste dueAt normalizado na recurring.create", async () => {
     const caller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
     const dueAt = new Date("2026-12-31T12:00:00.000Z");

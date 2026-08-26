@@ -230,3 +230,7 @@
 # Validação do transporte Titan
 
 - [x] Validar remetente, destinatários, assunto e redaction com Nodemailer mockado, sem conexão SMTP real
+
+# Teste operacional de SMTP
+
+- [x] Adicionar mutation protegida para teste manual de e-mail Titan, restrita a administrador e sem disparo automático

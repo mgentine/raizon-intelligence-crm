@@ -9,6 +9,7 @@ import { bulkUpsertCompanies, createImportFailureNotification, createActivity, c
 import { lookupCnpj } from "./integrations/cnpj";
 import { storagePut } from "./storage";
 import { normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
+import { sendTitanEmail } from "./email";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
 const leadStageSchema = z.enum(["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"]);
@@ -30,6 +31,11 @@ export const appRouter = router({
   notifications: router({
     list: protectedProcedure.query(({ ctx }) => listNotifications(ctx.user.id)),
     markRead: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => markNotificationRead(input.id, ctx.user.id)),
+    sendTestEmail: protectedProcedure.input(z.object({ subject: z.string().trim().min(1).max(120).default("Teste SMTP — Raizon CRM") })).mutation(async ({ ctx, input }) => {
+      requireProfile(ctx, ["admin"]);
+      const info = await sendTitanEmail({ subject: input.subject, text: "Teste controlado de integração SMTP Titan do Raizon Intelligence CRM." });
+      return { sent: true, messageId: info.messageId };
+    }),
   }),
   dashboard: router({
     stats: protectedProcedure.query(() => getDashboardStats()),
