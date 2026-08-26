@@ -79,12 +79,13 @@ export async function markNotificationRead(id: number, userId: number) {
 export async function getDashboardStats() {
   const db = await getDb();
   if (!db) return { companies: 0, opportunities: 0, openOpportunities: 0, expiringActs: 0, overdueActivities: 0 };
-  const [companyCount, opportunityCount, openCount, expiringCount, overdueCount] = await Promise.all([
+  const [companyCount, opportunityCount, openCount, expiringCount, overdueCount, forecast] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(companies),
     db.select({ count: sql<number>`count(*)` }).from(opportunities),
     db.select({ count: sql<number>`count(*)` }).from(opportunities).where(sql`${opportunities.stage} not in ('won','lost','discarded')`),
     db.select({ count: sql<number>`count(*)` }).from(regulatoryActs).where(and(isNotNull(regulatoryActs.expiresAt), lt(regulatoryActs.expiresAt, sql`date_add(now(), interval 90 day)`))),
-    db.select({ count: sql<number>`count(*)` }).from(activities).where(and(isNotNull(activities.nextActionAt), lt(activities.nextActionAt, sql`now()`))),
+    db.select({ count: sql<number>`count(*)` }).from(activities).where(sql`${activities.nextActionAt} < now()`),
+    db.select({ value: sql<string>`coalesce(sum(cast(${opportunities.estimatedValue} as decimal(12,2)) * ${opportunities.probability} / 100), 0)` }).from(opportunities).where(sql`${opportunities.stage} not in ('won', 'lost', 'discarded')`),
   ]);
   return {
     companies: Number(companyCount[0]?.count ?? 0),
@@ -92,6 +93,7 @@ export async function getDashboardStats() {
     openOpportunities: Number(openCount[0]?.count ?? 0),
     expiringActs: Number(expiringCount[0]?.count ?? 0),
     overdueActivities: Number(overdueCount[0]?.count ?? 0),
+    forecastRevenue: Number(forecast[0]?.value ?? 0),
   };
 }
 
