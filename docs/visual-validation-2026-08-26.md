@@ -21,3 +21,7 @@ Esta revisão demonstra estabilidade estrutural e responsividade nos estados vaz
 - **Desktop 1280×720, `/?view=Oportunidades`:** cabeçalho, CTA e quatro colunas do funil (`Novas`, `Qualificadas`, `Propostas`, `Ganhas`) renderizados sem corte; estado vazio aparece como colunas limpas com contadores zero.
 - **Mobile 390×844, `/?view=Oportunidades`:** sidebar colapsada, título e CTA acessíveis; as colunas são empilhadas verticalmente e permanecem utilizáveis, sem overflow horizontal observado. A tela fica longa, mas a leitura segue linear.
 - **Limitação:** não há registros reais/populados no banco desta sessão; edição, mudança de etapa e perda foram validadas por contrato/regra, não por interação visual com registro persistido.
+
+## Minha agenda — validação adicional
+
+A agenda foi revisada em desktop 1280×720 e mobile 390×844. O estado vazio exibe a fila de leads/oportunidades e o painel escuro de rotinas/atividades sem sobreposição; no mobile, as seções empilham verticalmente e o CTA permanece acessível. O fluxo completo criar → listar → concluir → refletir no dashboard não foi executado nesta sessão porque não há item recorrente real/populado disponível e não foram inseridos dados artificiais.
