@@ -257,6 +257,16 @@ export async function finishImportRun(id: number, result: { received: number; in
   await db.update(importRuns).set({ ...result, conflictCount: result.conflictCount ?? 0, finishedAt: new Date() }).where(eq(importRuns.id, id));
 }
 
+export async function createImportFailureNotification(userId: number, importRunId: number, message: string) {
+  const db = await getDb();
+  if (!db) return { created: false } as const;
+  const groupingKey = `import_run:${importRunId}`;
+  const existing = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, userId), eq(notifications.groupingKey, groupingKey))).limit(1);
+  if (existing.length) return { created: false } as const;
+  await db.insert(notifications).values({ userId, type: "import_failure", severity: "critical", groupingKey, title: "Falha na importação", body: message, entityType: "import_run", entityId: importRunId });
+  return { created: true } as const;
+}
+
 export async function bulkUpsertCompanies(rows: Array<{ cnpj: string; legalName: string; tradeName?: string; city?: string; state?: string; segment?: string; source?: string }>) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");

@@ -130,11 +130,11 @@
 
 - [ ] Implementar histórico dedicado por empresa e oportunidade com atividades relacionadas
 - [x] Adicionar painéis explícitos de cobertura de contato e prioridades operacionais no dashboard
-- [ ] Gerar notificações para oportunidades paradas e falhas de importação
+- [x] Gerar notificações para oportunidades paradas e falhas de importação
 - [ ] Implementar rotina periódica para processar/atualizar fontes além do recálculo atual, com bloqueio documentado quando a fonte oficial não estiver disponível
-- [ ] Documentar revisão final de segurança abrangendo permissões, dados sensíveis e estados de erro
-- [ ] Criar UI de mapeamento manual de colunas na importação assistida
-- [ ] Documentar bloqueio externo verificável para conectores oficiais CETESB e SP Águas ou implementar quando houver endpoint autorizado
+- [x] Documentar revisão final de segurança abrangendo permissões, dados sensíveis e estados de erro
+- [x] Criar UI de mapeamento manual de colunas na importação assistida
+- [x] Documentar bloqueio externo verificável para conectores oficiais CETESB e SP Águas ou implementar quando houver endpoint autorizado
 - [ ] Adicionar teste específico para criação e conclusão de recorrências persistidas
 
 # Estados explícitos do painel operacional
@@ -145,3 +145,9 @@
 # Validação reproduzível de loading
 
 - [x] Adicionar modo controlado forceCoverageLoading=1 e validar visualmente o loading do painel operacional
+
+# Validação do mapeamento manual
+
+- [x] Bloquear confirmação quando CNPJ ou razão social não estiverem mapeados
+- [x] Exibir erro quando o remapeamento não produzir registros válidos
+- [x] Criar validação reproduzível do remapeamento antes da confirmação

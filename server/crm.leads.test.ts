@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isImportConflictDecision, normalizeRegulatoryStatus, validateCommercialTransition } from "../shared/crmRules";
+import { mapImportRows, validateImportMapping } from "../shared/importRules";
 import { decorateRegulatoryActRow, groupNotifications } from "./db";
 
 describe("lead and regulatory rules", () => {
@@ -36,6 +37,15 @@ describe("lead and regulatory rules", () => {
       { id: 4, type: "overdue_activity", entityType: "activity", entityId: 4, groupingKey: "activity:4", readAt: new Date("2026-08-26T12:01:00Z"), severity: "critical" },
     ]);
     expect(allRead[0].readAt).not.toBeNull();
+  });
+
+  it("validates manual import mapping before confirmation", () => {
+    const raw = [{ Documento: "12.345.678/0001-90", Empresa: "Empresa Exemplo", UF: "SP" }];
+    const mapping = { cnpj: "Documento", legalName: "Empresa", city: "", state: "UF", segment: "" } as const;
+    const rows = mapImportRows(raw, mapping, "cetesb");
+    expect(validateImportMapping(mapping, rows)).toBeNull();
+    expect(validateImportMapping({ ...mapping, cnpj: "" }, rows)).toContain("CNPJ");
+    expect(validateImportMapping(mapping, [])).toContain("registros válidos");
   });
 
   it("accepts the reject conflict decision and rejects unknown decisions", () => {
