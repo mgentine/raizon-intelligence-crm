@@ -12,7 +12,7 @@ A plataforma deve manter ingestão assistida por arquivo como caminho operaciona
 
 ## Comportamento obrigatório da rotina
 
-Quando a fonte oficial não estiver disponível, a rotina deve registrar a tentativa como bloqueada ou falha controlada, gerar alerta operacional e preservar a última versão válida. Ela não deve arquivar atos existentes, zerar resultados, substituir a situação publicada nem criar leads a partir de resposta vazia.
+Quando a fonte oficial não estiver disponível, a rotina registra uma tentativa `import_run` com status `failed`, origem normalizada (`cetesb` ou `sp_aguas`), identificação `scheduled-source-update` e mensagem explicando o bloqueio. A resposta do callback também retorna os IDs dessas tentativas. A rotina deve gerar alerta operacional quando aplicável e preservar a última versão válida. Ela não deve arquivar atos existentes, zerar resultados, substituir a situação publicada nem criar leads a partir de resposta vazia.
 
 A atualização automática de CETESB e SP Águas permanece pendente de endpoint/exportação autorizado. A implementação atual entrega o callback periódico de recálculo de prioridades e notificações, além da ingestão assistida governada por arquivo; isso é deliberadamente diferente de um conector oficial em produção.
 

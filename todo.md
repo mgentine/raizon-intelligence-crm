@@ -132,7 +132,7 @@
 - [x] Adicionar painéis explícitos de cobertura de contato e prioridades operacionais no dashboard
 - [x] Gerar notificações para oportunidades paradas e falhas de importação
 - [ ] Implementar rotina periódica para processar/atualizar fontes além do recálculo atual, com bloqueio documentado quando a fonte oficial não estiver disponível
-- [x] Documentar revisão final de segurança abrangendo permissões, dados sensíveis e estados de erro
+- [x] Documentar revisão final de segurança abrangendo permissões, dados sensíveis e estados de erro (docs/security-review-2026-08-26.md)
 - [x] Criar UI de mapeamento manual de colunas na importação assistida
 - [x] Documentar bloqueio externo verificável para conectores oficiais CETESB e SP Águas ou implementar quando houver endpoint autorizado
 - [x] Adicionar teste específico para criação e conclusão de recorrências persistidas
