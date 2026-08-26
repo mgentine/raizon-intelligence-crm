@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
+import { applyCompanyLookupToDraft, normalizeCnpjInput } from "../shared/companyFormRules";
 
 describe("CRM rules", () => {
   it("prepara perda com motivo obrigatório para o card do funil", () => {
@@ -12,6 +13,18 @@ describe("CRM rules", () => {
     expect(normalizeCnpj("12.345.678/0001-90")).toBe("12345678000190");
     expect(isValidCnpj("12.345.678/0001-90")).toBe(true);
     expect(isValidCnpj("123")).toBe(false);
+  });
+
+  it("normalizes CNPJ input and preserves manual company edits when applying lookup data", () => {
+    expect(normalizeCnpjInput("12.345.678/0001-90 extra")).toBe("12345678000190");
+    const draft = applyCompanyLookupToDraft({ cnpj: "12.345.678/0001-90", legalName: "Nome digitado", city: "Votuporanga", state: "SP", segment: "SST", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", city: "São Paulo", state: "SP" });
+    expect(draft.legalName).toBe("Nome digitado");
+    expect(draft.city).toBe("Votuporanga");
+    expect(draft.segment).toBe("SST");
+    const emptyDraft = applyCompanyLookupToDraft({ cnpj: "", legalName: "", city: "", state: "SP", segment: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", city: "São Paulo", state: "RJ" });
+    expect(emptyDraft.legalName).toBe("Nome da consulta");
+    expect(emptyDraft.city).toBe("São Paulo");
+    expect(emptyDraft.state).toBe("RJ");
   });
 
   it("deduplicates by CNPJ and flags conflicting names", () => {

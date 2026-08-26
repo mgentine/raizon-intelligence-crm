@@ -261,3 +261,10 @@
 # Acesso rápido ao cadastro
 
 - [x] Adicionar atalho “Cadastrar cliente” no dashboard principal
+
+# Preenchimento automático por CNPJ
+
+- [x] Consultar dados cadastrais ao informar CNPJ válido no cadastro de cliente
+- [x] Preencher campos sem sobrescrever informações já editadas manualmente
+- [x] Exibir loading, erro e retorno não encontrado da consulta cadastral
+- [x] Testar normalização de CNPJ e preenchimento editável no contrato do formulário
