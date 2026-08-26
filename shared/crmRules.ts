@@ -43,3 +43,31 @@ export function completeRecurringStatus(status: RecurringStatus): "done" {
   if (status === "done" || status === "dismissed") throw new Error("Item recorrente já encerrado");
   return "done";
 }
+
+export type RegulatoryStatusClass = "valid" | "expiring" | "expired" | "suspended" | "unknown";
+
+export function normalizeRegulatoryStatus(value: string | undefined | null, expiresAt?: Date | null, now = new Date()): RegulatoryStatusClass {
+  const normalized = normalizeText(value);
+  if (normalized.includes("suspens")) return "suspended";
+  if (expiresAt) {
+    const time = expiresAt.getTime() - now.getTime();
+    if (time < 0) return "expired";
+    if (time <= 90 * 24 * 60 * 60 * 1000) return "expiring";
+  }
+  if (normalized.includes("vencid") || normalized.includes("expirad")) return "expired";
+  if (normalized.includes("valida") || normalized.includes("vigente") || normalized.includes("deferid")) return "valid";
+  return "unknown";
+}
+
+export function requiresNextAction(stage: string) {
+  return !["won", "lost", "discarded"].includes(stage);
+}
+
+export function validateCommercialTransition(stage: string, nextAction?: string | null, requirements?: { hasValidContact?: boolean; hasDiagnosis?: boolean; hasProposal?: boolean; lossReason?: string | null }) {
+  if (requiresNextAction(stage) && !nextAction?.trim()) throw new Error("Etapas comerciais abertas exigem próxima ação definida");
+  if (["contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved"].includes(stage) && requirements?.hasValidContact !== true) throw new Error("A etapa exige contato válido registrado");
+  if (["proposal", "negotiation", "approved"].includes(stage) && requirements?.hasDiagnosis !== true) throw new Error("A etapa exige diagnóstico registrado");
+  if (["negotiation", "approved"].includes(stage) && requirements?.hasProposal !== true) throw new Error("A etapa exige proposta registrada");
+  if (stage === "lost" && !requirements?.lossReason?.trim()) throw new Error("O motivo da perda é obrigatório");
+  return true as const;
+}

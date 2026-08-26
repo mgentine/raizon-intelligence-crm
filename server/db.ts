@@ -1,4 +1,5 @@
-import { and, asc, desc, eq, isNotNull, isNull, lt, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull, isNull, lt, lte, or, sql } from "drizzle-orm";
+import { createHash } from "node:crypto";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   activities,
@@ -12,8 +13,13 @@ import {
   notifications,
   units,
   contacts,
+  leads,
+  regulatoryVersions,
+  evidenceFiles,
+  importConflicts,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+import { normalizeRegulatoryStatus } from "../shared/crmRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -163,10 +169,15 @@ export async function createRegulatoryAct(input: typeof regulatoryActs.$inferIns
   return Number(result[0].insertId);
 }
 
+export function decorateRegulatoryActRow<T extends { act: { publishedStatus: string | null; expiresAt: Date | null } }>(row: T, now = new Date()) {
+  return { ...row, regulatoryStatus: normalizeRegulatoryStatus(row.act.publishedStatus, row.act.expiresAt, now) };
+}
+
 export async function listRegulatoryActs() {
   const db = await getDb();
   if (!db) return [];
-  return db.select({ act: regulatoryActs, company: companies }).from(regulatoryActs).leftJoin(companies, eq(regulatoryActs.companyId, companies.id)).orderBy(asc(regulatoryActs.expiresAt)).limit(100);
+  const rows = await db.select({ act: regulatoryActs, company: companies }).from(regulatoryActs).leftJoin(companies, eq(regulatoryActs.companyId, companies.id)).orderBy(asc(regulatoryActs.expiresAt)).limit(100);
+  return rows.map((row) => decorateRegulatoryActRow(row));
 }
 
 export async function listOpportunities() {
@@ -239,17 +250,27 @@ export async function bulkUpsertCompanies(rows: Array<{ cnpj: string; legalName:
 export async function bulkUpsertRegulatoryActs(rows: Array<{ cnpj: string; source: string; actType: string; actNumber?: string; processNumber?: string; publishedStatus?: string; expiresAt?: Date; issuedAt?: Date; evidenceUrl?: string; sourceVersion?: string; notes?: string }>) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  let inserted = 0, updated = 0, rejected = 0;
+  let inserted = 0, updated = 0, rejected = 0, unchanged = 0;
   for (const row of rows) {
     const cnpj = row.cnpj.replace(/\D/g, "");
     if (cnpj.length !== 14 || !row.source || !row.actType) { rejected++; continue; }
     const company = await db.select({ id: companies.id }).from(companies).where(eq(companies.cnpj, cnpj)).limit(1);
     if (!company[0]) { rejected++; continue; }
-    const existing = await db.select({ id: regulatoryActs.id }).from(regulatoryActs).where(and(eq(regulatoryActs.source, row.source), eq(regulatoryActs.actType, row.actType), eq(regulatoryActs.actNumber, row.actNumber || ""), eq(regulatoryActs.processNumber, row.processNumber || ""))).limit(1);
-    const values = { companyId: company[0].id, source: row.source, actType: row.actType.trim(), actNumber: row.actNumber || null, processNumber: row.processNumber || null, publishedStatus: row.publishedStatus || null, expiresAt: row.expiresAt || null, issuedAt: row.issuedAt || null, evidenceUrl: row.evidenceUrl || null, collectedAt: new Date(), sourceVersion: row.sourceVersion || null, notes: row.notes || null, needsValidation: 1 } as const;
-    if (existing[0]) { await db.update(regulatoryActs).set(values).where(eq(regulatoryActs.id, existing[0].id)); updated++; } else { await db.insert(regulatoryActs).values(values); inserted++; }
+    const fingerprint = createHash("sha256").update(JSON.stringify({ cnpj, source: row.source, actType: row.actType.trim(), actNumber: row.actNumber || null, processNumber: row.processNumber || null, publishedStatus: row.publishedStatus || null, expiresAt: row.expiresAt?.toISOString() || null, issuedAt: row.issuedAt?.toISOString() || null, evidenceUrl: row.evidenceUrl || null, sourceVersion: row.sourceVersion || null })).digest("hex");
+    const existing = await db.select({ id: regulatoryActs.id, rawFingerprint: regulatoryActs.rawFingerprint }).from(regulatoryActs).where(and(eq(regulatoryActs.source, row.source), eq(regulatoryActs.actType, row.actType), eq(regulatoryActs.actNumber, row.actNumber || ""), eq(regulatoryActs.processNumber, row.processNumber || ""))).limit(1);
+    const values = { companyId: company[0].id, source: row.source, actType: row.actType.trim(), actNumber: row.actNumber || null, processNumber: row.processNumber || null, publishedStatus: row.publishedStatus || null, expiresAt: row.expiresAt || null, issuedAt: row.issuedAt || null, evidenceUrl: row.evidenceUrl || null, collectedAt: new Date(), sourceVersion: row.sourceVersion || null, rawFingerprint: fingerprint, notes: row.notes || null, needsValidation: 1 } as const;
+    let actId: number;
+    if (existing[0]) {
+      actId = existing[0].id;
+      if (existing[0].rawFingerprint === fingerprint) { unchanged++; continue; }
+      await db.update(regulatoryActs).set(values).where(eq(regulatoryActs.id, actId)); updated++;
+    } else {
+      const result = await db.insert(regulatoryActs).values(values); actId = Number(result[0].insertId); inserted++;
+    }
+    await db.insert(regulatoryVersions).values({ regulatoryActId: actId, sourceVersion: row.sourceVersion || null, payloadFingerprint: fingerprint, publishedStatus: row.publishedStatus || null, expiresAt: row.expiresAt || null, evidenceUrl: row.evidenceUrl || null, collectedAt: new Date() }).onDuplicateKeyUpdate({ set: { payloadFingerprint: fingerprint } });
+    await db.insert(leads).values({ companyId: company[0].id, regulatoryActId: actId, source: row.source, sourceRecordKey: `${row.source}:${row.actType}:${row.actNumber || ""}:${row.processNumber || ""}`, candidateReason: `Ato ${row.actType} com situação publicada: ${row.publishedStatus || "não informada"}`, regulatoryStatusSnapshot: row.publishedStatus || null, regulatoryCollectedAt: new Date(), technicalPriority: row.expiresAt && row.expiresAt.getTime() < Date.now() + 90 * 86400000 ? "A" : "C", commercialPriority: "B", nextAction: "Validar oportunidade regulatória", nextActionAt: row.expiresAt || new Date(Date.now() + 7 * 86400000) }).onDuplicateKeyUpdate({ set: { regulatoryStatusSnapshot: row.publishedStatus || null, regulatoryCollectedAt: new Date(), updatedAt: new Date() } });
   }
-  return { received: rows.length, inserted, updated, rejected };
+  return { received: rows.length, inserted, updated, unchanged, rejected };
 }
 
 export async function createOpportunity(input: typeof opportunities.$inferInsert) {
@@ -290,4 +311,93 @@ export async function getCetesbLeadStatus() {
     status: row.status?.trim() || "Sem status informado",
     count: Number(row.count ?? 0),
   })).sort((a, b) => b.count - a.count);
+}
+
+export async function listLeads(filters?: { commercialStatus?: string; ownerId?: number; limit?: number }) {
+  const db = await getDb();
+  if (!db) return [];
+  const conditions = [];
+  if (filters?.commercialStatus) conditions.push(eq(leads.commercialStatus, filters.commercialStatus as typeof leads.$inferSelect.commercialStatus));
+  if (filters?.ownerId) conditions.push(eq(leads.ownerId, filters.ownerId));
+  const query = db.select({ lead: leads, company: companies, act: regulatoryActs }).from(leads).leftJoin(companies, eq(leads.companyId, companies.id)).leftJoin(regulatoryActs, eq(leads.regulatoryActId, regulatoryActs.id)).orderBy(asc(leads.nextActionAt), desc(leads.updatedAt)).limit(filters?.limit ?? 100);
+  const rows = conditions.length ? await query.where(and(...conditions)) : await query;
+  return rows.map((row) => ({ ...row, regulatoryStatus: normalizeRegulatoryStatus(row.lead.regulatoryStatusSnapshot, row.act?.expiresAt) }));
+}
+
+export async function getCommercialFunnelSummary() {
+  const db = await getDb();
+  if (!db) return [];
+  const rows = await db.select({ status: leads.commercialStatus, count: sql<number>`count(*)` }).from(leads).groupBy(leads.commercialStatus);
+  return rows.map((row) => ({ status: row.status, count: Number(row.count ?? 0) }));
+}
+
+export async function createLead(input: typeof leads.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(leads).values(input).onDuplicateKeyUpdate({ set: { updatedAt: new Date() } });
+  return Number(result[0].insertId ?? 0);
+}
+
+export async function updateLeadCommercialStatus(id: number, status: typeof leads.$inferInsert.commercialStatus, nextAction?: string, nextActionAt?: Date, discardedReason?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(leads).set({ commercialStatus: status, nextAction: nextAction ?? null, nextActionAt: nextActionAt ?? null, discardedReason: discardedReason ?? null, updatedAt: new Date() }).where(eq(leads.id, id));
+}
+
+export async function listOperationalQueue(userId: number) {
+  const db = await getDb();
+  if (!db) return { leads: [], opportunities: [], recurring: [], activities: [] };
+  const now = new Date();
+  const [leadRows, opportunityRows, recurringRows, activityRows] = await Promise.all([
+    db.select({ lead: leads, company: companies }).from(leads).leftJoin(companies, eq(leads.companyId, companies.id)).where(and(eq(leads.ownerId, userId), or(and(isNotNull(leads.nextActionAt), lte(leads.nextActionAt, sql`date_add(now(), interval 1 day)`)), lt(leads.updatedAt, sql`date_sub(now(), interval 14 day)`)))).orderBy(asc(leads.nextActionAt)).limit(30),
+    db.select({ opportunity: opportunities, company: companies }).from(opportunities).leftJoin(companies, eq(opportunities.companyId, companies.id)).where(and(eq(opportunities.ownerId, userId), or(and(isNotNull(opportunities.nextActionAt), lte(opportunities.nextActionAt, sql`date_add(now(), interval 1 day)`)), lt(opportunities.updatedAt, sql`date_sub(now(), interval 14 day)`)))).orderBy(asc(opportunities.nextActionAt)).limit(30),
+    db.select({ item: recurringItems, company: companies }).from(recurringItems).leftJoin(companies, eq(recurringItems.companyId, companies.id)).where(and(eq(recurringItems.ownerId, userId), eq(recurringItems.status, "open"), lte(recurringItems.dueAt, sql`date_add(now(), interval 1 day)`))).orderBy(asc(recurringItems.dueAt)).limit(30),
+    db.select({ activity: activities, company: companies }).from(activities).leftJoin(companies, eq(activities.companyId, companies.id)).where(and(eq(activities.ownerId, userId), isNotNull(activities.nextActionAt), lte(activities.nextActionAt, sql`date_add(now(), interval 1 day)`))).orderBy(asc(activities.nextActionAt)).limit(30),
+  ]);
+  return { leads: leadRows.map((row) => ({ ...row, queueReason: row.lead.nextActionAt && row.lead.nextActionAt <= now ? "atrasado" : "sem avanço há 14 dias" })), opportunities: opportunityRows.map((row) => ({ ...row, queueReason: row.opportunity.nextActionAt && row.opportunity.nextActionAt <= now ? "atrasada" : "sem avanço há 14 dias" })), recurring: recurringRows, activities: activityRows, generatedAt: now };
+}
+
+export async function createEvidenceFile(input: typeof evidenceFiles.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(evidenceFiles).values(input);
+  return Number(result[0].insertId);
+}
+
+export async function listEvidenceFiles(filters: { regulatoryActId?: number; companyId?: number }) {
+  const db = await getDb();
+  if (!db) return [];
+  const conditions = [];
+  if (filters.regulatoryActId) conditions.push(eq(evidenceFiles.regulatoryActId, filters.regulatoryActId));
+  if (filters.companyId) conditions.push(eq(evidenceFiles.companyId, filters.companyId));
+  const query = db.select().from(evidenceFiles).orderBy(desc(evidenceFiles.createdAt)).limit(100);
+  return conditions.length ? query.where(and(...conditions)) : query;
+}
+
+export async function listPendingImportConflicts(importRunId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const conditions = [eq(importConflicts.decision, "pending")];
+  if (importRunId) conditions.push(eq(importConflicts.importRunId, importRunId));
+  return db.select().from(importConflicts).where(and(...conditions)).orderBy(asc(importConflicts.createdAt)).limit(200);
+}
+
+export async function decideImportConflict(id: number, userId: number, decision: typeof importConflicts.$inferInsert.decision, rationale?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(importConflicts).set({ decision, decidedBy: userId, decidedAt: new Date(), rationale: rationale || null }).where(eq(importConflicts.id, id));
+  return { success: true } as const;
+}
+
+export async function getLeadTransitionEvidence(leadId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const lead = await db.select({ companyId: leads.companyId }).from(leads).where(eq(leads.id, leadId)).limit(1);
+  if (!lead[0]) throw new Error("Lead não encontrado");
+  const [contactRows, diagnosisRows, proposalRows] = await Promise.all([
+    db.select({ count: sql<number>`count(*)` }).from(contacts).where(eq(contacts.companyId, lead[0].companyId)),
+    db.select({ count: sql<number>`count(*)` }).from(activities).where(and(eq(activities.companyId, lead[0].companyId), sql`lower(coalesce(${activities.objective}, '')) like '%diagnos%'`)),
+    db.select({ count: sql<number>`count(*)` }).from(opportunities).where(and(eq(opportunities.companyId, lead[0].companyId), sql`${opportunities.stage} in ('proposal','negotiation','approved','won')`)),
+  ]);
+  return { hasValidContact: Number(contactRows[0]?.count ?? 0) > 0, hasDiagnosis: Number(diagnosisRows[0]?.count ?? 0) > 0, hasProposal: Number(proposalRows[0]?.count ?? 0) > 0 };
 }

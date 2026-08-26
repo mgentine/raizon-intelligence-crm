@@ -230,3 +230,119 @@ export const notifications = mysqlTable("notifications", {
 
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = typeof notifications.$inferInsert;
+
+export const leadStages = ["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"] as const;
+export type LeadStage = (typeof leadStages)[number];
+
+export const leads = mysqlTable("leads", {
+  id: int("id").autoincrement().primaryKey(),
+  companyId: int("companyId").notNull(),
+  unitId: int("unitId"),
+  regulatoryActId: int("regulatoryActId"),
+  source: varchar("source", { length: 80 }).notNull(),
+  sourceRecordKey: varchar("sourceRecordKey", { length: 180 }),
+  candidateReason: text("candidateReason"),
+  regulatoryStatusSnapshot: varchar("regulatoryStatusSnapshot", { length: 120 }),
+  regulatoryCollectedAt: timestamp("regulatoryCollectedAt"),
+  commercialStatus: mysqlEnum("commercialStatus", leadStages).default("new").notNull(),
+  technicalPriority: mysqlEnum("technicalPriority", ["A", "B", "C", "D"]).default("C").notNull(),
+  commercialPriority: mysqlEnum("commercialPriority", ["A", "B", "C", "D"]).default("B").notNull(),
+  ownerId: int("ownerId"),
+  nextAction: varchar("nextAction", { length: 255 }),
+  nextActionAt: timestamp("nextActionAt"),
+  lastContactedAt: timestamp("lastContactedAt"),
+  discardedReason: varchar("discardedReason", { length: 180 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  companyIdx: index("leads_company_idx").on(table.companyId),
+  statusIdx: index("leads_commercial_status_idx").on(table.commercialStatus),
+  actionIdx: index("leads_next_action_idx").on(table.nextActionAt),
+  sourceKeyUnique: uniqueIndex("leads_source_key_unique").on(table.source, table.sourceRecordKey),
+}));
+
+export type Lead = typeof leads.$inferSelect;
+export type InsertLead = typeof leads.$inferInsert;
+
+export const importStaging = mysqlTable("import_staging", {
+  id: int("id").autoincrement().primaryKey(),
+  importRunId: int("importRunId").notNull(),
+  lineNumber: int("lineNumber").notNull(),
+  rawPayload: text("rawPayload").notNull(),
+  rawFingerprint: varchar("rawFingerprint", { length: 128 }).notNull(),
+  normalizedCnpj: varchar("normalizedCnpj", { length: 14 }),
+  normalizedPayload: text("normalizedPayload"),
+  validationStatus: mysqlEnum("validationStatus", ["pending", "valid", "rejected", "conflict"]).default("pending").notNull(),
+  validationMessage: text("validationMessage"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  runLineUnique: uniqueIndex("import_staging_run_line_unique").on(table.importRunId, table.lineNumber),
+  fingerprintIdx: index("import_staging_fingerprint_idx").on(table.rawFingerprint),
+}));
+
+export type ImportStaging = typeof importStaging.$inferSelect;
+export type InsertImportStaging = typeof importStaging.$inferInsert;
+
+export const importConflicts = mysqlTable("import_conflicts", {
+  id: int("id").autoincrement().primaryKey(),
+  importRunId: int("importRunId").notNull(),
+  stagingId: int("stagingId"),
+  entityType: varchar("entityType", { length: 60 }).notNull(),
+  entityId: int("entityId"),
+  fieldName: varchar("fieldName", { length: 100 }).notNull(),
+  currentValue: text("currentValue"),
+  incomingValue: text("incomingValue"),
+  decision: mysqlEnum("decision", ["pending", "accept_incoming", "keep_current", "accept_partial", "review", "reject"]).default("pending").notNull(),
+  decidedBy: int("decidedBy"),
+  decidedAt: timestamp("decidedAt"),
+  rationale: text("rationale"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  runIdx: index("import_conflicts_run_idx").on(table.importRunId),
+  pendingIdx: index("import_conflicts_pending_idx").on(table.decision),
+}));
+
+export type ImportConflict = typeof importConflicts.$inferSelect;
+export type InsertImportConflict = typeof importConflicts.$inferInsert;
+
+export const regulatoryVersions = mysqlTable("regulatory_versions", {
+  id: int("id").autoincrement().primaryKey(),
+  regulatoryActId: int("regulatoryActId").notNull(),
+  sourceVersion: varchar("sourceVersion", { length: 120 }),
+  payloadFingerprint: varchar("payloadFingerprint", { length: 128 }).notNull(),
+  publishedStatus: varchar("publishedStatus", { length: 120 }),
+  expiresAt: timestamp("expiresAt"),
+  evidenceUrl: varchar("evidenceUrl", { length: 700 }),
+  collectedAt: timestamp("collectedAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  actVersionUnique: uniqueIndex("regulatory_versions_act_fingerprint_unique").on(table.regulatoryActId, table.payloadFingerprint),
+  actIdx: index("regulatory_versions_act_idx").on(table.regulatoryActId),
+}));
+
+export type RegulatoryVersion = typeof regulatoryVersions.$inferSelect;
+export type InsertRegulatoryVersion = typeof regulatoryVersions.$inferInsert;
+
+export const evidenceFiles = mysqlTable("evidence_files", {
+  id: int("id").autoincrement().primaryKey(),
+  companyId: int("companyId"),
+  unitId: int("unitId"),
+  regulatoryActId: int("regulatoryActId"),
+  opportunityId: int("opportunityId"),
+  uploadedBy: int("uploadedBy").notNull(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  mimeType: varchar("mimeType", { length: 120 }).notNull(),
+  sizeBytes: int("sizeBytes").notNull(),
+  storageKey: varchar("storageKey", { length: 700 }).notNull(),
+  storageUrl: varchar("storageUrl", { length: 700 }).notNull(),
+  source: varchar("source", { length: 80 }).default("manual").notNull(),
+  collectedAt: timestamp("collectedAt"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  actIdx: index("evidence_act_idx").on(table.regulatoryActId),
+  companyIdx: index("evidence_company_idx").on(table.companyId),
+}));
+
+export type EvidenceFile = typeof evidenceFiles.$inferSelect;
+export type InsertEvidenceFile = typeof evidenceFiles.$inferInsert;

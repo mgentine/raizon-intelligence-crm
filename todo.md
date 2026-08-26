@@ -52,3 +52,64 @@
 - [x] Validar visualmente o logo otimizado em desktop e mobile
 - [x] Adicionar gráfico no dashboard com status atualizado dos leads importados da CETESB, usando agregação real do banco
 - [ ] Testar o gráfico de status CETESB em dados vazios, dados reais e viewport mobile
+- [ ] Concluir pré-mortem do sistema completo antes de novas implementações e registrar riscos críticos, controles e critérios go/no-go
+- [ ] Documentar fluxo técnico detalhado de importação idempotente e separação entre status regulatório e comercial
+
+# Escopo aprovado para implementação completa
+
+- [x] Criar entidade explícita de leads com fonte, motivo do candidato, status regulatório referenciado e status comercial independente
+- [x] Criar tabelas de staging, conflitos e versões de origem para importações
+- [x] Criar armazenamento de metadados e upload de evidências regulatórias em S3
+- [x] Implementar fila Minha agenda de hoje com leads, follow-ups, vencimentos e oportunidades paradas
+- [x] Implementar transições controladas do pipeline com critérios mínimos e próxima ação
+- [ ] Implementar tela de revisão de conflitos com decisões aceitar/manter/revisar/rejeitar
+- [x] Implementar status regulatório normalizado sem sobrescrever o valor publicado bruto
+- [x] Implementar status comercial independente e gráfico comercial separado do gráfico regulatório
+- [x] Aplicar autorização backend por perfil administrador, comercial e técnico
+- [ ] Implementar painel de saúde das fontes e idade da última carga válida
+- [x] Implementar notificações agrupadas, severidade e deduplicação por entidade
+- [ ] Implementar conectores substituíveis para arquivo oficial, CNPJ, CETESB e SP Águas
+- [x] Implementar reprocessamento seguro e preservação da última versão válida após falha
+- [ ] Executar testes de autorização, idempotência, conflitos, status e notificações
+
+# Ajustes identificados pela revisão de implementação
+
+- [x] Implementar lógica real de Minha agenda de hoje e detecção de oportunidades paradas/sem avanço
+- [x] Definir e aplicar critérios mínimos por etapa do pipeline no backend e refletir isso na UI
+- [x] Integrar o status regulatório normalizado ao modelo, queries e UI sem perder o valor bruto publicado
+- [x] Renderizar gráfico comercial separado usando o resumo do funil
+- [x] Expandir autorização por perfil para todas as procedures e mutations sensíveis
+- [ ] Adicionar severidade e agrupamento às notificações no schema, backend e UI
+- [ ] Implementar reprocessamento transacional/seguro com preservação explícita da última versão válida
+
+# Ressalvas finais antes do checkpoint
+
+- [x] Restringir Minha agenda inteira à lógica de hoje/atrasado e exibir queueReason na UI para oportunidades/leads sem avanço
+- [x] Definir critérios mínimos por etapa do funil no backend, incluindo contato válido, diagnóstico, proposta e motivo de perda
+- [x] Normalizar status regulatório usando também expiresAt do ato relacionado e expor de forma consistente
+- [x] Aplicar RBAC por perfil também às queries/listagens sensíveis de importação, conflitos, evidências e cadastros técnicos
+- [x] Validar explicitamente o gráfico comercial em estados vazio, erro e mobile e registrar a cobertura
+
+# Últimos ajustes de efetividade
+
+- [x] Tornar obrigatória no backend a comprovação dos critérios por etapa do funil e fazer a UI enviar hasValidContact, hasDiagnosis, hasProposal e motivo de perda
+- [x] Propagar o status regulatório normalizado com expiresAt para as demais listagens e visões relevantes
+- [x] Adicionar tratamento e validação explícita de estado de erro para o gráfico comercial e registrar essa cobertura
+
+# Ajustes de efetividade antes do checkpoint final
+
+- [x] Substituir flags artificiais do funil por comprovação real no backend baseada em contatos, diagnóstico, proposta e motivo de perda persistidos
+- [x] Exibir e validar o status regulatório normalizado com expiresAt nas telas de atos e visões analíticas relevantes
+- [x] Forçar e revisar explicitamente o estado de erro do gráfico comercial e registrar essa cobertura visual
+
+# Evidências finais de validação
+
+- [x] Exibir regulatoryStatus normalizado com expiresAt também na UI de Atos regulatórios e registrar validação visual específica
+- [x] Forçar uma falha controlada do dashboard.commercialFunnel, revisar a UI de erro em desktop/mobile e documentar a cobertura
+- [x] Adicionar teste específico para propagação do status regulatório normalizado nas listagens de atos
+
+# Limitações de validação com banco vazio
+
+- [ ] Validar visualmente a tela de Atos regulatórios com registros reais/populados exibindo regulatoryStatus normalizado ao lado do vencimento
+- [x] Capturar e registrar explicitamente o estado de erro do funil comercial em mobile usando ?forceChartError=1
+- [x] Adicionar teste de integração/unidade do contrato de listRegulatoryActs confirmando regulatoryStatus normalizado
