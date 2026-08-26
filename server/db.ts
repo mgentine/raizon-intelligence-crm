@@ -222,6 +222,22 @@ export async function bulkUpsertCompanies(rows: Array<{ cnpj: string; legalName:
   return { received: rows.length, inserted, updated, rejected };
 }
 
+export async function bulkUpsertRegulatoryActs(rows: Array<{ cnpj: string; source: string; actType: string; actNumber?: string; processNumber?: string; publishedStatus?: string; expiresAt?: Date; issuedAt?: Date; evidenceUrl?: string; sourceVersion?: string; notes?: string }>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  let inserted = 0, updated = 0, rejected = 0;
+  for (const row of rows) {
+    const cnpj = row.cnpj.replace(/\D/g, "");
+    if (cnpj.length !== 14 || !row.source || !row.actType) { rejected++; continue; }
+    const company = await db.select({ id: companies.id }).from(companies).where(eq(companies.cnpj, cnpj)).limit(1);
+    if (!company[0]) { rejected++; continue; }
+    const existing = await db.select({ id: regulatoryActs.id }).from(regulatoryActs).where(and(eq(regulatoryActs.source, row.source), eq(regulatoryActs.actType, row.actType), eq(regulatoryActs.actNumber, row.actNumber || ""), eq(regulatoryActs.processNumber, row.processNumber || ""))).limit(1);
+    const values = { companyId: company[0].id, source: row.source, actType: row.actType.trim(), actNumber: row.actNumber || null, processNumber: row.processNumber || null, publishedStatus: row.publishedStatus || null, expiresAt: row.expiresAt || null, issuedAt: row.issuedAt || null, evidenceUrl: row.evidenceUrl || null, collectedAt: new Date(), sourceVersion: row.sourceVersion || null, notes: row.notes || null, needsValidation: 1 } as const;
+    if (existing[0]) { await db.update(regulatoryActs).set(values).where(eq(regulatoryActs.id, existing[0].id)); updated++; } else { await db.insert(regulatoryActs).values(values); inserted++; }
+  }
+  return { received: rows.length, inserted, updated, rejected };
+}
+
 export async function createOpportunity(input: typeof opportunities.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
