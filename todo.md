@@ -257,3 +257,7 @@
 - [x] Criar regra de conversão de lead qualificado em cliente base sem duplicar empresa por CNPJ
 - [x] Exibir avanço do lead até cliente e preservar histórico de atividades e oportunidades
 - [x] Testar conversão, duplicidade por CNPJ e autorização por perfil
+
+# Acesso rápido ao cadastro
+
+- [x] Adicionar atalho “Cadastrar cliente” no dashboard principal
