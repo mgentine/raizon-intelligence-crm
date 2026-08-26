@@ -243,3 +243,17 @@
 
 - [x] Tratar falha de autenticação Titan 535 com erro operacional seguro e orientado, com validação após atualização segura dos segredos
 - [x] Adicionar teste do mapeamento de erro SMTP sem expor usuário ou senha, incluindo erro bruto do transporte
+
+# Base de clientes reais
+
+- [x] Definir entidade/status de cliente ativo separada de lead, sem duplicar empresas por CNPJ
+- [ ] Adicionar importação governada da base de clientes com prévia, mapeamento, conflitos e auditoria
+- [x] Criar filtros de clientes ativos, inativos e leads na consulta de empresas
+- [ ] Validar carregamento com arquivo real fornecido pelo usuário, sem fabricar registros
+
+# Cadastro e conversão lead-cliente
+
+- [x] Adicionar botão destacado para cadastrar empresa diretamente na base
+- [x] Criar regra de conversão de lead qualificado em cliente base sem duplicar empresa por CNPJ
+- [x] Exibir avanço do lead até cliente e preservar histórico de atividades e oportunidades
+- [x] Testar conversão, duplicidade por CNPJ e autorização por perfil

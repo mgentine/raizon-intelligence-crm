@@ -16,17 +16,26 @@ const decideImportConflictMock = vi.hoisted(() => vi.fn(async (id: number, userI
 const updateOpportunityDetailsMock = vi.hoisted(() => vi.fn(async (id: number, changes: unknown) => ({ success: true, id, changes })));
 const updateOpportunityStageWithLossReasonMock = vi.hoisted(() => vi.fn(async (id: number, stage: string, lossReason?: string) => ({ success: true, id, stage, lossReason })));
 const sendTitanEmailMock = vi.hoisted(() => vi.fn(async () => ({ messageId: "admin-test-message" })));
+const convertLeadToClientMock = vi.hoisted(() => vi.fn(async (id: number) => ({ leadId: id, companyId: 55, relationshipStatus: "client", commercialStatus: "won" })));
 
 vi.mock("./email", () => ({ sendTitanEmail: sendTitanEmailMock }));
 
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock, updateOpportunityStageWithLossReason: updateOpportunityStageWithLossReasonMock };
+  return { ...actual, convertLeadToClient: convertLeadToClientMock, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock, updateOpportunityStageWithLossReason: updateOpportunityStageWithLossReasonMock };
 });
 
 import { appRouter } from "./routers";
 
 describe("normalização nas mutations", () => {
+  it("converte lead qualificado em cliente para comercial e bloqueia técnico", async () => {
+    convertLeadToClientMock.mockClear();
+    const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
+    await expect(commercialCaller.leads.convertToClient({ id: 44 })).resolves.toEqual({ leadId: 44, companyId: 55, relationshipStatus: "client", commercialStatus: "won" });
+    expect(convertLeadToClientMock).toHaveBeenCalledWith(44);
+    const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
+    await expect(technicalCaller.leads.convertToClient({ id: 44 })).rejects.toThrow();
+  });
   it("permite teste SMTP somente para administrador", async () => {
     sendTitanEmailMock.mockClear();
     const adminCaller = appRouter.createCaller({ user: { id: 1, role: "admin", profile: "commercial" } } as any);

@@ -1,0 +1,1 @@
+ALTER TABLE `companies` ADD `relationshipStatus` enum('prospect','client','inactive') DEFAULT 'prospect' NOT NULL;

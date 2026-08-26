@@ -212,12 +212,13 @@ export async function archiveContact(id: number) {
   return { success: true } as const;
 }
 
-export async function listCompanies(search?: string) {
+export async function listCompanies(search?: string, relationshipStatus?: "prospect" | "client" | "inactive") {
   const db = await getDb();
   if (!db) return [];
-  const base = db.select().from(companies).orderBy(desc(companies.updatedAt)).limit(100);
-  if (!search?.trim()) return base;
-  return db.select().from(companies).where(sql`${companies.legalName} like ${`%${search.trim()}%`} or ${companies.cnpj} like ${`%${search.trim()}%`}`).orderBy(desc(companies.updatedAt)).limit(100);
+  const conditions = [];
+  if (search?.trim()) conditions.push(sql`${companies.legalName} like ${`%${search.trim()}%`} or ${companies.cnpj} like ${`%${search.trim()}%`}`);
+  if (relationshipStatus) conditions.push(eq(companies.relationshipStatus, relationshipStatus));
+  return db.select().from(companies).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(companies.updatedAt)).limit(100);
 }
 
 export async function createRegulatoryAct(input: typeof regulatoryActs.$inferInsert) {
@@ -454,6 +455,21 @@ export async function updateLeadCommercialStatus(id: number, status: typeof lead
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.update(leads).set({ commercialStatus: status, nextAction: nextAction ?? null, nextActionAt: nextActionAt ?? null, discardedReason: discardedReason ?? null, updatedAt: new Date() }).where(eq(leads.id, id));
+}
+
+export async function convertLeadToClient(leadId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const leadRows = await db.select({ lead: leads, company: companies }).from(leads).innerJoin(companies, eq(leads.companyId, companies.id)).where(eq(leads.id, leadId)).limit(1);
+  const current = leadRows[0];
+  if (!current) throw new Error("Lead não encontrado");
+  const allowed = ["qualified", "approved", "won"];
+  if (!allowed.includes(current.lead.commercialStatus)) throw new Error("O lead precisa estar qualificado, aprovado ou ganho antes da conversão.");
+  await db.transaction(async (tx) => {
+    await tx.update(companies).set({ relationshipStatus: "client", updatedAt: new Date() }).where(eq(companies.id, current.company.id));
+    await tx.update(leads).set({ commercialStatus: "won", updatedAt: new Date() }).where(eq(leads.id, leadId));
+  });
+  return { leadId, companyId: current.company.id, relationshipStatus: "client" as const, commercialStatus: "won" as const };
 }
 
 export async function listOperationalQueue(userId: number) {

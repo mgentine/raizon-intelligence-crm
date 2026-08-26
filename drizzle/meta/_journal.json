@@ -50,6 +50,13 @@
       "when": 1787776140235,
       "tag": "0006_known_miracleman",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1787787460760,
+      "tag": "0007_numerous_cobalt_man",
+      "breakpoints": true
     }
   ]
 }
