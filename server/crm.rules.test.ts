@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
+import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
 
 describe("CRM rules", () => {
+  it("prepara perda com motivo obrigatório para o card do funil", () => {
+    expect(buildOpportunityStageChange("lost", "  Orçamento incompatível  ")).toEqual({ stage: "lost", lossReason: "Orçamento incompatível" });
+    expect(() => buildOpportunityStageChange("lost", "  ")).toThrow("Informe o motivo da perda.");
+    expect(buildOpportunityStageChange("proposal")).toEqual({ stage: "proposal", lossReason: undefined });
+  });
+
   it("normalizes formatted CNPJ and validates length", () => {
     expect(normalizeCnpj("12.345.678/0001-90")).toBe("12345678000190");
     expect(isValidCnpj("12.345.678/0001-90")).toBe(true);

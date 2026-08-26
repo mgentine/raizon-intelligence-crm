@@ -74,6 +74,11 @@ export function isImportConflictDecision(value: string): value is ImportConflict
   return (importConflictDecisions as readonly string[]).includes(value);
 }
 
+export function buildOpportunityStageChange(stage: string, lossReason?: string) {
+  if (stage === "lost" && !lossReason?.trim()) throw new Error("Informe o motivo da perda.");
+  return { stage, lossReason: stage === "lost" ? lossReason!.trim() : undefined };
+}
+
 export function validateCommercialTransition(stage: string, nextAction?: string | null, requirements?: { hasValidContact?: boolean; hasDiagnosis?: boolean; hasProposal?: boolean; lossReason?: string | null }) {
   if (requiresNextAction(stage) && !nextAction?.trim()) throw new Error("Etapas comerciais abertas exigem próxima ação definida");
   if (["contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved"].includes(stage) && requirements?.hasValidContact !== true) throw new Error("A etapa exige contato válido registrado");

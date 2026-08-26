@@ -218,4 +218,4 @@
 
 # Operação do funil na interface
 
-- [x] Adicionar seletor completo de etapa e motivo de perda no card de oportunidade, com fluxo controlado e persistência atômica
+- [x] Adicionar seletor completo de etapa e motivo de perda no card de oportunidade, com fluxo controlado, persistência atômica e regra pura testada
