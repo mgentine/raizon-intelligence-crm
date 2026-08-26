@@ -50,3 +50,5 @@
 - [x] Aplicar o logotipo oficial da Raizon Ambiental no sidebar, cabeçalho, favicon/metadados e validar desktop/mobile
 - [x] Remover fundo branco do logo oficial, melhorar resolução e substituir o asset no CRM
 - [x] Validar visualmente o logo otimizado em desktop e mobile
+- [x] Adicionar gráfico no dashboard com status atualizado dos leads importados da CETESB, usando agregação real do banco
+- [ ] Testar o gráfico de status CETESB em dados vazios, dados reais e viewport mobile

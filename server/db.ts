@@ -278,3 +278,16 @@ export async function updateOpportunityStage(id: number, stage: typeof opportuni
   if (!db) throw new Error("Database unavailable");
   await db.update(opportunities).set({ stage }).where(eq(opportunities.id, id));
 }
+
+export async function getCetesbLeadStatus() {
+  const db = await getDb();
+  if (!db) return [];
+  const rows = await db.select({
+    status: regulatoryActs.publishedStatus,
+    count: sql<number>`count(*)`,
+  }).from(regulatoryActs).where(eq(regulatoryActs.source, "cetesb")).groupBy(regulatoryActs.publishedStatus);
+  return rows.map((row) => ({
+    status: row.status?.trim() || "Sem status informado",
+    count: Number(row.count ?? 0),
+  })).sort((a, b) => b.count - a.count);
+}
