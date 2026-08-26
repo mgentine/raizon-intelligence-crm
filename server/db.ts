@@ -175,6 +175,13 @@ export async function listOpportunities() {
   return db.select({ opportunity: opportunities, company: companies }).from(opportunities).leftJoin(companies, eq(opportunities.companyId, companies.id)).orderBy(desc(opportunities.updatedAt)).limit(100);
 }
 
+export async function completeRecurringItem(id: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(recurringItems).set({ status: "done", updatedAt: new Date() }).where(and(eq(recurringItems.id, id), eq(recurringItems.ownerId, userId)));
+  return { success: true } as const;
+}
+
 export async function listUpcomingRecurring() {
   const db = await getDb();
   if (!db) return [];

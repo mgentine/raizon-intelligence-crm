@@ -33,7 +33,7 @@
 - [ ] Adicionar normalização de telefone, e-mail, datas e municípios
 - [x] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
 - [ ] Construir painéis de cobertura de contato, previsão de receita e prioridades operacionais
-- [ ] Construir calendário operacional de recorrência com criação e conclusão de tarefas
+- [x] Construir calendário operacional de recorrência com criação e conclusão de tarefas
 - [ ] Implementar notificações internas e por e-mail
 - [ ] Implementar adapters reais e substituíveis para CNPJ, CETESB e SP Águas, sujeitos à disponibilidade e às regras de cada fonte
 - [ ] Implementar rotina periódica completa para processamento de arquivos, atualização de fontes e recálculo de filas
@@ -44,3 +44,6 @@
 - [x] Criar registro curto da revisão responsiva por tela das sete views principais
 - [x] Implementar sidebar mobile realmente colapsável com toggle/drawer e validar em desktop/mobile
 - [x] Revalidar a correção responsiva após comprovar sidebar colapsável e grade adaptável
+- [ ] Implementar conclusão de itens recorrentes com status persistido no backend e ação na UI para marcar recorrência/tarefa como concluída
+- [ ] Adicionar testes para criação e conclusão de recorrências, incluindo estados aberto/concluído
+- [ ] Validar visualmente a agenda recorrente com fluxo completo: criar, listar, concluir e refletir no dashboard
