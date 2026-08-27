@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { lookupCnpj } from "./integrations/cnpj";
 import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
 import { applyCompanyLookupToDraft, normalizeCnpjInput } from "../shared/companyFormRules";
 
@@ -25,6 +26,28 @@ describe("CRM rules", () => {
     expect(emptyDraft.legalName).toBe("Nome da consulta");
     expect(emptyDraft.city).toBe("São Paulo");
     expect(emptyDraft.state).toBe("RJ");
+  });
+
+  it("accepts nullable BrasilAPI fields and normalizes the provider result", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ cnpj: "56431364000180", razao_social: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", nome_fantasia: null, descricao_situacao_cadastral: "ATIVA", cnae_fiscal: 1012101, municipio: "VOTUPORANGA", uf: "SP" }), { status: 200, headers: { "content-type": "application/json" } })));
+    await expect(lookupCnpj("56.431.364/0001-80")).resolves.toMatchObject({ legalName: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", tradeName: null, city: "VOTUPORANGA", state: "SP", mainCnae: "1012101" });
+    vi.unstubAllGlobals();
+  });
+
+  it("rejects CNPJ input without 14 digits before calling the provider", async () => {
+    await expect(lookupCnpj("123")).rejects.toThrow("14 dígitos");
+  });
+
+  it("maps a missing company response to a safe not-found error", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("not found", { status: 404 })));
+    await expect(lookupCnpj("56.431.364/0001-80")).rejects.toThrow("CNPJ_NOT_FOUND");
+    vi.unstubAllGlobals();
+  });
+
+  it("maps provider network failures to an unavailable error", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network failure")));
+    await expect(lookupCnpj("56.431.364/0001-80")).rejects.toThrow("CNPJ_PROVIDER_UNAVAILABLE");
+    vi.unstubAllGlobals();
   });
 
   it("deduplicates by CNPJ and flags conflicting names", () => {

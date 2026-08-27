@@ -268,3 +268,9 @@
 - [x] Preencher campos sem sobrescrever informações já editadas manualmente
 - [x] Exibir loading, erro e retorno não encontrado da consulta cadastral
 - [x] Testar normalização de CNPJ e preenchimento editável no contrato do formulário
+
+# Diagnóstico da consulta CNPJ
+
+- [x] Diferenciar CNPJ inválido, empresa não encontrada e indisponibilidade do provedor
+- [x] Exibir mensagem orientada sem bloquear o preenchimento manual
+- [x] Testar os três estados do provider cadastral
