@@ -55,6 +55,12 @@
 
 > O texto de cada proposta deve citar somente referências verificadas e pertinentes ao caso. A página oficial da SP Águas lista o SOE como canal de início de pedidos e a Portaria DAEE nº 1.630/2017, com alterações pelas Portarias nº 3.280/2020 e nº 832/2022, entre as referências de procedimentos de outorga. [1] [2]
 
+## Exportação em Word no CRM
+
+O painel de propostas passou a disponibilizar **Exportar proposta em Word**. O arquivo `.docx` utiliza a identidade e a organização do padrão comercial adotado na proposta nº 58/2026: cabeçalho institucional, identificação, quadro-resumo do cliente, resumo executivo, escopo, entregáveis, investimento, pagamento, validade, premissas, exclusões, documentos necessários e bloco final do responsável técnico.
+
+O documento é gerado exclusivamente a partir dos snapshots congelados da proposta selecionada. Por esse motivo, não pode completar dados ausentes com informações presumidas e permanece indisponível no modo de demonstração local. A validação gerou um DOCX válido a partir da proposta persistida nº 58/2026 e confirmou as seções principais no conteúdo serializado; o fluxo também foi revisado em desktop e celular.
+
 ## Referências
 
 [1] [SP Águas — Outorgas](https://www.spaguas.sp.gov.br/site/outorga/)

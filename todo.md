@@ -484,3 +484,10 @@
 
 - [x] Eliminar overflow horizontal dos cards de atos em telas de 390 px, mantendo visíveis Editar, Arquivar e Evidências
 - [x] Validar a lista de atos real em desktop e celular após a reorganização das ações
+
+# Exportação Word de propostas
+
+- [x] Implementar exportação DOCX baseada exclusivamente nos snapshots confirmados da proposta
+- [x] Reproduzir a hierarquia visual da proposta nº 58/2026: capa, resumo, escopo, investimento, condições, premissas e aceite
+- [x] Adicionar ação de exportação Word no painel, mantendo o PDF disponível e bloqueando demonstrações locais
+- [x] Testar a estrutura do DOCX e validar download com a proposta persistida nº 58/2026

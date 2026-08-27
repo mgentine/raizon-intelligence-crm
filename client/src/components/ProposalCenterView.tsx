@@ -8,6 +8,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { aggregateProposalValueByStatus, filterProposalPanelRows, sortProposalPanelRows, type ProposalPanelRow, type ProposalPanelSort } from "../../../shared/proposalPanelRules";
 import { getProposalValidityAlert } from "../../../shared/proposalAlertRules";
 import { downloadProposalPdf as downloadProposalPdfDocument, type ProposalPdfInput } from "@/lib/proposalPdf";
+import { downloadProposalDocx as downloadProposalDocxDocument } from "@/lib/proposalDocx";
 
 const emptyForm = { companyId: "", opportunityId: "", serviceId: "", professional: "Miguel Gentine", investment: "", paymentTerms: "50% na contratação + 50% no protocolo", validityDays: "20", visitsIncluded: "0", missingInformation: "", notes: "" };
 const emptyServiceForm = { name: "", category: "", scope: "", deliverables: "" };
@@ -24,6 +25,10 @@ const demoProposalRows = [
 
 function downloadProposalPdf(input: { proposal: ProposalDisplayRow["proposal"]; company?: ProposalDisplayRow["company"]; service?: ProposalDisplayRow["service"]; raizon?: ProposalPdfInput["raizon"] }) {
   return downloadProposalPdfDocument({ ...input, proposal: input.proposal as unknown as ProposalPdfInput["proposal"] });
+}
+
+function downloadProposalDocx(input: { proposal: ProposalDisplayRow["proposal"]; company?: ProposalDisplayRow["company"]; service?: ProposalDisplayRow["service"]; raizon?: ProposalPdfInput["raizon"] }) {
+  return downloadProposalDocxDocument({ ...input, proposal: input.proposal as unknown as ProposalPdfInput["proposal"] });
 }
 
 function money(value: string | number | null | undefined) { return value ? new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(value)) : "—"; }
@@ -51,6 +56,7 @@ export function ProposalCenterView() {
   const [demoMode, setDemoMode] = useState(() => new URLSearchParams(window.location.search).get("proposalDemo") === "1");
   const [demoRows, setDemoRows] = useState<DemoProposalRow[]>(() => demoProposalRows.map((row) => ({ ...row, proposal: { ...row.proposal }, company: { ...row.company }, service: { ...row.service } })));
   const [statusSuccess, setStatusSuccess] = useState(() => new URLSearchParams(window.location.search).get("proposalStatusSuccess") === "1" ? "Demonstração: status alterado para Negociação." : "");
+  const [docxProposalId, setDocxProposalId] = useState("");
   const companyCnpjDigits = companySearch.replace(/\D/g, "");
   const companyCnpjLookup = trpc.cnpj.lookup.useQuery({ cnpj: companyCnpjDigits }, { enabled: showForm && companyCnpjDigits.length === 14, retry: false });
   const canManageProposals = user?.role === "admin" || user?.profile === "commercial";
@@ -73,6 +79,7 @@ export function ProposalCenterView() {
   }, [panelRows]);
   const filteredProposals = useMemo(() => filterProposalPanelRows(panelRows, { search: proposalSearch, status: proposalStatusFilter, professional: proposalProfessionalFilter }), [panelRows, proposalSearch, proposalStatusFilter, proposalProfessionalFilter]);
   const sortedProposals = useMemo(() => sortProposalPanelRows(filteredProposals, proposalSort), [filteredProposals, proposalSort]);
+  const selectedDocxProposal = useMemo(() => sortedProposals.find((row) => !row.isDemo && String(row.proposal.id) === docxProposalId), [docxProposalId, sortedProposals]);
   const proposalChartData = useMemo(() => aggregateProposalValueByStatus(filteredProposals, statusLabels), [filteredProposals]);
 
   useEffect(() => {
@@ -108,6 +115,7 @@ export function ProposalCenterView() {
     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-7"><p className="text-[#65736c] text-sm">Propostas governadas por cliente, oportunidade e serviço aprovado.</p><div className="flex flex-col sm:flex-row gap-2"><Button variant="outline" className="border-[#6a4297] text-[#6a4297]" onClick={() => { setDemoMode((current) => !current); setSwipedProposalId(null); setStatusSuccess(""); }}>{demoMode ? "Sair da demonstração" : "Testar gestos com demonstração"}</Button>{canManageProposals && <Button className="bg-[#e13b32] text-white" onClick={() => { setForm(emptyForm); setCompanySearch(""); setShowForm(true); }}><Plus className="h-4 w-4 mr-2" />Nova proposta</Button>}</div></div>
     {demoMode && <div className="mb-5 border border-[#6a4297]/30 bg-[#f5f1ff] px-4 py-3 text-sm text-[#4d2e70]"><strong>Modo de demonstração ativo.</strong> Os três cards exibidos são exemplos locais para testar swipe e ordenação; eles não são gravados, enviados nem misturados aos dados da Raizon.</div>}
     {statusSuccess && <div role="status" aria-live="polite" className="mb-5 flex items-center gap-3 border border-[#3c9562]/30 bg-[#e8f6ed] px-4 py-3 text-sm font-semibold text-[#17683b] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-200"><CheckCircle2 className="h-5 w-5 shrink-0" />{statusSuccess}</div>}
+    {!demoMode && <section className="mb-6 border border-[#dfe5e0] bg-white p-4 sm:p-5" aria-labelledby="export-word-title"><div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between"><div><h2 id="export-word-title" className="text-base font-black text-[#16221f]">Exportar proposta em Word</h2><p className="mt-1 text-sm text-[#65736c]">Modelo DOCX inspirado no padrão Raizon, preenchido somente pelos snapshots aprovados da proposta.</p></div><div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:max-w-[600px]"><select aria-label="Proposta para exportação Word" className="h-11 min-w-0 border border-[#dfe5e0] bg-white px-3 text-sm" value={docxProposalId} onChange={(event) => setDocxProposalId(event.target.value)}><option value="">Selecione uma proposta persistida</option>{sortedProposals.filter((row) => !row.isDemo).map((row) => <option key={row.proposal.id} value={row.proposal.id}>{row.proposal.proposalNumber || `Rascunho #${row.proposal.id}`} · {row.company?.tradeName || row.company?.legalName || "Cliente"}</option>)}</select><Button variant="outline" className="border-[#315349] text-[#315349]" disabled={!selectedDocxProposal} onClick={() => { if (selectedDocxProposal) void downloadProposalDocx({ proposal: selectedDocxProposal.proposal, company: selectedDocxProposal.company, service: selectedDocxProposal.service, raizon: raizon.data ?? null }); }}><FileText className="mr-2 h-4 w-4" />Exportar Word</Button></div></div></section>}
 
     {showForm && <section className="bg-white border border-[#dfe5e0] p-4 sm:p-6 mb-6" aria-labelledby="new-proposal-title">
       <div className="flex items-start justify-between gap-4 mb-5"><div><h2 id="new-proposal-title" className="text-xl font-black">Nova proposta — rascunho</h2><p className="text-sm text-[#65736c] mt-1">Consulte o CNPJ, confirme o cliente e registre as condições antes da revisão.</p></div><Button variant="outline" size="icon" aria-label="Fechar formulário" onClick={() => setShowForm(false)}><X className="h-4 w-4" /></Button></div>
