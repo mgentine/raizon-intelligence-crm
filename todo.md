@@ -354,3 +354,24 @@
 - [x] Auditar telas, fluxo de uso, estados vazios/erro e responsividade
 - [x] Corrigir inconsistências encontradas e reexecutar validações
 - [x] Registrar conclusão da auditoria com ressalvas verificáveis
+
+# Fase 2 — conversão da venda em execução técnica — solicitação 27/08/2026
+
+- [ ] Criar projeto de execução a partir de proposta aceita
+- [ ] Congelar escopo, entregáveis, premissas, exclusões e documentos da proposta
+- [ ] Implementar checklist de documentos e pendências com responsáveis e prazos
+- [ ] Implementar tarefas técnicas, evidências e acompanhamento de execução
+- [ ] Implementar entrega, aceite, encerramento e registro do pós-atendimento inicial
+- [ ] Adicionar testes de transição, RBAC, persistência e validar desktop/mobile
+
+# Fase 2 — execução e entrega técnica
+
+- [x] Criar tabela project_evidence e aplicar migration 0014 ao banco
+- [x] Implementar persistência e listagem de evidências técnicas por projeto
+- [x] Implementar upload de evidências técnicas ao S3 com limite de 5 MB e metadados no banco
+- [x] Integrar anexos técnicos à ficha do projeto na Central de Execução
+- [x] Validar TypeScript, 57 testes Vitest e build de produção
+- [x] Validar visualmente a Central de Execução em desktop e mobile com banco vazio
+- [ ] Executar transição ponta a ponta com dados reais do ambiente, sem inserir dados artificiais
+- [x] Finalizar documentação operacional e critérios de aceite da Fase 2
+- [ ] Iniciar Fase 3 — Inteligência, automação e escala

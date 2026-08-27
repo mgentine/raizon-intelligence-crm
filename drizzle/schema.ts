@@ -271,6 +271,99 @@ export const proposals = mysqlTable("proposals", {
 export type Proposal = typeof proposals.$inferSelect;
 export type InsertProposal = typeof proposals.$inferInsert;
 
+export const executionProjectStatuses = ["planning", "in_progress", "blocked", "delivered", "accepted", "closed", "cancelled"] as const;
+export type ExecutionProjectStatus = (typeof executionProjectStatuses)[number];
+
+export const executionProjects = mysqlTable("execution_projects", {
+  id: int("id").autoincrement().primaryKey(),
+  proposalId: int("proposalId").notNull(),
+  opportunityId: int("opportunityId").notNull(),
+  companyId: int("companyId").notNull(),
+  ownerId: int("ownerId"),
+  title: varchar("title", { length: 255 }).notNull(),
+  status: mysqlEnum("status", executionProjectStatuses).default("planning").notNull(),
+  scopeSnapshot: text("scopeSnapshot").notNull(),
+  deliverablesSnapshot: text("deliverablesSnapshot").notNull(),
+  exclusionsSnapshot: text("exclusionsSnapshot"),
+  assumptionsSnapshot: text("assumptionsSnapshot"),
+  requiredDocumentsSnapshot: text("requiredDocumentsSnapshot"),
+  startAt: timestamp("startAt"),
+  dueAt: timestamp("dueAt"),
+  deliveredAt: timestamp("deliveredAt"),
+  acceptedAt: timestamp("acceptedAt"),
+  closedAt: timestamp("closedAt"),
+  acceptanceNotes: text("acceptanceNotes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  proposalIdx: index("execution_projects_proposal_idx").on(table.proposalId),
+  companyIdx: index("execution_projects_company_idx").on(table.companyId),
+  statusIdx: index("execution_projects_status_idx").on(table.status),
+}));
+
+export type ExecutionProject = typeof executionProjects.$inferSelect;
+export type InsertExecutionProject = typeof executionProjects.$inferInsert;
+
+export const projectTaskStatuses = ["open", "in_progress", "blocked", "done", "cancelled"] as const;
+export const projectTasks = mysqlTable("project_tasks", {
+  id: int("id").autoincrement().primaryKey(),
+  projectId: int("projectId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull().default("technical"),
+  ownerId: int("ownerId"),
+  status: mysqlEnum("status", projectTaskStatuses).default("open").notNull(),
+  dueAt: timestamp("dueAt"),
+  notes: text("notes"),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  projectIdx: index("project_tasks_project_idx").on(table.projectId),
+  statusIdx: index("project_tasks_status_idx").on(table.status),
+}));
+
+export type ProjectTask = typeof projectTasks.$inferSelect;
+export type InsertProjectTask = typeof projectTasks.$inferInsert;
+
+export const projectChecklistStatuses = ["pending", "received", "approved", "rejected", "waived"] as const;
+export const projectChecklist = mysqlTable("project_checklist", {
+  id: int("id").autoincrement().primaryKey(),
+  projectId: int("projectId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  required: int("required").default(1).notNull(),
+  status: mysqlEnum("status", projectChecklistStatuses).default("pending").notNull(),
+  ownerId: int("ownerId"),
+  dueAt: timestamp("dueAt"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  projectIdx: index("project_checklist_project_idx").on(table.projectId),
+  statusIdx: index("project_checklist_status_idx").on(table.status),
+}));
+
+export type ProjectChecklist = typeof projectChecklist.$inferSelect;
+export type InsertProjectChecklist = typeof projectChecklist.$inferInsert;
+
+export const projectEvidence = mysqlTable("project_evidence", {
+  id: int("id").autoincrement().primaryKey(),
+  projectId: int("projectId").notNull(),
+  taskId: int("taskId"),
+  title: varchar("title", { length: 255 }).notNull(),
+  fileName: varchar("fileName", { length: 255 }).notNull(),
+  mimeType: varchar("mimeType", { length: 120 }).notNull(),
+  fileKey: varchar("fileKey", { length: 500 }).notNull(),
+  fileUrl: varchar("fileUrl", { length: 1000 }).notNull(),
+  uploadedBy: int("uploadedBy").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  projectIdx: index("project_evidence_project_idx").on(table.projectId),
+  taskIdx: index("project_evidence_task_idx").on(table.taskId),
+}));
+
+export type ProjectEvidence = typeof projectEvidence.$inferSelect;
+export type InsertProjectEvidence = typeof projectEvidence.$inferInsert;
+
 export const activities = mysqlTable("activities", {
   id: int("id").autoincrement().primaryKey(),
   companyId: int("companyId").notNull(),

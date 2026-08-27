@@ -21,12 +21,17 @@ import {
   serviceCatalog,
   proposals,
   proposalSequences,
+  executionProjects,
+  projectTasks,
+  projectChecklist,
+  projectEvidence,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
 import { validateProposalTransition, buildProposalSourceMap, canCreateProposalFromOpportunity, type ProposalStatus } from "../shared/proposalRules";
+import { canTransitionExecution, canCloseExecution, type ExecutionStatus } from "../shared/executionRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -153,6 +158,94 @@ export async function issueProposal(id: number, reviewedBy: number) {
     await tx.update(proposals).set({ proposalNumber, status: "issued", reviewedBy, issuedAt: new Date(), updatedAt: new Date() }).where(eq(proposals.id, id));
     return { proposalNumber, version: current.version };
   });
+}
+
+export async function listExecutionProjects() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ project: executionProjects, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName }, proposal: { id: proposals.id, proposalNumber: proposals.proposalNumber, version: proposals.version } })
+    .from(executionProjects)
+    .leftJoin(companies, eq(executionProjects.companyId, companies.id))
+    .leftJoin(proposals, eq(executionProjects.proposalId, proposals.id))
+    .orderBy(desc(executionProjects.updatedAt)).limit(100);
+}
+
+export async function getExecutionProjectDetails(projectId: number) {
+  const db = await getDb();
+  if (!db) return { project: null, tasks: [], checklist: [] };
+  const [projectRow] = await db.select({ project: executionProjects, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName }, proposal: { id: proposals.id, proposalNumber: proposals.proposalNumber, version: proposals.version } }).from(executionProjects).leftJoin(companies, eq(executionProjects.companyId, companies.id)).leftJoin(proposals, eq(executionProjects.proposalId, proposals.id)).where(eq(executionProjects.id, projectId)).limit(1);
+  const tasks = await db.select().from(projectTasks).where(eq(projectTasks.projectId, projectId)).orderBy(desc(projectTasks.createdAt));
+  const checklist = await db.select().from(projectChecklist).where(eq(projectChecklist.projectId, projectId)).orderBy(desc(projectChecklist.createdAt));
+  return { project: projectRow || null, tasks, checklist };
+}
+
+export async function createExecutionProjectFromProposal(input: { proposalId: number; ownerId: number; title?: string; startAt?: Date; dueAt?: Date }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.transaction(async (tx) => {
+    const [proposal] = await tx.select().from(proposals).where(eq(proposals.id, input.proposalId)).limit(1);
+    if (!proposal) throw new Error("Proposta não encontrada.");
+    if (proposal.status !== "accepted") throw new Error("Somente propostas aceitas pelo cliente podem iniciar uma execução.");
+    const [existing] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, input.proposalId)).limit(1);
+    if (existing) return existing.id;
+    const title = input.title?.trim() || `Execução — ${proposal.proposalNumber || `Proposta #${proposal.id}`}`;
+    const inserted = await tx.insert(executionProjects).values({ proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, ownerId: input.ownerId, title, scopeSnapshot: proposal.scopeSnapshot, deliverablesSnapshot: proposal.deliverablesSnapshot, exclusionsSnapshot: proposal.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: proposal.requiredDocumentsSnapshot ?? undefined, startAt: input.startAt, dueAt: input.dueAt }).$returningId();
+    const projectId = Number(inserted[0]?.id);
+    const documents = String(proposal.requiredDocumentsSnapshot || "").split(/\\r?\\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
+    if (documents.length) await tx.insert(projectChecklist).values(documents.map((title) => ({ projectId, title, required: 1, ownerId: input.ownerId })));
+    return projectId;
+  });
+}
+
+export async function updateExecutionProjectStatus(id: number, status: string, acceptanceNotes?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [current] = await db.select().from(executionProjects).where(eq(executionProjects.id, id)).limit(1);
+  if (!current) throw new Error("Projeto de execução não encontrado.");
+  if (!canTransitionExecution(current.status, status as ExecutionStatus)) throw new Error(`Transição de execução inválida: ${current.status} → ${status}.`);
+  if (status === "closed") { const checklist = await db.select({ required: projectChecklist.required, status: projectChecklist.status }).from(projectChecklist).where(eq(projectChecklist.projectId, id)); if (!canCloseExecution("accepted", checklist)) throw new Error("Não é possível encerrar enquanto houver documentos obrigatórios pendentes."); }
+  const now = new Date();
+  await db.update(executionProjects).set({ status: status as any, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
+  return { success: true } as const;
+}
+
+export async function createProjectTask(input: { projectId: number; title: string; category?: string; ownerId?: number; dueAt?: Date; notes?: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [project] = await db.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1);
+  if (!project) throw new Error("Projeto de execução não encontrado.");
+  const inserted = await db.insert(projectTasks).values({ ...input, category: input.category || "technical" }).$returningId();
+  return Number(inserted[0]?.id);
+}
+
+export async function updateProjectTaskStatus(id: number, status: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const completedAt = status === "done" ? new Date() : undefined;
+  await db.update(projectTasks).set({ status: status as any, completedAt, updatedAt: new Date() }).where(eq(projectTasks.id, id));
+  return { success: true } as const;
+}
+
+export async function listProjectEvidence(projectId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(projectEvidence).where(eq(projectEvidence.projectId, projectId)).orderBy(desc(projectEvidence.createdAt));
+}
+
+export async function createProjectEvidence(input: { projectId: number; taskId?: number; title: string; fileName: string; mimeType: string; fileKey: string; fileUrl: string; uploadedBy: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [project] = await db.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1);
+  if (!project) throw new Error("Projeto de execução não encontrado.");
+  const inserted = await db.insert(projectEvidence).values(input).$returningId();
+  return Number(inserted[0]?.id);
+}
+
+export async function updateProjectChecklistStatus(id: number, status: string, notes?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(projectChecklist).set({ status: status as any, notes, updatedAt: new Date() }).where(eq(projectChecklist.id, id));
+  return { success: true } as const;
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
