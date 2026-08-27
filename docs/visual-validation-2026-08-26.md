@@ -39,3 +39,7 @@ A captura desktop confirmou que a navegação lateral não exibe mais a aba inde
 ## View Empresas após integração contextual — 27/08/2026
 
 Em desktop 1280×720, a tela **Empresas** apresenta navegação sem Contatos, busca, filtro de relacionamento, CTA **Cadastrar cliente** e estado vazio sem sobreposição. Em mobile 390×844, o menu colapsado, título, busca, CTA, filtro e mensagem vazia permanecem legíveis; a busca fica estreita, mas utilizável, e não foi observado overflow horizontal. Não foi possível abrir a ficha contextual nem testar edição/arquivamento visualmente porque não existem empresas/contatos reais populados nesta sessão.
+
+## Formulário ampliado de cliente — 27/08/2026
+
+Com o parâmetro controlado `openCompanyForm=1`, o formulário foi revisado em desktop 1280×720 e mobile 390×844. A versão desktop apresenta seções de **Dados cadastrais**, **Endereço e operação** e **Canais e relacionamento**, com observações e ações no rodapé. No mobile, os campos empilham linearmente, o textarea permanece legível e os botões continuam acessíveis; não foi observado overflow horizontal. A validação de persistência com dados reais depende de cadastro controlado pelo usuário e não foi simulada.

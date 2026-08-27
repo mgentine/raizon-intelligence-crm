@@ -18,14 +18,20 @@ describe("CRM rules", () => {
 
   it("normalizes CNPJ input and preserves manual company edits when applying lookup data", () => {
     expect(normalizeCnpjInput("12.345.678/0001-90 extra")).toBe("12345678000190");
-    const draft = applyCompanyLookupToDraft({ cnpj: "12.345.678/0001-90", legalName: "Nome digitado", city: "Votuporanga", state: "SP", segment: "SST", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", city: "São Paulo", state: "SP" });
+    const draft = applyCompanyLookupToDraft({ cnpj: "12.345.678/0001-90", legalName: "Nome digitado", tradeName: "Fantasia digitada", registrationStatus: "ATIVA", mainCnae: "4321-5", address: "Rua A", addressNumber: "10", addressComplement: "", neighborhood: "Centro", postalCode: "15500-000", city: "Votuporanga", state: "SP", phone: "", email: "", website: "", segment: "SST", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "BAIXADA", mainCnae: "1234567", city: "São Paulo", state: "SP" });
     expect(draft.legalName).toBe("Nome digitado");
     expect(draft.city).toBe("Votuporanga");
     expect(draft.segment).toBe("SST");
-    const emptyDraft = applyCompanyLookupToDraft({ cnpj: "", legalName: "", city: "", state: "SP", segment: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", city: "São Paulo", state: "RJ" });
+    expect(draft.tradeName).toBe("Fantasia digitada");
+    expect(draft.registrationStatus).toBe("ATIVA");
+    expect(draft.mainCnae).toBe("4321-5");
+    const emptyDraft = applyCompanyLookupToDraft({ cnpj: "", legalName: "", tradeName: "", registrationStatus: "", mainCnae: "", address: "", addressNumber: "", addressComplement: "", neighborhood: "", postalCode: "", city: "", state: "SP", phone: "", email: "", website: "", segment: "", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "ATIVA", mainCnae: "1234567", city: "São Paulo", state: "RJ" });
     expect(emptyDraft.legalName).toBe("Nome da consulta");
     expect(emptyDraft.city).toBe("São Paulo");
     expect(emptyDraft.state).toBe("RJ");
+    expect(emptyDraft.tradeName).toBe("Fantasia da consulta");
+    expect(emptyDraft.registrationStatus).toBe("ATIVA");
+    expect(emptyDraft.mainCnae).toBe("1234567");
   });
 
   it("accepts nullable BrasilAPI fields and normalizes the provider result", async () => {

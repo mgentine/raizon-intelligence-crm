@@ -57,6 +57,13 @@
       "when": 1787787460760,
       "tag": "0007_numerous_cobalt_man",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1787792038648,
+      "tag": "0008_mighty_patch",
+      "breakpoints": true
     }
   ]
 }

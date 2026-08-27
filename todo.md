@@ -287,3 +287,10 @@
 - [x] Incorporar listagem e cadastro de contatos ao contexto da empresa/cliente
 - [x] Preservar vínculos de contatos com unidades, atividades e oportunidades
 - [x] Validar permissões, estados vazio/erro e responsividade da seção contextual
+
+# Ampliação do cadastro de cliente — solicitação 27/08/2026
+
+- [x] Adicionar campos cadastrais, endereço, operação e relacionamento ao formulário de cliente
+- [x] Persistir os novos campos no modelo canônico de empresas sem quebrar registros existentes
+- [x] Manter o preenchimento automático por CNPJ sem sobrescrever dados editados manualmente
+- [x] Adicionar testes e validar o formulário ampliado em desktop e mobile
