@@ -441,3 +441,9 @@
 - [x] Redesenhar o drawer móvel com rótulos, largura adequada e ação explícita de fechar
 - [x] Escurecer o conteúdo de fundo e bloquear sua rolagem enquanto o menu estiver aberto
 - [x] Validar menu aberto/fechado em celular e tablet sem corte ou sobreposição indevida
+
+# Painel de propostas em celular
+
+- [x] Auditar cards, filtros, gráfico e ações do painel em celular
+- [x] Ajustar a estrutura mobile para cartões empilhados sem rolagem horizontal de conteúdo crítico
+- [x] Validar a visualização mobile e documentar a decisão de layout

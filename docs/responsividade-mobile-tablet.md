@@ -24,3 +24,9 @@ Os grids críticos se reorganizam para uma coluna em celular e preservam duas ou
 O menu lateral móvel foi substituído por um drawer com largura de até 80% da tela e limite de 300 px. Os rótulos agora permanecem visíveis ao lado dos ícones; o menu possui botão explícito de fechamento, fechamento ao tocar no overlay e suporte à tecla Escape. O conteúdo da página fica escurecido e sua rolagem é bloqueada enquanto a navegação está aberta.
 
 Na verificação em 390×844, o drawer exibiu a lista de navegação completa, com texto legível e sem competir com o conteúdo de fundo. O botão de abertura do menu e o ícone de notificações passaram a ter área de toque de 40×40 px no cabeçalho; os demais botões mobile mantêm a regra geral de 44 px.
+
+## Painel de propostas em celular
+
+O painel de propostas não utiliza tabela horizontal em dispositivos móveis. Em 390×844, filtros, gráfico e propostas são apresentados em fluxo vertical; as propostas são cards empilhados com status, validade, investimento, profissional e ações organizadas em grade de uma coluna. Dessa forma, exportar PDF, alterar status ou duplicar uma proposta não exige deslocamento horizontal.
+
+O formulário de nova proposta também foi revisado nessa largura: a consulta por CNPJ, a seleção de serviço, os campos comerciais e as ações de rascunho permanecem empilhados e utilizáveis. Essa estrutura é preferível à rolagem horizontal porque preserva contexto e área de toque em uma operação comercial frequente.
