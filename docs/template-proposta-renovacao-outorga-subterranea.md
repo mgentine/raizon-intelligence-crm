@@ -61,6 +61,8 @@ O painel de propostas passou a disponibilizar **Exportar proposta em Word**. O a
 
 O documento é gerado exclusivamente a partir dos snapshots congelados da proposta selecionada. Por esse motivo, não pode completar dados ausentes com informações presumidas e permanece indisponível no modo de demonstração local. A validação gerou um DOCX válido a partir da proposta persistida nº 58/2026 e confirmou as seções principais no conteúdo serializado; o fluxo também foi revisado em desktop e celular.
 
+Após a revisão de uso, a ação também foi posicionada **no próprio card de cada proposta persistida**, logo abaixo de “Exportar PDF”. Assim, quem estiver analisando uma proposta específica encontra os dois formatos no mesmo contexto, sem precisar retornar ao seletor geral. A verificação em 1280×720 e 390×844 confirmou as opções PDF e Word visíveis; nos cards demonstrativos, ambas continuam bloqueadas para evitar a geração a partir de dados locais não persistidos.
+
 ## Referências
 
 [1] [SP Águas — Outorgas](https://www.spaguas.sp.gov.br/site/outorga/)

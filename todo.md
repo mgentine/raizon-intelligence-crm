@@ -491,3 +491,8 @@
 - [x] Reproduzir a hierarquia visual da proposta nº 58/2026: capa, resumo, escopo, investimento, condições, premissas e aceite
 - [x] Adicionar ação de exportação Word no painel, mantendo o PDF disponível e bloqueando demonstrações locais
 - [x] Testar a estrutura do DOCX e validar download com a proposta persistida nº 58/2026
+
+# Correção de descoberta da exportação Word
+
+- [x] Exibir Exportar Word diretamente no card de cada proposta persistida, ao lado de Exportar PDF
+- [x] Validar a visibilidade das duas exportações em desktop e celular
