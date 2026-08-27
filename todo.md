@@ -407,3 +407,10 @@
 # Decisão de escopo — autenticação
 
 - [ ] Implementar autenticação própria com login/senha, recuperação de acesso e MFA — adiado por decisão do usuário; manter Manus OAuth no escopo atual
+
+# Melhoria do painel de propostas
+
+- [x] Criar painel de propostas com status visual, resumo e ação rápida de duplicação
+- [x] Preservar profissional e condições comerciais ao duplicar uma proposta como novo rascunho
+- [x] Selecionar imediatamente o novo serviço criado no formulário de proposta, sem recarregar a página
+- [x] Validar duplicação, seleção imediata, responsividade, testes e build

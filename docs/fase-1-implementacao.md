@@ -60,3 +60,9 @@ A revisão reproduzível com `?view=Propostas&openProposalForm=1` confirmou em d
 ### Refinamento da busca por CNPJ
 
 O formulário passou a oferecer um campo digitável para localizar empresa por CNPJ ou nome, seguido da seleção da empresa encontrada. A revisão com `?view=Propostas&openProposalForm=1` confirmou em 1280×720 e 390×844 que o campo fica no topo do fluxo, a seleção de oportunidade permanece dependente do cliente e não há overflow horizontal. Quando nenhum registro corresponde à busca, a interface informa claramente que não há cliente cadastrado correspondente. A lista vazia observada na revisão decorre do banco de homologação sem dados artificiais.
+
+### Painel e duplicação rápida
+
+O painel de propostas agora apresenta total, propostas em curso, propostas aceitas e valor da carteira ativa, além de cards com cliente, serviço, valor, condições, profissional e selo visual do status atual. A ação **Duplicar** cria um novo rascunho versionado da proposta selecionada e preserva escopo, snapshots, valor, condições comerciais, observações e profissional responsável; a versão original permanece intacta para auditoria.
+
+O cadastro rápido de serviço passou a aguardar a atualização local do catálogo e seleciona o serviço recém-criado no mesmo formulário, sem recarregar a página. A revisão em 1280×720 e 390×844 confirmou legibilidade dos indicadores e ausência de overflow. Os cards com dados populados continuam pendentes de conferência com registros reais autorizados.
