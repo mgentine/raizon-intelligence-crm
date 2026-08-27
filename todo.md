@@ -280,3 +280,10 @@
 - [x] Adicionar fallback cadastral quando a rota principal retornar 403
 - [x] Preservar distinção entre CNPJ não encontrado e provedor bloqueado/indisponível
 - [x] Testar 403, fallback bem-sucedido e falha conjunta dos provedores
+
+# Contatos dentro da ficha da empresa
+
+- [x] Remover Contatos da navegação lateral e da aba independente
+- [x] Incorporar listagem e cadastro de contatos ao contexto da empresa/cliente
+- [x] Preservar vínculos de contatos com unidades, atividades e oportunidades
+- [ ] Validar permissões, estados vazio/erro e responsividade da seção contextual

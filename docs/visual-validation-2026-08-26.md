@@ -31,3 +31,7 @@ A agenda foi revisada em desktop 1280×720 e mobile 390×844. O estado vazio exi
 Em 26/08/2026, a view `/?view=Empresas` foi revisada em desktop. O botão **Cadastrar cliente**, a busca por CNPJ/nome e o filtro de relacionamentos aparecem alinhados; com banco vazio, a tela exibe estado vazio sem fabricar registros. O formulário de CNPJ é aberto após ação do usuário e contém estados de consulta, encontrado e falha para o preenchimento automático. A validação populada com retorno real do provider ainda depende de uma execução controlada com CNPJ válido.
 
 - **Mobile 390×844, `/?view=Empresas`:** menu colapsado, título, botão **Cadastrar cliente**, busca, filtro de relacionamento e estado vazio renderizados sem sobreposição; o layout permanece legível e linear. A captura não abriu o formulário, portanto a validação visual do estado preenchido segue dependente de interação manual ou dados reais.
+
+## Navegação após incorporação de Contatos à ficha de Empresas — 27/08/2026
+
+A captura desktop confirmou que a navegação lateral não exibe mais a aba independente **Contatos** e que o atalho **Cadastrar cliente** permanece visível no dashboard. A captura mobile confirmou que o menu colapsável continua utilizável e que os atalhos de cadastro se reorganizam sem overflow. A ficha contextual de contatos depende da abertura de uma empresa real; como o banco permanece vazio, o estado populado e as operações de edição/arquivamento não foram executados nesta rodada.
