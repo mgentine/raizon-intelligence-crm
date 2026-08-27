@@ -320,3 +320,9 @@
 # Fluxograma da jornada do cliente — solicitação 27/08/2026
 
 - [x] Gerar fluxograma visual e fonte editável da jornada ponta a ponta do cliente
+
+# Correção de consultas do dashboard — solicitação 27/08/2026
+
+- [x] Diagnosticar a divergência de schema que quebra recorrências e atividades
+- [x] Corrigir a migration/estrutura do banco sem remover dados existentes
+- [x] Validar as queries, testes e dashboard após a correção
