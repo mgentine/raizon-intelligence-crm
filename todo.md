@@ -428,3 +428,10 @@
 - [x] Ajustar formulários, painéis, filtros e ações de propostas para telas menores
 - [x] Ajustar Central de Execução e Central de Inteligência para tablet e celular
 - [x] Validar as telas críticas em 390×844, 768×1024 e desktop, sem overflow horizontal
+
+# Autofill, PDF e alertas de validade de propostas
+
+- [x] Implementar consulta pública de CNPJ no formulário de proposta, preservando edição manual
+- [x] Implementar alertas visuais para propostas próximas da validade ou vencidas
+- [x] Implementar exportação de proposta em PDF profissional baseada em snapshots confirmados
+- [x] Validar dados, PDF, alertas, responsividade, testes e build

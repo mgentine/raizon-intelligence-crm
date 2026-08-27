@@ -590,6 +590,13 @@ export async function createCompany(input: typeof companies.$inferInsert) {
   return result[0].insertId;
 }
 
+export async function getCompanyByCnpj(cnpj: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const [company] = await db.select().from(companies).where(eq(companies.cnpj, cnpj)).limit(1);
+  return company;
+}
+
 export async function createImportRun(input: { source: string; filename?: string; createdBy?: number }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
