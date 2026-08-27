@@ -141,6 +141,13 @@
       "when": 1787851642153,
       "tag": "0019_odd_cobalt_man",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1787858965214,
+      "tag": "0020_glamorous_paper_doll",
+      "breakpoints": true
     }
   ]
 }

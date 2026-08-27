@@ -501,3 +501,21 @@
 
 - [x] Consolidar histórico, funcionalidades, tecnologias, APIs, links e integrações do Raizon Intelligence CRM
 - [x] Documentar validações, limitações conhecidas e próximos passos por prioridade
+
+# Rodada estrutural 1 — Integridade transacional e concorrência
+
+- [x] Registrar baseline imutável: versão, árvore relevante, migrations, schema, alterações locais, testes, TypeScript, build e warnings
+- [x] Auditar criação de projeto a partir de proposta aceita, com transações e rollback em falhas intermediárias
+- [x] Auditar e reforçar idempotência e concorrência na criação de projetos e na numeração anual de propostas
+- [x] Auditar e reforçar constraints críticas no schema e no banco sem alterar o modelo comercial além do necessário
+- [x] Criar testes de regressão para falha parcial, duplicação concorrente e numeração anual
+- [x] Registrar evidências finais como COMPROVADO, INFERIDO ou NÃO VALIDADO e consolidar checkpoint
+- [x] Reconciliar o ledger `__drizzle_migrations`, que registra somente a migration 0000 apesar do schema físico refletir migrations posteriores
+
+# Etapa 2 — Proposta aceita para projeto atômico
+
+- [x] Mapear proposta aceita, projeto, checklist, tarefas, snapshots, responsáveis, prazos e outras gravações reais do fluxo
+- [x] Garantir que todas as gravações de setup de execução ocorram em uma única transação atômica
+- [x] Criar testes de rollback para falha em checklist/tarefas e reexecução idempotente da criação de projeto
+- [x] Documentar o fluxo comprovado e quaisquer estruturas que não sejam criadas automaticamente
+- [x] Tornar atômico o aceite comercial e a criação idempotente de projeto/checklist, evitando proposta aceita sem setup de execução

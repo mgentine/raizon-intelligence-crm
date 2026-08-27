@@ -7,6 +7,7 @@ import {
   timestamp,
   varchar,
   decimal,
+  foreignKey,
   index,
   uniqueIndex,
 } from "drizzle-orm/mysql-core";
@@ -266,8 +267,14 @@ export const proposals = mysqlTable("proposals", {
 }, (table) => ({
   seriesIdx: index("proposals_series_idx").on(table.seriesKey),
   opportunityIdx: index("proposals_opportunity_idx").on(table.opportunityId),
+  companyIdx: index("proposals_company_idx").on(table.companyId),
+  serviceIdx: index("proposals_service_idx").on(table.serviceId),
   statusIdx: index("proposals_status_idx").on(table.status),
+  seriesVersionUnique: uniqueIndex("proposals_series_version_unique").on(table.seriesKey, table.version),
   numberVersionUnique: uniqueIndex("proposals_number_version_unique").on(table.proposalNumber, table.version),
+  companyFk: foreignKey({ name: "proposals_company_fk", columns: [table.companyId], foreignColumns: [companies.id] }),
+  opportunityFk: foreignKey({ name: "proposals_opportunity_fk", columns: [table.opportunityId], foreignColumns: [opportunities.id] }),
+  serviceFk: foreignKey({ name: "proposals_service_fk", columns: [table.serviceId], foreignColumns: [serviceCatalog.id] }),
 }));
 
 export type Proposal = typeof proposals.$inferSelect;
@@ -298,9 +305,13 @@ export const executionProjects = mysqlTable("execution_projects", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
-  proposalIdx: index("execution_projects_proposal_idx").on(table.proposalId),
+  proposalUnique: uniqueIndex("execution_projects_proposal_unique").on(table.proposalId),
   companyIdx: index("execution_projects_company_idx").on(table.companyId),
+  opportunityIdx: index("execution_projects_opportunity_idx").on(table.opportunityId),
   statusIdx: index("execution_projects_status_idx").on(table.status),
+  proposalFk: foreignKey({ name: "execution_projects_proposal_fk", columns: [table.proposalId], foreignColumns: [proposals.id] }),
+  opportunityFk: foreignKey({ name: "execution_projects_opportunity_fk", columns: [table.opportunityId], foreignColumns: [opportunities.id] }),
+  companyFk: foreignKey({ name: "execution_projects_company_fk", columns: [table.companyId], foreignColumns: [companies.id] }),
 }));
 
 export type ExecutionProject = typeof executionProjects.$inferSelect;
@@ -322,6 +333,7 @@ export const projectTasks = mysqlTable("project_tasks", {
 }, (table) => ({
   projectIdx: index("project_tasks_project_idx").on(table.projectId),
   statusIdx: index("project_tasks_status_idx").on(table.status),
+  projectFk: foreignKey({ name: "project_tasks_project_fk", columns: [table.projectId], foreignColumns: [executionProjects.id] }),
 }));
 
 export type ProjectTask = typeof projectTasks.$inferSelect;
@@ -342,6 +354,7 @@ export const projectChecklist = mysqlTable("project_checklist", {
 }, (table) => ({
   projectIdx: index("project_checklist_project_idx").on(table.projectId),
   statusIdx: index("project_checklist_status_idx").on(table.status),
+  projectFk: foreignKey({ name: "project_checklist_project_fk", columns: [table.projectId], foreignColumns: [executionProjects.id] }),
 }));
 
 export type ProjectChecklist = typeof projectChecklist.$inferSelect;
@@ -361,6 +374,8 @@ export const projectEvidence = mysqlTable("project_evidence", {
 }, (table) => ({
   projectIdx: index("project_evidence_project_idx").on(table.projectId),
   taskIdx: index("project_evidence_task_idx").on(table.taskId),
+  projectFk: foreignKey({ name: "project_evidence_project_fk", columns: [table.projectId], foreignColumns: [executionProjects.id] }),
+  taskFk: foreignKey({ name: "project_evidence_task_fk", columns: [table.taskId], foreignColumns: [projectTasks.id] }),
 }));
 
 export type ProjectEvidence = typeof projectEvidence.$inferSelect;
