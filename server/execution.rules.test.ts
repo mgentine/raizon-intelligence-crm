@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canCloseExecution, canTransitionExecution, hasOpenRequiredChecklist, canUploadProjectEvidence, MAX_PROJECT_EVIDENCE_BYTES } from "../shared/executionRules";
+import { calculateExecutionProgress, canCloseExecution, canTransitionExecution, hasOpenRequiredChecklist, canUploadProjectEvidence, MAX_PROJECT_EVIDENCE_BYTES } from "../shared/executionRules";
 
 describe("Execution rules", () => {
   it("permite o avanço operacional na ordem correta", () => {
@@ -26,5 +26,10 @@ describe("Execution rules", () => {
     expect(canUploadProjectEvidence({ title: " ", sizeBytes: 1024 })).toBe(false);
     expect(canUploadProjectEvidence({ title: "Arquivo vazio", sizeBytes: 0 })).toBe(false);
     expect(canUploadProjectEvidence({ title: "Arquivo grande", sizeBytes: MAX_PROJECT_EVIDENCE_BYTES + 1 })).toBe(false);
+  });
+
+  it("calcula progresso de tarefas, checklist e visão geral", () => {
+    expect(calculateExecutionProgress([{ status: "done" }, { status: "in_progress" }, { status: "cancelled" }], [{ required: 1, status: "approved" }, { required: 1, status: "pending" }, { required: 0, status: "pending" }])).toEqual({ taskProgress: 50, checklistProgress: 50, overallProgress: 50, completedTasks: 1, totalTasks: 2, resolvedChecklist: 1, totalChecklist: 2 });
+    expect(calculateExecutionProgress([], [])).toEqual({ taskProgress: null, checklistProgress: null, overallProgress: 0, completedTasks: 0, totalTasks: 0, resolvedChecklist: 0, totalChecklist: 0 });
   });
 });

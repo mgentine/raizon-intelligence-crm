@@ -375,3 +375,8 @@
 - [ ] Executar transição ponta a ponta com dados reais do ambiente, sem inserir dados artificiais
 - [x] Finalizar documentação operacional e critérios de aceite da Fase 2
 - [ ] Iniciar Fase 3 — Inteligência, automação e escala
+
+# Melhoria solicitada — progresso da execução
+
+- [x] Adicionar indicador visual de progresso baseado em tarefas e checklist na Central de Execução
+- [x] Validar o indicador em desktop/mobile e atualizar testes/documentação

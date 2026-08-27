@@ -61,3 +61,9 @@ A transição ponta a ponta com dados reais ainda não foi executada para evitar
 O limite atual de 5 MB e o transporte em base64 são adequados para documentos operacionais pequenos, mas podem exigir upload multipart ou presigned URL em uma evolução futura para relatórios pesados, vídeos, plantas ou conjuntos de medições. Também permanece como próximo passo a validação operacional com dados reais e o refinamento do registro de aceite/justificativa antes do encerramento, caso a política interna da Raizon exija uma justificativa textual obrigatória.
 
 Com a Fase 2 concluída, a Fase 3 pode tratar inteligência e automação: priorização baseada em histórico, geração de filas determinísticas, alertas de recorrência, indicadores de produtividade e apoio analítico sem inventar dados técnicos ou regulatórios.
+
+## Indicador de progresso
+
+A Central de Execução exibe um percentual geral no topo da ficha e duas barras complementares. O progresso de tarefas é calculado como tarefas concluídas dividido pelas tarefas ativas, desconsiderando tarefas canceladas. O progresso do checklist considera somente documentos obrigatórios e trata itens `approved` e `waived` como resolvidos. O percentual geral é a média das frentes disponíveis; quando uma frente não possui itens, ela é apresentada como “Sem tarefas” ou “Não aplicável” e não reduz artificialmente o resultado.
+
+O indicador usa `role="progressbar"`, valores de 0 a 100 e rótulos acessíveis. A regra está em `shared/executionRules.ts` e possui testes unitários para percentuais, média, itens cancelados e projeto sem itens.
