@@ -26,7 +26,7 @@ import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
-import { validateProposalTransition, buildProposalSourceMap, type ProposalStatus } from "../shared/proposalRules";
+import { validateProposalTransition, buildProposalSourceMap, canCreateProposalFromOpportunity, type ProposalStatus } from "../shared/proposalRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -98,6 +98,10 @@ export async function createProposalFromRefs(input: { opportunityId: number; com
   const [opportunity] = await db.select().from(opportunities).where(eq(opportunities.id, input.opportunityId)).limit(1);
   const [service] = await db.select().from(serviceCatalog).where(and(eq(serviceCatalog.id, input.serviceId), eq(serviceCatalog.isActive, 1))).limit(1);
   if (!company || !opportunity || !service) throw new Error("Empresa, oportunidade ou serviço não encontrado.");
+  if (opportunity.companyId !== company.id) throw new Error("A oportunidade não pertence à empresa selecionada.");
+  if (!canCreateProposalFromOpportunity(opportunity.stage)) throw new Error("A oportunidade precisa estar em proposta ou em uma etapa posterior antes de criar o rascunho.");
+  if (input.unitId) { const [unit] = await db.select({ id: units.id }).from(units).where(and(eq(units.id, input.unitId), eq(units.companyId, company.id))).limit(1); if (!unit) throw new Error("A unidade selecionada não pertence à empresa."); }
+  if (input.contactId) { const [contact] = await db.select({ id: contacts.id }).from(contacts).where(and(eq(contacts.id, input.contactId), eq(contacts.companyId, company.id))).limit(1); if (!contact) throw new Error("O contato selecionado não pertence à empresa."); }
   const clientSnapshot = JSON.stringify({ id: company.id, cnpj: company.cnpj, legalName: company.legalName, tradeName: company.tradeName, address: company.address, addressNumber: company.addressNumber, city: company.city, state: company.state });
   const serviceSnapshot = JSON.stringify({ id: service.id, name: service.name, category: service.category, agency: service.agency, state: service.state, summary: service.summary });
   const [latest] = await db.select({ version: proposals.version, proposalNumber: proposals.proposalNumber }).from(proposals).where(eq(proposals.seriesKey, `opportunity:${input.opportunityId}`)).orderBy(desc(proposals.version)).limit(1);

@@ -346,3 +346,11 @@
 - [x] Implementar propostas com rascunho, revisão, emissão, numeração anual e versionamento
 - [x] Implementar governança de origem, informações pendentes e cláusulas obrigatórias
 - [x] Adicionar testes e validar o fluxo da Fase 1 em desktop e mobile
+
+# Auditoria da Fase 1 — solicitação 27/08/2026
+
+- [x] Auditar consistência entre schema, migrations e banco da Fase 1
+- [x] Auditar procedures, RBAC, transições e snapshots de propostas
+- [x] Auditar telas, fluxo de uso, estados vazios/erro e responsividade
+- [x] Corrigir inconsistências encontradas e reexecutar validações
+- [x] Registrar conclusão da auditoria com ressalvas verificáveis

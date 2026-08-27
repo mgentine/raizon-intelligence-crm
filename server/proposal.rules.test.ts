@@ -1,9 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { buildProposalSourceMap, calculateSuggestedPrice, validateProposalTransition } from "../shared/proposalRules";
+import { buildProposalSourceMap, calculateSuggestedPrice, canCreateProposalFromOpportunity, canProfileUpdateProposalStatus, validateProposalTransition } from "../shared/proposalRules";
 
 describe("Proposal rules", () => {
   it("calcula preço sugerido com fatores e adicionais explícitos", () => {
     expect(calculateSuggestedPrice({ basePrice: 2000, sizeFactor: 1.25, complexityFactor: 1.1, distanceAmount: 300, visitAmount: 200 })).toBe(3250);
+  });
+
+  it("bloqueia proposta para oportunidade antes da etapa de proposta", () => {
+    expect(canCreateProposalFromOpportunity("qualified")).toBe(false);
+    expect(canCreateProposalFromOpportunity("proposal")).toBe(true);
+    expect(canCreateProposalFromOpportunity("execution")).toBe(true);
+  });
+
+  it("restringe status externos para o perfil técnico", () => {
+    expect(canProfileUpdateProposalStatus("technical", "user", "technical_review")).toBe(true);
+    expect(canProfileUpdateProposalStatus("technical", "user", "approved_internal")).toBe(false);
+    expect(canProfileUpdateProposalStatus("commercial", "user", "approved_internal")).toBe(true);
+    expect(canProfileUpdateProposalStatus("technical", "admin", "accepted")).toBe(true);
   });
 
   it("permite apenas transições governadas", () => {
