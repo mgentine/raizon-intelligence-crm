@@ -326,3 +326,9 @@
 - [x] Diagnosticar a divergência de schema que quebra recorrências e atividades
 - [x] Corrigir a migration/estrutura do banco sem remover dados existentes
 - [x] Validar as queries, testes e dashboard após a correção
+
+# Análise de evolução para sistema técnico-comercial — solicitação 27/08/2026
+
+- [x] Analisar viabilidade da arquitetura de propostas, catálogo, operação, financeiro e Radar
+- [x] Separar capacidades implementáveis, dependências externas e controles obrigatórios
+- [x] Priorizar roadmap por valor, risco e esforço sem iniciar módulos não aprovados
