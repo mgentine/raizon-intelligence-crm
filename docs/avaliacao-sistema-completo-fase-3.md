@@ -88,3 +88,7 @@ A pendência material é executar a jornada completa com dados reais autorizados
 [6]: `shared/intelligenceRules.ts` — regras puras de métricas e elegibilidade de follow-up.  
 [7]: `docs/fase-2-implementacao.md` — documentação da execução e entrega técnica.  
 [8]: `drizzle/0015_narrow_kang.sql`, `drizzle/0016_chubby_joystick.sql` e `drizzle/0017_brown_timeslip.sql` — migrations aplicadas da Fase 3.
+
+## Decisão de escopo — autenticação
+
+Por decisão do usuário, esta etapa não implementará autenticação própria com senha, recuperação de acesso ou MFA. O CRM continuará utilizando o Manus OAuth já integrado ao projeto, mantendo as procedures protegidas e o controle de perfis existente. A autenticação própria permanece registrada como demanda futura e não bloqueia a operação comercial, regulatória, técnica ou de inteligência atualmente implementada.

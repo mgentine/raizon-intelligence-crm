@@ -403,3 +403,7 @@
 # Refinamento do cliente por CNPJ na proposta
 
 - [x] Adicionar campo digitável de busca por CNPJ no formulário de proposta, mantendo a seleção do cliente cadastrado
+
+# Decisão de escopo — autenticação
+
+- [ ] Implementar autenticação própria com login/senha, recuperação de acesso e MFA — adiado por decisão do usuário; manter Manus OAuth no escopo atual
