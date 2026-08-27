@@ -55,7 +55,7 @@ const fakeDb = { transaction: vi.fn(transaction) };
 
 vi.mock("drizzle-orm/mysql2", () => ({ drizzle: vi.fn(() => fakeDb) }));
 
-import { updateExecutionProjectStatus, updateProposalDetails, updateProposalStatus } from "./db";
+import { createProjectTask, updateExecutionProjectStatus, updateProjectChecklistStatus, updateProjectTaskStatus, updateProposalDetails, updateProposalStatus } from "./db";
 
 const acceptedCandidate = {
   id: 44,
@@ -131,6 +131,24 @@ describe("aceite de proposta e setup atômico de execução", () => {
 
     await expect(updateExecutionProjectStatus(701, "closed")).rejects.toThrow("documentos obrigatórios pendentes");
 
+    expect(state.committedUpdates).toEqual([]);
+  });
+
+  it("não cria tarefa em projeto já encerrado", async () => {
+    state.selectResults = [[{ id: 701, status: "closed" }]];
+
+    await expect(createProjectTask({ projectId: 701, title: "Tarefa tardia", ownerId: 9 })).rejects.toThrow("Não é possível criar tarefas");
+
+    expect(state.committedInserts).toEqual([]);
+  });
+
+  it("não atualiza tarefa ou checklist depois que o projeto foi cancelado", async () => {
+    state.selectResults = [[{ id: 811, projectId: 701 }], [{ id: 701, status: "cancelled" }]];
+    await expect(updateProjectTaskStatus(811, "done")).rejects.toThrow("Não é possível alterar tarefas");
+    expect(state.committedUpdates).toEqual([]);
+
+    state.selectResults = [[{ id: 812, projectId: 701 }], [{ id: 701, status: "closed" }]];
+    await expect(updateProjectChecklistStatus(812, "approved")).rejects.toThrow("Não é possível alterar checklist");
     expect(state.committedUpdates).toEqual([]);
   });
 });

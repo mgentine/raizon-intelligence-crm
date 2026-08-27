@@ -80,4 +80,18 @@ describe("contratos estruturais P0", () => {
     expect(body).toContain('.for("update")');
     expect(body).toContain("tx.select({ required: projectChecklist.required, status: projectChecklist.status })");
   });
+
+  it("serializa tarefa e checklist com o projeto para evitar mutação após encerramento", () => {
+    const source = readFileSync(new URL("./db.ts", import.meta.url), "utf8");
+    const createTaskBody = functionBody(source, "createProjectTask", "updateProjectTaskStatus");
+    const updateTaskBody = functionBody(source, "updateProjectTaskStatus", "listProjectEvidence");
+    const checklistBody = functionBody(source, "updateProjectChecklistStatus", "upsertUser");
+
+    for (const body of [createTaskBody, updateTaskBody, checklistBody]) {
+      expect(body).toContain("withTransactionRetry");
+      expect(body).toContain("db.transaction");
+      expect(body).toContain('.for("update")');
+      expect(body).toContain('["closed", "cancelled"]');
+    }
+  });
 });

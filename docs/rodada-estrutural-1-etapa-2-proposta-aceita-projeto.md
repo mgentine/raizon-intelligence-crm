@@ -100,3 +100,21 @@ Segundo, `updateExecutionProjectStatus` passou a executar em transação com loc
 | Encerramento com checklist pendente | **COMPROVADO:** bloqueado dentro da transação, sem `UPDATE` do projeto. |
 | Lock do projeto e checklist no fechamento | **COMPROVADO:** presente na implementação e no teste estrutural. |
 | Suíte após as correções complementares | **87/87 testes aprovados em 18 arquivos**. |
+
+## 8. Integridade de tarefas e checklist após encerramento
+
+As mutações de tarefas e checklist foram revisadas porque o lock aplicado apenas no encerramento ainda não impediria uma gravação posterior iniciada por outra requisição. `createProjectTask`, `updateProjectTaskStatus` e `updateProjectChecklistStatus` agora obtêm lock pessimista do projeto dentro de uma transação com retry limitado. Elas recusam a operação se o projeto estiver `closed` ou `cancelled`, antes de qualquer `INSERT` ou `UPDATE` dependente.
+
+Essa serialização produz dois comportamentos relevantes: se a mutação obtiver o lock primeiro, o encerramento aguardará e avaliará o checklist após a alteração; se o encerramento obtiver o lock primeiro, a mutação aguardará, relerá o estado protegido e será bloqueada. O resultado impede que tarefas ou documentos sejam modificados após o encerramento persistido do agregado.
+
+| Critério | Classificação e evidência |
+|---|---|
+| Criação de tarefa em projeto encerrado | **COMPROVADO:** teste determinístico rejeita a chamada antes do `INSERT` e não registra commit. |
+| Alteração de tarefa em projeto cancelado | **COMPROVADO:** teste determinístico rejeita a chamada após lock do projeto e não registra `UPDATE`. |
+| Alteração de checklist em projeto encerrado | **COMPROVADO:** teste determinístico rejeita a chamada após lock do projeto e não registra `UPDATE`. |
+| Ordem de locks em concorrência física TiDB | **INFERIDO:** a implementação usa lock do projeto como ponto de serialização. Não foi executado teste de estresse com duas sessões físicas TiDB. |
+| Atomicidade diante de falha real do driver/banco | **NÃO VALIDADO:** o rollback foi exercitado em simulação determinística; uma injeção de falha no TiDB produtivo não foi realizada para evitar risco operacional. |
+
+## 9. Validação final desta extensão
+
+Em 27/08/2026, após as alterações pós-encerramento, `pnpm exec tsc --noEmit`, `pnpm test`, `pnpm build` e `git diff --check` concluíram sem erro. A suíte totalizou **90 testes aprovados em 18 arquivos**. O build mantém apenas o aviso pré-existente de chunk Vite acima de 500 kB, fora do escopo P0 de integridade transacional.

@@ -526,3 +526,9 @@
 - [x] Serializar a transição de status do projeto, incluindo validação de checklist no encerramento, para evitar corrida entre leitura e gravação
 - [x] Criar testes de regressão para edição bloqueada e encerramento concorrente de execução
 - [x] Documentar a auditoria e a evidência das correções de imutabilidade e transição
+
+# Rodada estrutural 1 — Integridade pós-encerramento
+
+- [x] Impedir criação ou atualização de tarefa/checklist em projeto encerrado ou cancelado
+- [x] Serializar as mutações de tarefa/checklist com lock do projeto para evitar corrida com o encerramento
+- [x] Adicionar testes de regressão para bloqueio pós-encerramento sem gravações parciais

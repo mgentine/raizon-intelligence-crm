@@ -283,18 +283,28 @@ export async function updateExecutionProjectStatus(id: number, status: string, a
 export async function createProjectTask(input: { projectId: number; title: string; category?: string; ownerId?: number; dueAt?: Date; notes?: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const [project] = await db.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1);
-  if (!project) throw new Error("Projeto de execução não encontrado.");
-  const inserted = await db.insert(projectTasks).values({ ...input, category: input.category || "technical" }).$returningId();
-  return Number(inserted[0]?.id);
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1).for("update");
+    if (!project) throw new Error("Projeto de execução não encontrado.");
+    if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível criar tarefas em projeto encerrado ou cancelado.");
+    const inserted = await tx.insert(projectTasks).values({ ...input, category: input.category || "technical" }).$returningId();
+    return Number(inserted[0]?.id);
+  }));
 }
 
 export async function updateProjectTaskStatus(id: number, status: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const completedAt = status === "done" ? new Date() : undefined;
-  await db.update(projectTasks).set({ status: status as any, completedAt, updatedAt: new Date() }).where(eq(projectTasks.id, id));
-  return { success: true } as const;
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [task] = await tx.select({ id: projectTasks.id, projectId: projectTasks.projectId }).from(projectTasks).where(eq(projectTasks.id, id)).limit(1).for("update");
+    if (!task) throw new Error("Tarefa de execução não encontrada.");
+    const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, task.projectId)).limit(1).for("update");
+    if (!project) throw new Error("Projeto de execução não encontrado.");
+    if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível alterar tarefas em projeto encerrado ou cancelado.");
+    const completedAt = status === "done" ? new Date() : undefined;
+    await tx.update(projectTasks).set({ status: status as any, completedAt, updatedAt: new Date() }).where(eq(projectTasks.id, id));
+    return { success: true } as const;
+  }));
 }
 
 export async function listProjectEvidence(projectId: number) {
@@ -321,8 +331,15 @@ export async function createProjectEvidence(input: { projectId: number; taskId?:
 export async function updateProjectChecklistStatus(id: number, status: string, notes?: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(projectChecklist).set({ status: status as any, notes, updatedAt: new Date() }).where(eq(projectChecklist.id, id));
-  return { success: true } as const;
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [item] = await tx.select({ id: projectChecklist.id, projectId: projectChecklist.projectId }).from(projectChecklist).where(eq(projectChecklist.id, id)).limit(1).for("update");
+    if (!item) throw new Error("Item de checklist não encontrado.");
+    const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, item.projectId)).limit(1).for("update");
+    if (!project) throw new Error("Projeto de execução não encontrado.");
+    if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível alterar checklist em projeto encerrado ou cancelado.");
+    await tx.update(projectChecklist).set({ status: status as any, notes, updatedAt: new Date() }).where(eq(projectChecklist.id, id));
+    return { success: true } as const;
+  }));
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
