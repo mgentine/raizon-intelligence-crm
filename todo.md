@@ -496,3 +496,8 @@
 
 - [x] Exibir Exportar Word diretamente no card de cada proposta persistida, ao lado de Exportar PDF
 - [x] Validar a visibilidade das duas exportações em desktop e celular
+
+# Resumo executivo do sistema
+
+- [x] Consolidar histórico, funcionalidades, tecnologias, APIs, links e integrações do Raizon Intelligence CRM
+- [x] Documentar validações, limitações conhecidas e próximos passos por prioridade
