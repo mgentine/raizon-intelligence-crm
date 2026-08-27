@@ -95,7 +95,7 @@ export async function listProposals() {
     .from(proposals)
     .leftJoin(companies, eq(proposals.companyId, companies.id))
     .leftJoin(serviceCatalog, eq(proposals.serviceId, serviceCatalog.id))
-    .orderBy(desc(proposals.updatedAt)).limit(100);
+    .orderBy(desc(proposals.updatedAt));
 }
 
 export async function createProposalFromRefs(input: { opportunityId: number; companyId: number; unitId?: number; contactId?: number; serviceId: number; ownerId: number; professional?: string; investment: string; paymentTerms?: string; validityDays?: number; visitsIncluded?: number; missingInformation?: string; notes?: string }) {

@@ -414,3 +414,10 @@
 - [x] Preservar profissional e condições comerciais ao duplicar uma proposta como novo rascunho
 - [x] Selecionar imediatamente o novo serviço criado no formulário de proposta, sem recarregar a página
 - [x] Validar duplicação, seleção imediata, responsividade, testes e build
+
+# Filtros e visualização do painel de propostas
+
+- [x] Implementar pesquisa por cliente, status e profissional no painel de propostas
+- [x] Implementar filtros rápidos de status e profissional com contagem de resultados
+- [x] Implementar gráfico de valores de propostas por status baseado exclusivamente em dados persistidos
+- [x] Validar cálculo, estado sem dados, responsividade, testes e build

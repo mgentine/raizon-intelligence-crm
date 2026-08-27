@@ -66,3 +66,9 @@ O formulário passou a oferecer um campo digitável para localizar empresa por C
 O painel de propostas agora apresenta total, propostas em curso, propostas aceitas e valor da carteira ativa, além de cards com cliente, serviço, valor, condições, profissional e selo visual do status atual. A ação **Duplicar** cria um novo rascunho versionado da proposta selecionada e preserva escopo, snapshots, valor, condições comerciais, observações e profissional responsável; a versão original permanece intacta para auditoria.
 
 O cadastro rápido de serviço passou a aguardar a atualização local do catálogo e seleciona o serviço recém-criado no mesmo formulário, sem recarregar a página. A revisão em 1280×720 e 390×844 confirmou legibilidade dos indicadores e ausência de overflow. Os cards com dados populados continuam pendentes de conferência com registros reais autorizados.
+
+### Pesquisa, filtros e gráfico de valores
+
+O painel passou a carregar todas as propostas persistidas, permitindo pesquisa por cliente, serviço, número de proposta ou profissional, além de filtros por status e profissional. A contagem de resultados é atualizada conforme os filtros aplicados. O gráfico de barras soma o valor das propostas por status usando somente os registros retornados e acompanha os filtros ativos; não são criados valores de demonstração.
+
+Nas revisões desktop 1280×720 e mobile 390×844, os filtros foram exibidos de forma legível e o gráfico apresentou o estado seguro “Não há valores de propostas para os filtros aplicados”, pois o banco segue vazio. A agregação e os filtros foram extraídos para regras puras e cobertos por teste automatizado.
