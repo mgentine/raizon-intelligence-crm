@@ -45,3 +45,9 @@ O primeiro comando de conferência utilizou nomes SQL em formato `snake_case`, i
 ## Limites
 
 Esta é uma análise documental e técnica de rastreabilidade, não uma validação jurídica da contratação, assinaturas, exigibilidade, adimplemento ou regularidade de contratos. Não foram verificadas assinaturas digitais por cadeia criptográfica, publicações oficiais, processos administrativos externos, recebimento de pagamento ou atesto formal da contratante.
+
+## Homologação autorizada posterior
+
+Em 27/08/2026, o responsável pelo CRM autorizou explicitamente o cadastro histórico controlado do Município de Guzolândia/SP, com projeto inicial **em execução**. O cadastro passou a usar `Contrato nº 006/2026` como origem documental e a separar essa base de ativação de aceite comercial final: a proposta histórica ficou `documentStatus=issued` e `decisionStatus=pending`, enquanto o projeto recebeu `activationBasis=documented_contract` e permanece `in_progress`.
+
+Nenhum pagamento, atesto, aceite final, aprovação final ou encerramento foi registrado. As três pendências continuam abertas como tarefas documentais, e os dois PDFs de origem foram preservados em S3 e vinculados ao projeto.

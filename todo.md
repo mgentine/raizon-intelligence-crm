@@ -557,6 +557,22 @@
 - [x] Confrontar os dados documentais com registros existentes e identificar lacunas sem inferência
 - [x] Entregar matriz de homologação para autorização explícita por proposta/empresa antes de qualquer mutation
 
+# Homologação histórica autorizada — Município de Guzolândia/SP
+
+- [x] Mapear campos documentais e a estrutura de cadastro histórico sem inferir aceite, pagamento ou encerramento
+- [x] Criar empresa, oportunidade, proposta histórica/contrato e projeto em execução com referências rastreáveis
+- [x] Registrar evidências, atividades, entregas e pendências comprovadas sem concluir tarefas artificialmente
+- [x] Validar o agregado criado, os vínculos, a ausência de aceite final e a visualização do caso no CRM
+- [x] Executar rotina idempotente para o caso Guzolândia, com S3 prévio e commit único dos metadados no banco
+- [x] Adicionar chave única aditiva para o identificador de template do serviço histórico e validar duplicidades prévias
+- [x] Separar base de ativação por contrato documentado do aceite comercial final e corrigir o estado histórico de Guzolândia sem perder rastreabilidade
+- [x] Testar que contrato documentado ativa projeto histórico sem registrar aceite comercial final
+- [ ] Alinhar a visualização de empresas à relação comercial derivada, sem reintroduzir promoção manual pelo campo legado
+
+### Verificação de domínio concluída
+
+- [x] Confirmar que a relação comercial derivada classifica Guzolândia como cliente em execução no backend, sem promover manualmente o campo legado
+
 # Reverificação de aderência às instruções P0 reenviadas
 
 - [x] Confrontar os requisitos P0 do arquivo com schema, migration, transações, locks e testes atuais

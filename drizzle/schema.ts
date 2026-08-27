@@ -70,12 +70,14 @@ export const serviceCatalog = mysqlTable("service_catalog", {
   defaultVisits: int("defaultVisits").default(0).notNull(),
   basePrice: decimal("basePrice", { precision: 12, scale: 2 }),
   templateKey: varchar("templateKey", { length: 255 }),
+  historicalSourceKey: varchar("historicalSourceKey", { length: 180 }),
   isActive: int("isActive").default(1).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
   categoryIdx: index("service_catalog_category_idx").on(table.category),
   activeIdx: index("service_catalog_active_idx").on(table.isActive),
+  historicalSourceUnique: uniqueIndex("service_catalog_historical_source_unique").on(table.historicalSourceKey),
 }));
 
 export type ServiceCatalogItem = typeof serviceCatalog.$inferSelect;
@@ -270,6 +272,8 @@ export const proposals = mysqlTable("proposals", {
   sentAt: timestamp("sentAt"),
   decidedAt: timestamp("decidedAt"),
   cancelledAt: timestamp("cancelledAt"),
+  contractReference: varchar("contractReference", { length: 120 }),
+  contractDocumentedAt: timestamp("contractDocumentedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
@@ -302,6 +306,7 @@ export const executionProjects = mysqlTable("execution_projects", {
   title: varchar("title", { length: 255 }).notNull(),
   status: mysqlEnum("status", executionProjectStatuses).default("planning").notNull(),
   phase: mysqlEnum("phase", ["planning", "in_progress", "delivered", "accepted", "closed", "cancelled"]).default("planning").notNull(),
+  activationBasis: mysqlEnum("activationBasis", ["customer_acceptance", "documented_contract", "legacy"]).default("customer_acceptance").notNull(),
   scopeSnapshot: text("scopeSnapshot").notNull(),
   deliverablesSnapshot: text("deliverablesSnapshot").notNull(),
   exclusionsSnapshot: text("exclusionsSnapshot"),

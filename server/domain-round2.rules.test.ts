@@ -67,4 +67,15 @@ describe("Remodelagem autorizada — migration compatível", () => {
     expect(migration).toContain("INSERT INTO `opportunities`");
     expect(migration).toContain("legacyLeadId");
   });
+
+  it("separa contrato documentado de aceite comercial final para o projeto histórico", () => {
+    const migration = readFileSync(new URL("../drizzle/0024_certain_rage.sql", import.meta.url), "utf8");
+    const historicalScript = readFileSync(new URL("../scripts/register-guzolandia-history.mjs", import.meta.url), "utf8");
+    expect(migration).toContain("contractReference");
+    expect(migration).toContain("contractDocumentedAt");
+    expect(migration).toContain("documented_contract");
+    expect(historicalScript).toContain('decisionStatus: "pending"');
+    expect(historicalScript).toContain('activationBasis: "documented_contract"');
+    expect(historicalScript).toContain('contractReference: "Contrato nº 006/2026"');
+  });
 });

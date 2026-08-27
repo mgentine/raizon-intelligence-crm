@@ -1,0 +1,2 @@
+ALTER TABLE `service_catalog` ADD `historicalSourceKey` varchar(180);--> statement-breakpoint
+ALTER TABLE `service_catalog` ADD CONSTRAINT `service_catalog_historical_source_unique` UNIQUE(`historicalSourceKey`);
