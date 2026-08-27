@@ -17,11 +17,16 @@ import {
   regulatoryVersions,
   evidenceFiles,
   importConflicts,
+  raizonProfiles,
+  serviceCatalog,
+  proposals,
+  proposalSequences,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
 import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
+import { validateProposalTransition, buildProposalSourceMap, type ProposalStatus } from "../shared/proposalRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -35,6 +40,115 @@ export async function getDb() {
     }
   }
   return _db;
+}
+
+export async function getRaizonProfile() {
+  const db = await getDb();
+  if (!db) return undefined;
+  const rows = await db.select().from(raizonProfiles).where(eq(raizonProfiles.profileKey, "default")).limit(1);
+  return rows[0];
+}
+
+export async function upsertRaizonProfile(input: Omit<typeof raizonProfiles.$inferInsert, "id" | "profileKey" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(raizonProfiles).values({ profileKey: "default", ...input }).onDuplicateKeyUpdate({ set: { ...input, updatedAt: new Date() } });
+  return getRaizonProfile();
+}
+
+export async function listServiceCatalog(includeInactive = false) {
+  const db = await getDb();
+  if (!db) return [];
+  const rows = await db.select().from(serviceCatalog).where(includeInactive ? undefined : eq(serviceCatalog.isActive, 1)).orderBy(asc(serviceCatalog.name));
+  return rows;
+}
+
+export async function createServiceCatalogItem(input: typeof serviceCatalog.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(serviceCatalog).values(input);
+  return Number(result[0].insertId);
+}
+
+export async function updateServiceCatalogItem(id: number, input: Partial<typeof serviceCatalog.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(serviceCatalog).set({ ...input, updatedAt: new Date() }).where(eq(serviceCatalog.id, id));
+  return { success: true } as const;
+}
+
+export async function archiveServiceCatalogItem(id: number) {
+  return updateServiceCatalogItem(id, { isActive: 0 });
+}
+
+export async function listProposals() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ proposal: proposals, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName }, service: { id: serviceCatalog.id, name: serviceCatalog.name, category: serviceCatalog.category } })
+    .from(proposals)
+    .leftJoin(companies, eq(proposals.companyId, companies.id))
+    .leftJoin(serviceCatalog, eq(proposals.serviceId, serviceCatalog.id))
+    .orderBy(desc(proposals.updatedAt)).limit(100);
+}
+
+export async function createProposalFromRefs(input: { opportunityId: number; companyId: number; unitId?: number; contactId?: number; serviceId: number; ownerId: number; investment: string; paymentTerms?: string; validityDays?: number; visitsIncluded?: number; missingInformation?: string; notes?: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [company] = await db.select().from(companies).where(eq(companies.id, input.companyId)).limit(1);
+  const [opportunity] = await db.select().from(opportunities).where(eq(opportunities.id, input.opportunityId)).limit(1);
+  const [service] = await db.select().from(serviceCatalog).where(and(eq(serviceCatalog.id, input.serviceId), eq(serviceCatalog.isActive, 1))).limit(1);
+  if (!company || !opportunity || !service) throw new Error("Empresa, oportunidade ou serviço não encontrado.");
+  const clientSnapshot = JSON.stringify({ id: company.id, cnpj: company.cnpj, legalName: company.legalName, tradeName: company.tradeName, address: company.address, addressNumber: company.addressNumber, city: company.city, state: company.state });
+  const serviceSnapshot = JSON.stringify({ id: service.id, name: service.name, category: service.category, agency: service.agency, state: service.state, summary: service.summary });
+  const [latest] = await db.select({ version: proposals.version, proposalNumber: proposals.proposalNumber }).from(proposals).where(eq(proposals.seriesKey, `opportunity:${input.opportunityId}`)).orderBy(desc(proposals.version)).limit(1);
+  const result = await db.insert(proposals).values({ seriesKey: `opportunity:${input.opportunityId}`, version: (latest?.version ?? 0) + 1, proposalNumber: latest?.proposalNumber ?? undefined, opportunityId: input.opportunityId, companyId: input.companyId, unitId: input.unitId, contactId: input.contactId, serviceId: input.serviceId, ownerId: input.ownerId, clientSnapshot, serviceSnapshot, scopeSnapshot: service.scope, deliverablesSnapshot: service.deliverables, exclusionsSnapshot: service.exclusions, requiredDocumentsSnapshot: service.requiredDocuments, investment: input.investment, paymentTerms: input.paymentTerms, validityDays: input.validityDays ?? 20, visitsIncluded: input.visitsIncluded ?? service.defaultVisits, missingInformation: input.missingInformation, sourceMap: JSON.stringify(buildProposalSourceMap()), notes: input.notes });
+  return Number(result[0].insertId);
+}
+
+export async function updateProposalDetails(id: number, input: Partial<typeof proposals.$inferInsert>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(proposals).set({ ...input, updatedAt: new Date() }).where(eq(proposals.id, id));
+  return { success: true } as const;
+}
+
+export async function updateProposalStatus(id: number, status: ProposalStatus, reviewedBy: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [current] = await db.select().from(proposals).where(eq(proposals.id, id)).limit(1);
+  if (!current) throw new Error("Proposta não encontrada.");
+  validateProposalTransition(current.status, status, Number(current.investment) > 0 && Boolean(current.scopeSnapshot && current.deliverablesSnapshot));
+  await db.update(proposals).set({ status, reviewedBy, updatedAt: new Date() }).where(eq(proposals.id, id));
+  return { success: true } as const;
+}
+
+export async function createProposalVersion(id: number, ownerId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [current] = await db.select().from(proposals).where(eq(proposals.id, id)).limit(1);
+  if (!current) throw new Error("Proposta não encontrada.");
+  const result = await db.insert(proposals).values({ seriesKey: current.seriesKey, version: current.version + 1, proposalNumber: current.proposalNumber, opportunityId: current.opportunityId, companyId: current.companyId, unitId: current.unitId ?? undefined, contactId: current.contactId ?? undefined, serviceId: current.serviceId, ownerId, status: "draft", clientSnapshot: current.clientSnapshot, serviceSnapshot: current.serviceSnapshot, scopeSnapshot: current.scopeSnapshot, deliverablesSnapshot: current.deliverablesSnapshot, exclusionsSnapshot: current.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: current.requiredDocumentsSnapshot ?? undefined, investment: current.investment, paymentTerms: current.paymentTerms ?? undefined, validityDays: current.validityDays, visitsIncluded: current.visitsIncluded, missingInformation: current.missingInformation ?? undefined, sourceMap: current.sourceMap ?? undefined, notes: current.notes ?? undefined });
+  return Number(result[0].insertId);
+}
+
+export async function issueProposal(id: number, reviewedBy: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.transaction(async (tx) => {
+    const [current] = await tx.select().from(proposals).where(eq(proposals.id, id)).limit(1);
+    if (!current) throw new Error("Proposta não encontrada.");
+    if (current.status !== "approved_internal") throw new Error("A proposta precisa estar aprovada internamente antes da emissão.");
+    let proposalNumber = current.proposalNumber;
+    if (!proposalNumber) {
+      const year = new Date().getFullYear();
+      await tx.insert(proposalSequences).values({ year, nextNumber: 2 }).onDuplicateKeyUpdate({ set: { nextNumber: sql`${proposalSequences.nextNumber} + 1` } });
+      const [sequence] = await tx.select().from(proposalSequences).where(eq(proposalSequences.year, year)).limit(1);
+      const number = Math.max(Number(sequence?.nextNumber ?? 2) - 1, 1);
+      proposalNumber = `${String(number).padStart(3, "0")}/${year}`;
+    }
+    await tx.update(proposals).set({ proposalNumber, status: "issued", reviewedBy, issuedAt: new Date(), updatedAt: new Date() }).where(eq(proposals.id, id));
+    return { proposalNumber, version: current.version };
+  });
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {

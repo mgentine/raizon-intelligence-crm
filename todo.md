@@ -337,3 +337,12 @@
 
 - [x] Reorganizar a evolução do sistema técnico-comercial em três fases
 - [x] Definir entregas, dependências, critérios de aceite e limites de cada fase
+
+# Fase 1 — base comercial e motor de propostas — solicitação 27/08/2026
+
+- [x] Implementar cadastro mestre da Raizon com dados da contratada e assinatura padrão
+- [x] Implementar catálogo de serviços com escopo, entregáveis, documentos, exclusões e premissas
+- [x] Implementar regras de precificação sugerida com aprovação manual
+- [x] Implementar propostas com rascunho, revisão, emissão, numeração anual e versionamento
+- [x] Implementar governança de origem, informações pendentes e cláusulas obrigatórias
+- [x] Adicionar testes e validar o fluxo da Fase 1 em desktop e mobile
