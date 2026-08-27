@@ -22,3 +22,9 @@ A atualização automática de CETESB e SP Águas permanece pendente de endpoint
 2. [e-CETESB — Portal de Licenciamento Ambiental](https://e.cetesb.sp.gov.br/portal-servicos-frontend/)
 3. [SP Águas — Outorgas](https://www.spaguas.sp.gov.br/site/outorga/)
 4. [Conecta gov.br — API Consulta CNPJ](https://www.gov.br/conecta/catalogo/apis/consulta-cnpj)
+
+## Fallback cadastral por CNPJ
+
+A consulta cadastral utiliza a BrasilAPI como primeira rota e, quando ela retorna bloqueio como HTTP 403, falha de rede ou indisponibilidade, tenta a API pública do CNPJ.ws. A documentação do CNPJ.ws informa limite de até três consultas por minuto e consulta somente à sua própria base [5]. Em teste técnico realizado em 27/08/2026, o endpoint `https://publica.cnpj.ws/cnpj/56431364000180` respondeu HTTP 200 e retornou a razão social do CNPJ usado na validação. Essa resposta confirma a operação do fallback neste momento, mas não representa garantia de SLA; o CRM mantém mensagem de indisponibilidade e edição manual quando ambas as fontes falharem.
+
+5. [CNPJ.ws — Consultando CNPJ na API Pública](https://docs.cnpj.ws/referencia-de-api/api-publica/consultando-cnpj)
