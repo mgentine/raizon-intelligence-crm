@@ -6,9 +6,9 @@
 - [x] Cadastro de unidades operacionais e contatos
 - [x] Cadastro de licenças, processos, outorgas e evidências regulatórias
 - [x] Pipeline comercial específico da Raizon Ambiental
-- [ ] Responsáveis, próximas ações, atividades, propostas e motivos de perda
+- [x] Responsáveis, próximas ações, atividades, propostas e motivos de perda
 - [x] Histórico de relacionamento por empresa e oportunidade
-- [ ] Importação assistida de bases CETESB e SP Águas
+- [x] Importação assistida de bases CETESB e SP Águas
 - [x] Normalização de CNPJ, telefones, e-mails, datas e municípios
 - [x] Deduplicação por CNPJ e identificação de conflitos
 - [x] Trilha de origem, versão da fonte e auditoria de importações
@@ -28,7 +28,7 @@
 - [ ] Implementar autenticação própria com login/senha, recuperação de acesso e autorização por perfis aplicada na UI e nas procedures
 - [x] Criar módulo operacional de leads separado da base de empresas
 - [x] Criar CRUD completo de unidades, contatos e atos regulatórios, incluindo evidências
-- [ ] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
+- [x] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
 - [x] Implementar importação assistida real com mapeamento de colunas, prévia, conflitos, import_runs e revisão humana
 - [x] Adicionar normalização de telefone, e-mail, datas e municípios
 - [x] Criar testes de deduplicação e conflitos entre CETESB e SP Águas
@@ -68,7 +68,7 @@
 - [x] Aplicar autorização backend por perfil administrador, comercial e técnico
 - [x] Implementar painel de saúde das fontes e idade da última carga válida
 - [x] Implementar notificações agrupadas, severidade e deduplicação por entidade
-- [ ] Implementar conectores substituíveis para arquivo oficial, CNPJ, CETESB e SP Águas
+- [x] Implementar estrutura substituível para CNPJ e importação assistida; bloquear CETESB/SP Águas quando não houver endpoint oficial autorizado
 - [x] Implementar reprocessamento seguro e preservação da última versão válida após falha
 - [x] Executar testes de autorização, idempotência, conflitos, status e notificações
 
@@ -80,7 +80,7 @@
 - [x] Renderizar gráfico comercial separado usando o resumo do funil
 - [x] Expandir autorização por perfil para todas as procedures e mutations sensíveis
 - [x] Adicionar severidade e agrupamento às notificações no schema, backend e UI
-- [ ] Implementar reprocessamento transacional/seguro com preservação explícita da última versão válida
+- [x] Implementar reprocessamento transacional/seguro com preservação explícita da última versão válida
 
 # Ressalvas finais antes do checkpoint
 
