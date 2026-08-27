@@ -532,3 +532,14 @@
 - [x] Impedir criação ou atualização de tarefa/checklist em projeto encerrado ou cancelado
 - [x] Serializar as mutações de tarefa/checklist com lock do projeto para evitar corrida com o encerramento
 - [x] Adicionar testes de regressão para bloqueio pós-encerramento sem gravações parciais
+
+# Continuidade técnica sem dados operacionais — decisões de 27/08/2026
+
+- [x] Documentar bloqueios de autenticação própria, automações externas, agenda real e execução real até nova autorização ou dado válido
+- [x] Auditar controles técnicos de importação em prévia, conflito, dados CETESB documentados e jobs desativados sem criar ou alterar registros
+- [x] Corrigir e testar apenas pendências técnicas comprovadas que não modifiquem dados operacionais
+- [x] Substituir a confirmação de importação direta por prévia transacional em `import_runs` e `import_staging`, sem escrita em `companies`
+- [x] Gerar conflitos persistidos e relatório estimado da prévia antes de qualquer futura aplicação canônica
+- [x] Cobrir o contrato de prévia e a remoção do caminho tRPC de escrita direta com testes de regressão
+- [x] Adicionar bloqueio explícito de escrita aos callbacks periódicos até autorização operacional de ativação
+- [x] Exigir CNPJ com comprimento e dígitos verificadores válidos na prévia antes de classificar a linha como apta

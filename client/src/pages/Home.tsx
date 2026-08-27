@@ -61,6 +61,7 @@ export default function Home() {
   const [importRawRows, setImportRawRows] = useState<Record<string, unknown>[]>([]);
   const [importHeaders, setImportHeaders] = useState<string[]>([]);
   const [importMapping, setImportMapping] = useState<ImportMapping>({ cnpj: "", legalName: "", city: "", state: "", segment: "" });
+  const [importFilename, setImportFilename] = useState("");
   const [showCompanyForm, setShowCompanyForm] = useState(() => new URLSearchParams(window.location.search).get("openCompanyForm") === "1");
   const [showUnitForm, setShowUnitForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -143,13 +144,14 @@ export default function Home() {
   const archiveUnitMutation = trpc.units.archive.useMutation({ onSuccess: () => units.refetch(), onError: (error) => setImportStatus(`Não foi possível arquivar a unidade: ${error.message}`) });
   const archiveContactMutation = trpc.contacts.archive.useMutation({ onSuccess: () => contacts.refetch(), onError: (error) => setImportStatus(`Não foi possível arquivar o contato: ${error.message}`) });
   const createCompanyMutation = trpc.companies.create.useMutation({ onSuccess: () => { setShowCompanyForm(false); setCompanyForm(emptyCompanyForm); companies.refetch(); }, onError: (error) => setImportStatus(`Não foi possível cadastrar: ${error.message}`) });
-  const importCompanies = trpc.companies.bulkUpsert.useMutation({ onSuccess: (result) => { setImportStatus(`${result.received} registros processados · ${result.inserted} incluídos · ${result.updated} atualizados · ${result.rejected} rejeitados.`); setPendingImport([]); pendingConflicts.refetch(); }, onError: (error) => setImportStatus(`Falha na importação: ${error.message}`) });
+  const importCompanies = trpc.companies.previewImport.useMutation({ onSuccess: (result) => { setImportStatus(`Prévia #${result.runId} registrada: ${result.received} linhas · ${result.wouldCreate} possíveis inclusões · ${result.wouldUpdate} possíveis atualizações · ${result.conflicts} conflitos · ${result.rejected} rejeitadas. Nenhuma empresa foi criada ou alterada.`); setPendingImport([]); pendingConflicts.refetch(); importHistory.refetch(); }, onError: (error) => setImportStatus(`Não foi possível registrar a prévia: ${error.message}`) });
   const decideConflictMutation = trpc.imports.decideConflict.useMutation({ onSuccess: () => pendingConflicts.refetch(), onError: (error) => setImportStatus(`Não foi possível decidir o conflito: ${error.message}`) });
   const sendTestEmailMutation = trpc.notifications.sendTestEmail.useMutation({ onSuccess: () => setImportStatus("Teste SMTP enviado. Confira a caixa de entrada do destinatário configurado."), onError: (error) => setImportStatus(`Não foi possível enviar o teste SMTP: ${error.message}`) });
   async function handleEvidenceUpload(event: ChangeEvent<HTMLInputElement>, act: any) { const file = event.target.files?.[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) { setImportStatus("A evidência deve ter no máximo 5 MB."); return; } const reader = new FileReader(); reader.onload = () => { const base64 = String(reader.result || "").split(",")[1] || ""; uploadEvidenceMutation.mutate({ filename: file.name, mimeType: file.type || "application/octet-stream", base64, regulatoryActId: act.id, companyId: act.companyId, source: "manual" }); }; reader.readAsDataURL(file); }
   async function handleImport(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
+    setImportFilename(file.name);
     setImportStatus("Lendo planilha e preparando revisão…");
     const buffer = await file.arrayBuffer();
     const workbook = XLSX.read(buffer, { type: "array", cellDates: true });
@@ -160,7 +162,7 @@ export default function Home() {
     const rows = mapImportRows(raw, suggested, importSource);
     if (!rows.length) { setImportStatus("Nenhum registro reconhecível. Verifique se a primeira aba possui CNPJ e razão social/requerente."); return; }
     setImportRawRows(raw); setImportHeaders(Object.keys(raw[0] || {})); setImportMapping(suggested); setPendingImport(rows);
-    setImportStatus(`${rows.length} registros prontos para revisão. Confirme a carga para gravar no banco.`);
+    setImportStatus(`${rows.length} registros prontos para revisão. Gere a prévia no staging; nenhuma empresa será alterada nesta etapa.`);
   }
 
   const initials = useMemo(() => (user?.name || "MG").split(" ").map(part => part[0]).slice(0, 2).join("").toUpperCase(), [user?.name]);

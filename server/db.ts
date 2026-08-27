@@ -17,6 +17,7 @@ import {
   regulatoryVersions,
   evidenceFiles,
   importConflicts,
+  importStaging,
   raizonProfiles,
   serviceCatalog,
   proposals,
@@ -34,6 +35,7 @@ import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
 import { validateProposalTransition, buildProposalSourceMap, canCreateProposalFromOpportunity, type ProposalStatus } from "../shared/proposalRules";
 import { canTransitionExecution, canCloseExecution, type ExecutionStatus } from "../shared/executionRules";
 import { calculateCommercialMetrics, isEligibleForProposalFollowUp } from "../shared/intelligenceRules";
+import { buildCompanyImportPreviewCandidate, compareCompanyImportCandidate, type ImportRow } from "../shared/importRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -718,26 +720,62 @@ export async function createImportFailureNotification(userId: number, importRunI
   return { created: true } as const;
 }
 
-export async function bulkUpsertCompanies(rows: Array<{ cnpj: string; legalName: string; tradeName?: string; city?: string; state?: string; segment?: string; source?: string }>) {
+export async function createCompanyImportPreview(input: { source: string; filename?: string; createdBy: number; rows: Array<ImportRow & { tradeName?: string }> }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  let inserted = 0;
-  let updated = 0;
-  let rejected = 0;
-  for (const row of rows) {
-    const cnpj = row.cnpj.replace(/\D/g, "");
-    if (cnpj.length !== 14 || !row.legalName?.trim()) { rejected++; continue; }
-    const existing = await db.select({ id: companies.id }).from(companies).where(eq(companies.cnpj, cnpj)).limit(1);
-    const values = { cnpj, legalName: row.legalName.trim(), tradeName: row.tradeName || null, city: row.city || null, state: row.state || null, segment: row.segment || null, source: row.source || "import" } as const;
-    if (existing[0]) {
-      await db.update(companies).set(values).where(eq(companies.id, existing[0].id));
-      updated++;
-    } else {
-      await db.insert(companies).values(values);
-      inserted++;
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const source = input.rows[0]?.source || input.source;
+    const created = await tx.insert(importRuns).values({ source, filename: input.filename, createdBy: input.createdBy, status: "processing" }).$returningId();
+    const runId = Number(created[0]?.id);
+    let valid = 0;
+    let rejected = 0;
+    let conflictCount = 0;
+    let duplicateCount = 0;
+    let wouldCreate = 0;
+    let wouldUpdate = 0;
+    let unchanged = 0;
+    const seenCnpjs = new Map<string, number>();
+
+    for (let index = 0; index < input.rows.length; index++) {
+      const row = input.rows[index]!;
+      const candidate = buildCompanyImportPreviewCandidate(row, index + 1);
+      const rawPayload = JSON.stringify(row);
+      const normalizedPayload = JSON.stringify(candidate);
+      const rawFingerprint = createHash("sha256").update(normalizedPayload).digest("hex");
+      const duplicateOf = candidate.cnpj ? seenCnpjs.get(candidate.cnpj) : undefined;
+      const validationMessage = candidate.validationMessage || (duplicateOf ? `CNPJ duplicado na própria prévia; primeira ocorrência na linha ${duplicateOf}.` : undefined);
+      const validationStatus = validationMessage ? (duplicateOf ? "conflict" : "rejected") : "valid";
+      const staged = await tx.insert(importStaging).values({ importRunId: runId, lineNumber: candidate.lineNumber, rawPayload, rawFingerprint, normalizedCnpj: candidate.cnpj || null, normalizedPayload, validationStatus, validationMessage: validationMessage || null }).$returningId();
+      const stagingId = Number(staged[0]?.id);
+
+      if (candidate.cnpj && !duplicateOf) seenCnpjs.set(candidate.cnpj, candidate.lineNumber);
+      if (candidate.validationMessage) { rejected++; continue; }
+      if (duplicateOf) {
+        duplicateCount++;
+        conflictCount++;
+        await tx.insert(importConflicts).values({ importRunId: runId, stagingId, entityType: "company_import", fieldName: "cnpj", currentValue: `Linha ${duplicateOf}`, incomingValue: `Linha ${candidate.lineNumber}` });
+        continue;
+      }
+
+      valid++;
+      const [current] = await tx.select({ id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName, city: companies.city, state: companies.state, segment: companies.segment }).from(companies).where(eq(companies.cnpj, candidate.cnpj)).limit(1);
+      if (!current) { wouldCreate++; continue; }
+      const differences = compareCompanyImportCandidate(current, candidate);
+      if (!differences.length) { unchanged++; continue; }
+      wouldUpdate++;
+      conflictCount += differences.length;
+      await tx.update(importStaging).set({ validationStatus: "conflict", validationMessage: `${differences.length} divergência(s) com o cadastro canônico.` }).where(eq(importStaging.id, stagingId));
+      await tx.insert(importConflicts).values(differences.map((difference) => ({ importRunId: runId, stagingId, entityType: "company", entityId: current.id, ...difference })));
     }
-  }
-  return { received: rows.length, inserted, updated, rejected };
+
+    await tx.update(importRuns).set({ status: "review_required", receivedCount: input.rows.length, insertedCount: 0, updatedCount: 0, rejectedCount: rejected, conflictCount, finishedAt: new Date() }).where(eq(importRuns.id, runId));
+    return { runId, received: input.rows.length, valid, rejected, conflicts: conflictCount, duplicates: duplicateCount, wouldCreate, wouldUpdate, unchanged, status: "review_required" as const };
+  }));
+}
+
+/** @deprecated Importação canônica direta permanece bloqueada até aprovação explícita de uma prévia persistida. */
+export async function bulkUpsertCompanies() {
+  throw new Error("IMPORT_PREVIEW_REQUIRED: gere e aprove uma prévia de importação antes de alterar empresas canônicas.");
 }
 
 export async function bulkUpsertRegulatoryActs(rows: Array<{ cnpj: string; source: string; actType: string; actNumber?: string; processNumber?: string; publishedStatus?: string; expiresAt?: Date; issuedAt?: Date; evidenceUrl?: string; sourceVersion?: string; notes?: string }>) {

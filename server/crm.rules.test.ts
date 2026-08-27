@@ -19,7 +19,7 @@ describe("CRM rules", () => {
 
   it("normalizes formatted CNPJ and validates length", () => {
     expect(normalizeCnpj("12.345.678/0001-90")).toBe("12345678000190");
-    expect(isValidCnpj("12.345.678/0001-90")).toBe(true);
+    expect(isValidCnpj("04.252.011/0001-10")).toBe(true);
     expect(isValidCnpj("123")).toBe(false);
   });
 

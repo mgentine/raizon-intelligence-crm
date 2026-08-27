@@ -1,4 +1,5 @@
 export type SourceUpdateState = "updated" | "blocked_no_authorized_endpoint";
+export type OperationalAutomationState = "disabled_pending_authorization";
 
 export type SourceUpdateReadiness = {
   cetesb: SourceUpdateState;
@@ -10,6 +11,10 @@ export function getSourceUpdateReadiness(input: { cetesbAuthorizedEndpoint?: boo
     cetesb: input.cetesbAuthorizedEndpoint ? "updated" : "blocked_no_authorized_endpoint",
     spAguas: input.spAguasAuthorizedEndpoint ? "updated" : "blocked_no_authorized_endpoint",
   };
+}
+
+export function getOperationalAutomationState(): OperationalAutomationState {
+  return "disabled_pending_authorization";
 }
 
 export function buildBlockedSourceAttempt(source: "cetesb" | "sp_aguas", message: string) {

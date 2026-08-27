@@ -9,7 +9,14 @@ export function normalizeText(value: string | undefined | null) {
 }
 
 export function isValidCnpj(value: string) {
-  return normalizeCnpj(value).length === 14;
+  const cnpj = normalizeCnpj(value);
+  if (!/^\d{14}$/.test(cnpj) || /^(\d)\1{13}$/.test(cnpj)) return false;
+  const calculateDigit = (base: string, weights: number[]) => weights.reduce((sum, weight, index) => sum + Number(base[index]) * weight, 0) % 11;
+  const firstRemainder = calculateDigit(cnpj.slice(0, 12), [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const firstDigit = firstRemainder < 2 ? 0 : 11 - firstRemainder;
+  const secondRemainder = calculateDigit(cnpj.slice(0, 12) + firstDigit, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const secondDigit = secondRemainder < 2 ? 0 : 11 - secondRemainder;
+  return Number(cnpj[12]) === firstDigit && Number(cnpj[13]) === secondDigit;
 }
 
 export function dedupeCompanyRows(rows: CompanyImportRow[]) {

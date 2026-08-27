@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isImportConflictDecision, normalizeRegulatoryStatus, shouldCreateOpenNotification, validateCommercialTransition } from "../shared/crmRules";
+import { isImportConflictDecision, isValidCnpj, normalizeRegulatoryStatus, shouldCreateOpenNotification, validateCommercialTransition } from "../shared/crmRules";
 import { mapImportRows, validateImportMapping } from "../shared/importRules";
 import { normalizeCnpjValue, normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
 import { decorateRegulatoryActRow, filterEvidenceRows, filterRegulatoryActRows, groupNotifications } from "./db";
@@ -75,6 +75,13 @@ describe("lead and regulatory rules", () => {
     expect(persisted.dueAt).toBeInstanceOf(Date);
     expect(persisted.invalid).toBeUndefined();
     expect(persisted.title).toBe("Renovação");
+  });
+
+  it("rejeita CNPJ com tamanho ou dígitos verificadores inválidos", () => {
+    expect(isValidCnpj("04.252.011/0001-10")).toBe(true);
+    expect(isValidCnpj("12.345.678/0001-90")).toBe(false);
+    expect(isValidCnpj("123")).toBe(false);
+    expect(isValidCnpj("11.111.111/1111-11")).toBe(false);
   });
 
   it("expõe bloqueio explícito quando fontes oficiais não têm endpoint autorizado", () => {

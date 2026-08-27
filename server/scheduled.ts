@@ -4,7 +4,7 @@ import { regulatoryActs } from "../drizzle/schema";
 import { getDb, getUserByOpenId, recordBlockedSourceAttempt, refreshUserNotifications, runProposalFollowUps } from "./db";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
-import { getSourceUpdateReadiness } from "../shared/sourceReadiness";
+import { getOperationalAutomationState, getSourceUpdateReadiness } from "../shared/sourceReadiness";
 import { sendOperationalDigestEmail } from "./email";
 
 export async function refreshRegulatoryPriorities(req: Request, res: Response) {
@@ -12,6 +12,8 @@ export async function refreshRegulatoryPriorities(req: Request, res: Response) {
   try {
     const user = await sdk.authenticateRequest(req);
     if (!user.isCron || !user.taskUid) return res.status(403).json({ error: "cron-only" });
+    const automationState = getOperationalAutomationState();
+    if (automationState === "disabled_pending_authorization") return res.json({ ok: true, taskUid: user.taskUid, skipped: automationState, startedAt, finishedAt: new Date().toISOString() });
     const db = await getDb();
     if (!db) return res.status(503).json({ error: "database-unavailable" });
     const result = await db.update(regulatoryActs).set({ needsValidation: 1 }).where(and(isNotNull(regulatoryActs.expiresAt), lte(regulatoryActs.expiresAt, sql`date_add(now(), interval 90 day)`)));
@@ -40,6 +42,8 @@ export async function refreshCommercialFollowUps(req: Request, res: Response) {
   try {
     const user = await sdk.authenticateRequest(req);
     if (!user.isCron || !user.taskUid) return res.status(403).json({ error: "cron-only" });
+    const automationState = getOperationalAutomationState();
+    if (automationState === "disabled_pending_authorization") return res.json({ ok: true, taskUid: user.taskUid, skipped: automationState, finishedAt: new Date().toISOString() });
     const result = await runProposalFollowUps();
     return res.json({ ok: true, taskUid: user.taskUid, ...result, finishedAt: new Date().toISOString() });
   } catch (error) {

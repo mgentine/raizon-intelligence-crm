@@ -60,30 +60,20 @@ describe("callback periódico regulatório", () => {
     }));
   });
 
-  it("executa a rotina para identidade cron e retorna métricas da execução", async () => {
+  it("mantém a rotina inerte para identidade cron até autorização operacional", async () => {
     authenticateRequestMock.mockResolvedValueOnce({ isCron: true, taskUid: "task-123" });
-    const where = vi.fn().mockResolvedValue([{ affectedRows: 3 }]);
-    const set = vi.fn().mockReturnValue({ where });
-    const update = vi.fn().mockReturnValue({ set });
-    getDbMock.mockResolvedValueOnce({ update });
-    getUserByOpenIdMock.mockResolvedValueOnce({ id: 7 });
-    refreshUserNotificationsMock.mockResolvedValueOnce({ created: 2 });
     const res = responseDouble();
 
     await refreshRegulatoryPriorities(requestDouble(), res);
 
-    expect(update).toHaveBeenCalled();
-    expect(refreshUserNotificationsMock).toHaveBeenCalledWith(7);
-    expect(sendOperationalDigestEmailMock).toHaveBeenCalledWith({ createdCount: 2, blockedAttemptCount: 2 });
-    expect(recordBlockedSourceAttemptMock).toHaveBeenCalledTimes(2);
-    expect(recordBlockedSourceAttemptMock).toHaveBeenCalledWith("cetesb", expect.stringContaining("última versão válida preservada"));
-    expect(recordBlockedSourceAttemptMock).toHaveBeenCalledWith("sp_aguas", expect.stringContaining("endpoint/exportação autorizada"));
+    expect(getDbMock).not.toHaveBeenCalled();
+    expect(refreshUserNotificationsMock).not.toHaveBeenCalled();
+    expect(sendOperationalDigestEmailMock).not.toHaveBeenCalled();
+    expect(recordBlockedSourceAttemptMock).not.toHaveBeenCalled();
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       ok: true,
       taskUid: "task-123",
-      refreshed: 3,
-      notificationsCreated: 2,
-      blockedAttemptIds: [101, 102],
+      skipped: "disabled_pending_authorization",
       startedAt: expect.any(String),
       finishedAt: expect.any(String),
     }));
@@ -101,11 +91,11 @@ describe("callback periódico de follow-up comercial", () => {
     expect(runProposalFollowUpsMock).not.toHaveBeenCalled();
   });
 
-  it("executa follow-ups para identidade cron e retorna métricas", async () => {
+  it("mantém follow-ups inertes para identidade cron até autorização operacional", async () => {
     authenticateRequestMock.mockResolvedValueOnce({ isCron: true, taskUid: "task-followup" });
     const res = responseDouble();
     await refreshCommercialFollowUps(requestDouble(), res);
-    expect(runProposalFollowUpsMock).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ ok: true, taskUid: "task-followup", scanned: 4, created: 2, skipped: 2 }));
+    expect(runProposalFollowUpsMock).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ ok: true, taskUid: "task-followup", skipped: "disabled_pending_authorization" }));
   });
 });
