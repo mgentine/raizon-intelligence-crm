@@ -14,6 +14,12 @@ const emptyForm = { companyId: "", opportunityId: "", serviceId: "", professiona
 const emptyServiceForm = { name: "", category: "", scope: "", deliverables: "" };
 const statusLabels: Record<string, string> = { draft: "Rascunho", technical_review: "Revisão técnica", commercial_review: "Revisão comercial", approved_internal: "Aprovada internamente", issued: "Emitida", sent: "Enviada", negotiating: "Negociação", accepted: "Aceita pelo cliente", rejected: "Recusada", cancelled: "Cancelada" };
 const statusTone: Record<string, string> = { draft: "bg-[#f2f4f3] text-[#526059]", technical_review: "bg-[#fff1df] text-[#9a4d00]", commercial_review: "bg-[#fff1df] text-[#9a4d00]", approved_internal: "bg-[#e7f2ed] text-[#315349]", issued: "bg-[#e8efff] text-[#36558d]", sent: "bg-[#e8efff] text-[#36558d]", negotiating: "bg-[#f7eafd] text-[#7c3f96]", accepted: "bg-[#e3f6eb] text-[#17683b]", rejected: "bg-[#fde9e8] text-[#b32318]", cancelled: "bg-[#f2f4f3] text-[#526059]" };
+function proposalStateDisplay(proposal: { status: string; documentStatus?: string | null; decisionStatus?: string | null; sentAt?: Date | string | null }) {
+  const decision = proposal.decisionStatus ?? (["accepted", "rejected", "cancelled"].includes(proposal.status) ? proposal.status : "pending");
+  if (decision !== "pending") return { key: decision, label: statusLabels[decision] || decision };
+  const document = proposal.documentStatus ?? (["draft", "technical_review", "commercial_review", "approved_internal"].includes(proposal.status) ? proposal.status : "issued");
+  return { key: document, label: `${statusLabels[document] || document}${proposal.sentAt || proposal.status === "sent" ? " · enviada" : ""}` };
+}
 const professionals = ["Miguel Gentine", "Laleska Fernanda"] as const;
 type ProposalDisplayRow = ProposalPanelRow & { isDemo?: boolean; proposal: Omit<ProposalPanelRow["proposal"], "createdAt" | "issuedAt" | "validityDays"> & { id: number; companyId: number; version: number; createdAt: Date | string; issuedAt: Date | string | null; updatedAt: Date | string; validityDays: number; paymentTerms?: string | null } };
 type DemoProposalRow = ProposalDisplayRow & { isDemo: true; proposal: ProposalDisplayRow["proposal"] & { proposalNumber: string; investment: string; paymentTerms: string; validityDays: number; professional: string; createdAt: string; issuedAt: string; updatedAt: string }; company: { legalName: string; tradeName: string }; service: { name: string } };

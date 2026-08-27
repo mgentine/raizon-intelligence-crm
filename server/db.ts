@@ -26,6 +26,7 @@ import {
   projectTasks,
   projectChecklist,
   projectEvidence,
+  projectBlockers,
   intelligenceSuggestions,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -166,18 +167,41 @@ export async function updateProposalStatus(id: number, status: ProposalStatus, r
   return withTransactionRetry(() => db.transaction(async (tx) => {
     const [current] = await tx.select().from(proposals).where(eq(proposals.id, id)).limit(1).for("update");
     if (!current) throw new Error("Proposta não encontrada.");
-    if (current.status !== status) {
-      validateProposalTransition(current.status, status, Number(current.investment) > 0 && Boolean(current.scopeSnapshot && current.deliverablesSnapshot));
-      await tx.update(proposals).set({ status, reviewedBy, updatedAt: new Date() }).where(eq(proposals.id, id));
-    }
+    const now = new Date();
+    const hasRequiredContent = Number(current.investment) > 0 && Boolean(current.scopeSnapshot && current.deliverablesSnapshot);
+    const effectiveDocumentStatus = current.documentStatus ?? (["draft", "technical_review", "commercial_review", "approved_internal"].includes(current.status) ? current.status : "issued");
+    const effectiveDecisionStatus = current.decisionStatus ?? (current.status === "accepted" ? "accepted" : current.status === "rejected" ? "rejected" : current.status === "cancelled" ? "cancelled" : "pending");
+    const documentStatuses = ["draft", "technical_review", "commercial_review", "approved_internal", "issued"] as const;
 
-    if (status !== "accepted") return { success: true, executionProjectId: null, alreadyApplied: current.status === status } as const;
+    if (status === "negotiating") throw new Error("Negociação pertence à oportunidade. Atualize a etapa comercial da oportunidade, sem alterar a proposta.");
+    if (status === "sent") {
+      if (effectiveDocumentStatus !== "issued" || effectiveDecisionStatus !== "pending") throw new Error("Somente proposta emitida e sem decisão pode registrar envio.");
+      if (!current.sentAt) await tx.update(proposals).set({ sentAt: now, reviewedBy, updatedAt: now }).where(eq(proposals.id, id));
+      return { success: true, executionProjectId: null, alreadyApplied: Boolean(current.sentAt) } as const;
+    }
+    if ((documentStatuses as readonly string[]).includes(status)) {
+      if (effectiveDecisionStatus !== "pending") throw new Error("A proposta já possui decisão comercial e não pode voltar ao ciclo documental. Crie uma nova versão.");
+      if (effectiveDocumentStatus === status) return { success: true, executionProjectId: null, alreadyApplied: true } as const;
+      validateProposalTransition(effectiveDocumentStatus as ProposalStatus, status, hasRequiredContent);
+      await tx.update(proposals).set({ status, documentStatus: status as typeof proposals.$inferInsert.documentStatus, reviewedBy, approvedAt: status === "approved_internal" ? now : current.approvedAt, issuedAt: status === "issued" ? now : current.issuedAt, updatedAt: now }).where(eq(proposals.id, id));
+      return { success: true, executionProjectId: null, alreadyApplied: current.documentStatus === status } as const;
+    }
+    if (effectiveDocumentStatus !== "issued") throw new Error("A proposta precisa estar emitida antes da decisão comercial.");
+    if (effectiveDecisionStatus !== "pending") {
+      if (status !== "accepted" || effectiveDecisionStatus !== "accepted") throw new Error("A proposta já possui uma decisão comercial definitiva.");
+      const [existing] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, current.id)).limit(1);
+      return { success: true, executionProjectId: existing?.id ?? null, alreadyApplied: true } as const;
+    }
+    if (!["accepted", "rejected", "cancelled"].includes(status)) throw new Error("Decisão comercial inválida.");
+    await tx.update(proposals).set({ status, decisionStatus: status as typeof proposals.$inferInsert.decisionStatus, decidedAt: now, cancelledAt: status === "cancelled" ? now : current.cancelledAt, reviewedBy, updatedAt: now }).where(eq(proposals.id, id));
+
+    if (status !== "accepted") return { success: true, executionProjectId: null, alreadyApplied: false } as const;
 
     const [existing] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, current.id)).limit(1);
     if (existing) return { success: true, executionProjectId: existing.id, alreadyApplied: true } as const;
 
     const title = `Execução — ${current.proposalNumber || `Proposta #${current.id}`}`;
-    const inserted = await tx.insert(executionProjects).values({ proposalId: current.id, opportunityId: current.opportunityId, companyId: current.companyId, ownerId: reviewedBy, title, scopeSnapshot: current.scopeSnapshot, deliverablesSnapshot: current.deliverablesSnapshot, assumptionsSnapshot: current.assumptionsSnapshot ?? undefined, exclusionsSnapshot: current.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: current.requiredDocumentsSnapshot ?? undefined }).$returningId();
+    const inserted = await tx.insert(executionProjects).values({ proposalId: current.id, opportunityId: current.opportunityId, companyId: current.companyId, ownerId: reviewedBy, title, status: "planning", phase: "planning", scopeSnapshot: current.scopeSnapshot, deliverablesSnapshot: current.deliverablesSnapshot, assumptionsSnapshot: current.assumptionsSnapshot ?? undefined, exclusionsSnapshot: current.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: current.requiredDocumentsSnapshot ?? undefined }).$returningId();
     const projectId = Number(inserted[0]?.id);
     if (!Number.isInteger(projectId) || projectId <= 0) throw new Error("Não foi possível obter o identificador do projeto de execução criado.");
     const documents = String(current.requiredDocumentsSnapshot || "").split(/\r?\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
@@ -216,7 +240,7 @@ export async function issueProposal(id: number, reviewedBy: number) {
       const number = Math.max(Number(sequence?.nextNumber ?? 2) - 1, 1);
       proposalNumber = `${String(number).padStart(3, "0")}/${year}`;
     }
-    await tx.update(proposals).set({ proposalNumber, status: "issued", reviewedBy, issuedAt: new Date(), updatedAt: new Date() }).where(eq(proposals.id, id));
+    await tx.update(proposals).set({ proposalNumber, status: "issued", documentStatus: "issued", decisionStatus: "pending", reviewedBy, issuedAt: new Date(), updatedAt: new Date() }).where(eq(proposals.id, id));
     return { proposalNumber, version: current.version };
   }));
 }
@@ -237,7 +261,8 @@ export async function getExecutionProjectDetails(projectId: number) {
   const [projectRow] = await db.select({ project: executionProjects, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName }, proposal: { id: proposals.id, proposalNumber: proposals.proposalNumber, version: proposals.version } }).from(executionProjects).leftJoin(companies, eq(executionProjects.companyId, companies.id)).leftJoin(proposals, eq(executionProjects.proposalId, proposals.id)).where(eq(executionProjects.id, projectId)).limit(1);
   const tasks = await db.select().from(projectTasks).where(eq(projectTasks.projectId, projectId)).orderBy(desc(projectTasks.createdAt));
   const checklist = await db.select().from(projectChecklist).where(eq(projectChecklist.projectId, projectId)).orderBy(desc(projectChecklist.createdAt));
-  return { project: projectRow || null, tasks, checklist };
+  const blockers = await db.select().from(projectBlockers).where(eq(projectBlockers.projectId, projectId)).orderBy(desc(projectBlockers.openedAt));
+  return { project: projectRow || null, tasks, checklist, blockers };
 }
 
 export async function createExecutionProjectFromProposal(input: { proposalId: number; ownerId: number; title?: string; startAt?: Date; dueAt?: Date }) {
@@ -247,11 +272,11 @@ export async function createExecutionProjectFromProposal(input: { proposalId: nu
     return await withTransactionRetry(() => db.transaction(async (tx) => {
       const [proposal] = await tx.select().from(proposals).where(eq(proposals.id, input.proposalId)).limit(1).for("update");
       if (!proposal) throw new Error("Proposta não encontrada.");
-      if (proposal.status !== "accepted") throw new Error("Somente propostas aceitas pelo cliente podem iniciar uma execução.");
+      if (proposal.decisionStatus !== "accepted") throw new Error("Somente propostas aceitas pelo cliente podem iniciar uma execução.");
       const [existing] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, input.proposalId)).limit(1);
       if (existing) return existing.id;
       const title = input.title?.trim() || `Execução — ${proposal.proposalNumber || `Proposta #${proposal.id}`}`;
-      const inserted = await tx.insert(executionProjects).values({ proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, ownerId: input.ownerId, title, scopeSnapshot: proposal.scopeSnapshot, deliverablesSnapshot: proposal.deliverablesSnapshot, assumptionsSnapshot: proposal.assumptionsSnapshot ?? undefined, exclusionsSnapshot: proposal.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: proposal.requiredDocumentsSnapshot ?? undefined, startAt: input.startAt, dueAt: input.dueAt }).$returningId();
+      const inserted = await tx.insert(executionProjects).values({ proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, ownerId: input.ownerId, title, status: "planning", phase: "planning", scopeSnapshot: proposal.scopeSnapshot, deliverablesSnapshot: proposal.deliverablesSnapshot, assumptionsSnapshot: proposal.assumptionsSnapshot ?? undefined, exclusionsSnapshot: proposal.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: proposal.requiredDocumentsSnapshot ?? undefined, startAt: input.startAt, dueAt: input.dueAt }).$returningId();
       const projectId = Number(inserted[0]?.id);
       const documents = String(proposal.requiredDocumentsSnapshot || "").split(/\r?\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
       if (documents.length) await tx.insert(projectChecklist).values(documents.map((title) => ({ projectId, title, required: 1, ownerId: input.ownerId })));
@@ -271,13 +296,17 @@ export async function updateExecutionProjectStatus(id: number, status: string, a
   return withTransactionRetry(() => db.transaction(async (tx) => {
     const [current] = await tx.select().from(executionProjects).where(eq(executionProjects.id, id)).limit(1).for("update");
     if (!current) throw new Error("Projeto de execução não encontrado.");
-    if (!canTransitionExecution(current.status, status as ExecutionStatus)) throw new Error(`Transição de execução inválida: ${current.status} → ${status}.`);
+    if (status === "blocked") throw new Error("Bloqueios devem ser registrados como ocorrência do projeto, sem substituir sua fase de execução.");
+    const effectiveCurrentStatus = current.status === "blocked" ? current.phase : current.status;
+    if (!canTransitionExecution(effectiveCurrentStatus as ExecutionStatus, status as ExecutionStatus)) throw new Error(`Transição de execução inválida: ${effectiveCurrentStatus} → ${status}.`);
     if (status === "closed") {
       const checklist = await tx.select({ required: projectChecklist.required, status: projectChecklist.status }).from(projectChecklist).where(eq(projectChecklist.projectId, id)).for("update");
       if (!canCloseExecution("accepted", checklist)) throw new Error("Não é possível encerrar enquanto houver documentos obrigatórios pendentes.");
+      const blockers = await tx.select({ id: projectBlockers.id }).from(projectBlockers).where(and(eq(projectBlockers.projectId, id), eq(projectBlockers.status, "open"))).for("update");
+      if (blockers.length) throw new Error("Não é possível encerrar enquanto houver blockers abertos.");
     }
     const now = new Date();
-    await tx.update(executionProjects).set({ status: status as any, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
+    await tx.update(executionProjects).set({ status: status as any, phase: status as typeof executionProjects.$inferInsert.phase, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
     return { success: true } as const;
   }));
 }
@@ -341,6 +370,39 @@ export async function updateProjectChecklistStatus(id: number, status: string, n
     if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível alterar checklist em projeto encerrado ou cancelado.");
     await tx.update(projectChecklist).set({ status: status as any, notes, updatedAt: new Date() }).where(eq(projectChecklist.id, id));
     return { success: true } as const;
+  }));
+}
+
+export async function listProjectBlockers(projectId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(projectBlockers).where(eq(projectBlockers.projectId, projectId)).orderBy(desc(projectBlockers.openedAt));
+}
+
+export async function createProjectBlocker(input: { projectId: number; title: string; reason: string; ownerId?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [project] = await tx.select({ id: executionProjects.id, phase: executionProjects.phase }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1).for("update");
+    if (!project) throw new Error("Projeto de execução não encontrado.");
+    if (["closed", "cancelled"].includes(project.phase)) throw new Error("Não é possível abrir blocker em projeto encerrado ou cancelado.");
+    const inserted = await tx.insert(projectBlockers).values({ ...input, title: input.title.trim(), reason: input.reason.trim() }).$returningId();
+    return Number(inserted[0]?.id);
+  }));
+}
+
+export async function resolveProjectBlocker(id: number, resolvedBy: number, resolutionNotes?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [blocker] = await tx.select().from(projectBlockers).where(eq(projectBlockers.id, id)).limit(1).for("update");
+    if (!blocker) throw new Error("Blocker não encontrado.");
+    if (blocker.status !== "open") return { success: true, alreadyApplied: true } as const;
+    const [project] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.id, blocker.projectId)).limit(1).for("update");
+    if (!project) throw new Error("Projeto de execução não encontrado.");
+    const now = new Date();
+    await tx.update(projectBlockers).set({ status: "resolved", resolvedAt: now, resolvedBy, resolutionNotes: resolutionNotes?.trim() || null, updatedAt: now }).where(eq(projectBlockers.id, id));
+    return { success: true, alreadyApplied: false } as const;
   }));
 }
 
@@ -604,10 +666,25 @@ export async function archiveContact(id: number) {
 export async function listCompanies(search?: string, relationshipStatus?: "prospect" | "client" | "inactive") {
   const db = await getDb();
   if (!db) return [];
-  const conditions = [];
+  const conditions = [isNull(companies.archivedAt)];
   if (search?.trim()) conditions.push(sql`${companies.legalName} like ${`%${search.trim()}%`} or ${companies.cnpj} like ${`%${search.trim()}%`}`);
-  if (relationshipStatus) conditions.push(eq(companies.relationshipStatus, relationshipStatus));
-  return db.select().from(companies).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(companies.updatedAt)).limit(100);
+  const companyRows = await db.select().from(companies).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(companies.updatedAt)).limit(100);
+  const ids = companyRows.map((company) => company.id);
+  if (!ids.length) return [];
+  const [opportunityRows, projectRows] = await Promise.all([
+    db.select({ companyId: opportunities.companyId, stage: opportunities.stage }).from(opportunities),
+    db.select({ companyId: executionProjects.companyId, phase: executionProjects.phase }).from(executionProjects),
+  ]);
+  const rows = companyRows.map((company) => {
+    const companyOpportunities = opportunityRows.filter((row) => row.companyId === company.id);
+    const companyProjects = projectRows.filter((row) => row.companyId === company.id);
+    const hasOpenOpportunity = companyOpportunities.some((row) => !["won", "lost", "discarded"].includes(row.stage));
+    const hasHistoricalClient = companyOpportunities.some((row) => row.stage === "won") || companyProjects.some((row) => row.phase !== "planning");
+    const hasActiveProject = companyProjects.some((row) => !["closed", "cancelled"].includes(row.phase));
+    return { ...company, commercialRelation: { hasOpenOpportunity, hasHistoricalClient, hasActiveProject } };
+  });
+  if (!relationshipStatus) return rows;
+  return rows.filter((row) => relationshipStatus === "inactive" ? row.operationalStatus === "inactive" : relationshipStatus === "client" ? row.commercialRelation.hasHistoricalClient : !row.commercialRelation.hasHistoricalClient && row.commercialRelation.hasOpenOpportunity);
 }
 
 export async function createRegulatoryAct(input: typeof regulatoryActs.$inferInsert) {
@@ -861,7 +938,7 @@ export async function getCetesbLeadStatus() {
 export async function listLeads(filters?: { commercialStatus?: string; ownerId?: number; limit?: number }) {
   const db = await getDb();
   if (!db) return [];
-  const conditions = [];
+  const conditions = [isNull(leads.archivedAt)];
   if (filters?.commercialStatus) conditions.push(eq(leads.commercialStatus, filters.commercialStatus as typeof leads.$inferSelect.commercialStatus));
   if (filters?.ownerId) conditions.push(eq(leads.ownerId, filters.ownerId));
   const query = db.select({ lead: leads, company: companies, act: regulatoryActs }).from(leads).leftJoin(companies, eq(leads.companyId, companies.id)).leftJoin(regulatoryActs, eq(leads.regulatoryActId, regulatoryActs.id)).orderBy(asc(leads.nextActionAt), desc(leads.updatedAt)).limit(filters?.limit ?? 100);
@@ -872,13 +949,14 @@ export async function listLeads(filters?: { commercialStatus?: string; ownerId?:
 export async function getCommercialFunnelSummary() {
   const db = await getDb();
   if (!db) return [];
-  const rows = await db.select({ status: leads.commercialStatus, count: sql<number>`count(*)` }).from(leads).groupBy(leads.commercialStatus);
+  const rows = await db.select({ status: opportunities.stage, count: sql<number>`count(*)` }).from(opportunities).groupBy(opportunities.stage);
   return rows.map((row) => ({ status: row.status, count: Number(row.count ?? 0) }));
 }
 
 export async function createLead(input: typeof leads.$inferInsert) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
+  if (input.commercialStatus && !["new", "enrichment", "actionable", "contacted"].includes(input.commercialStatus)) throw new Error("Lead é reservado ao contato anterior à qualificação. Crie uma oportunidade para etapas qualificadas.");
   const result = await db.insert(leads).values(input).onDuplicateKeyUpdate({ set: { updatedAt: new Date() } });
   return Number(result[0].insertId ?? 0);
 }
@@ -886,22 +964,32 @@ export async function createLead(input: typeof leads.$inferInsert) {
 export async function updateLeadCommercialStatus(id: number, status: typeof leads.$inferInsert.commercialStatus, nextAction?: string, nextActionAt?: Date, discardedReason?: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
+  if (status === "qualified") {
+    return convertLeadToOpportunity(id, { nextAction, nextActionAt });
+  }
+  if (!status || !["new", "enrichment", "actionable", "contacted"].includes(status)) throw new Error("Lead qualificado deve ser convertido em oportunidade; etapas comerciais posteriores não são gravadas em Lead.");
   await db.update(leads).set({ commercialStatus: status, nextAction: nextAction ?? null, nextActionAt: nextActionAt ?? null, discardedReason: discardedReason ?? null, updatedAt: new Date() }).where(eq(leads.id, id));
 }
 
-export async function convertLeadToClient(leadId: number) {
+export async function convertLeadToOpportunity(leadId: number, qualification?: { nextAction?: string; nextActionAt?: Date }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const leadRows = await db.select({ lead: leads, company: companies }).from(leads).innerJoin(companies, eq(leads.companyId, companies.id)).where(eq(leads.id, leadId)).limit(1);
-  const current = leadRows[0];
-  if (!current) throw new Error("Lead não encontrado");
-  const allowed = ["qualified", "approved", "won"];
-  if (!allowed.includes(current.lead.commercialStatus)) throw new Error("O lead precisa estar qualificado, aprovado ou ganho antes da conversão.");
-  await db.transaction(async (tx) => {
-    await tx.update(companies).set({ relationshipStatus: "client", updatedAt: new Date() }).where(eq(companies.id, current.company.id));
-    await tx.update(leads).set({ commercialStatus: "won", updatedAt: new Date() }).where(eq(leads.id, leadId));
-  });
-  return { leadId, companyId: current.company.id, relationshipStatus: "client" as const, commercialStatus: "won" as const };
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [lead] = await tx.select().from(leads).where(eq(leads.id, leadId)).limit(1).for("update");
+    if (!lead) throw new Error("Lead não encontrado.");
+    if (lead.convertedOpportunityId) return { leadId, opportunityId: lead.convertedOpportunityId, alreadyApplied: true } as const;
+    const inserted = await tx.insert(opportunities).values({ companyId: lead.companyId, unitId: lead.unitId ?? undefined, regulatoryActId: lead.regulatoryActId ?? undefined, legacyLeadId: lead.id, ownerId: lead.ownerId ?? undefined, title: lead.candidateReason?.trim() || `Lead convertido #${lead.id}`, serviceType: "A classificar", source: lead.source, stage: "qualified", technicalPriority: lead.technicalPriority, commercialPriority: lead.commercialPriority, probability: 20, nextAction: qualification?.nextAction ?? lead.nextAction ?? undefined, nextActionAt: qualification?.nextActionAt ?? lead.nextActionAt ?? undefined, notes: `Convertida do Lead #${lead.id}. Status regulatório snapshot: ${lead.regulatoryStatusSnapshot ?? "não informado"}.` }).$returningId();
+    const opportunityId = Number(inserted[0]?.id);
+    if (!Number.isInteger(opportunityId) || opportunityId <= 0) throw new Error("Não foi possível obter a oportunidade convertida.");
+    const now = new Date();
+    await tx.update(leads).set({ commercialStatus: "qualified", nextAction: qualification?.nextAction ?? lead.nextAction, nextActionAt: qualification?.nextActionAt ?? lead.nextActionAt, convertedOpportunityId: opportunityId, convertedAt: now, archivedAt: now, updatedAt: now }).where(eq(leads.id, leadId));
+    return { leadId, opportunityId, alreadyApplied: false } as const;
+  }));
+}
+
+/** @deprecated Compatibilidade temporária: a conversão agora cria Opportunity e não altera a condição comercial da Company. */
+export async function convertLeadToClient(leadId: number) {
+  return convertLeadToOpportunity(leadId);
 }
 
 export async function listOperationalQueue(userId: number) {

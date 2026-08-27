@@ -589,3 +589,19 @@
 
 - [x] Criar classificadores puros de dimensão documental/decisão da Proposal e de fase/condição do ExecutionProject, sem alterar enums persistidos
 - [x] Criar testes de compatibilidade para estados legados e documentar que nenhuma migration física é necessária nesta etapa
+
+# Rodada estrutural 2 — remodelagem de domínio autorizada
+
+- [x] Inventariar registros e dependências de Proposal, Opportunity, Lead, Company e ExecutionProject antes do backfill
+- [x] Criar estrutura aditiva para ciclo documental e decisão comercial da Proposal, preservando histórico de `status`
+- [x] Interromper novas gravações de Lead comercialmente qualificado e preparar migração gradual para Opportunity
+- [x] Criar estrutura de relacionamento comercial derivado da Company sem remover dados legados
+- [x] Criar `project_blockers` com abertura, resolução, responsável e motivo, sem perder a fase do projeto
+- [x] Executar backfill idempotente, verificar contagens e preservar rastreabilidade da origem
+- [x] Adaptar backend e interface com compatibilidade temporária para os contratos legados
+- [x] Criar testes de migration, conversão e regressão sem criar registros operacionais fictícios
+- [x] Documentar modelo anterior/final, dados afetados, regras de conversão, riscos e decisões pendentes
+
+# Rodada estrutural 2 — ajuste de atomicidade da conversão
+
+- [x] Unificar qualificação e conversão Lead → Opportunity em uma única transação para impedir estado parcial

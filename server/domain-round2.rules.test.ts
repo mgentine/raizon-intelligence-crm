@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { formatBrl, moneyToCents, splitMoney, sumMoney } from "../shared/moneyRules";
 import { classifyTemporalField, formatCivilDateInSaoPaulo, isValidCivilDate, normalizeCivilDate, toUtcIso } from "../shared/timezoneRules";
 import { onlyActive } from "../shared/archiveRules";
+import { readFileSync } from "node:fs";
 
 describe("Rodada estrutural 2 — dinheiro, timezone e archive", () => {
   it("soma centavos sem erro de ponto flutuante", () => {
@@ -46,5 +47,24 @@ describe("Dimensões derivadas compatíveis", () => {
     expect(deriveExecutionDimensions("blocked")).toEqual({ phase: "execution", hasOpenBlocker: true });
     expect(deriveExecutionDimensions("in_progress")).toEqual({ phase: "execution", hasOpenBlocker: false });
     expect(deriveExecutionDimensions("delivered")).toEqual({ phase: "delivery", hasOpenBlocker: false });
+  });
+});
+
+describe("Remodelagem autorizada — migration compatível", () => {
+  it("mantém a migration exclusivamente aditiva e com backfill idempotente", () => {
+    const migration = ["0021_fearless_adam_warlock.sql", "0022_odd_boom_boom.sql"].map((file) => readFileSync(new URL(`../drizzle/${file}`, import.meta.url), "utf8")).join("\n");
+    expect(migration).toContain("ADD `legacyLeadId`");
+    expect(migration).toContain("ADD `documentStatus`");
+    expect(migration).toContain("ADD `decisionStatus`");
+    expect(migration).toContain("ON DUPLICATE KEY UPDATE");
+    expect(migration).toContain("convertedOpportunityId");
+    expect(migration).not.toMatch(/\bDROP\s+(TABLE|COLUMN|INDEX|CONSTRAINT)\b|\bDELETE\s+FROM\b/i);
+  });
+
+  it("mantém bloqueio como condição separada da fase operacional", () => {
+    const migration = readFileSync(new URL("../drizzle/0022_odd_boom_boom.sql", import.meta.url), "utf8");
+    expect(migration).toContain("WHEN `status` IN ('in_progress', 'blocked') THEN 'in_progress'");
+    expect(migration).toContain("INSERT INTO `opportunities`");
+    expect(migration).toContain("legacyLeadId");
   });
 });

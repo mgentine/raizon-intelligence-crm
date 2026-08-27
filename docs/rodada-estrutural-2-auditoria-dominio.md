@@ -59,3 +59,32 @@ A política de archive existente foi coberta por teste puro: registros com `arch
 Foram adicionados classificadores puros em `shared/domainRules.ts`. Para Proposal, eles derivam `documentLifecycle`, `decisionStatus` e `communicationEvent` a partir do `status` legado. Para ExecutionProject, derivam `phase` e `hasOpenBlocker`, interpretando `blocked` como fase `execution` com condição de bloqueio aberta. Essa camada não cria `project_blockers`, não altera enums, não muda queries persistidas e não presume que todo bloqueio deva ser materializado como novo registro.
 
 Os estados legados foram cobertos por testes. A separação física das dimensões continua pendente de decisão de domínio, inventário dos registros e plano de compatibilidade; portanto nenhuma migration foi gerada ou aplicada nesta extensão.
+
+## Remodelagem autorizada aplicada
+
+Após a autorização expressa para migrar gradualmente, foram aplicadas as migrations aditivas `0021_fearless_adam_warlock.sql` e `0022_odd_boom_boom.sql`. Não houve `DROP`, `DELETE FROM`, remoção de coluna, renomeação de tabela nem criação de dado fictício. O ledger Drizzle foi reconciliado para 23 migrations e o runner confirmou ausência de DDL pendente.
+
+| Eixo | Alteração aplicada | Compatibilidade e rastreabilidade |
+|---|---|---|
+| Proposal | Adicionados `documentStatus`, `decisionStatus`, `approvedAt` e `decidedAt`. | `status` legado permanece preservado; `sentAt` continua sendo o evento de envio. |
+| Lead → Opportunity | `legacyLeadId`, `convertedOpportunityId` e `convertedAt`; qualificação e conversão ocorrem no mesmo commit. | `UNIQUE(opportunities.legacyLeadId)` impede duplicação; Lead convertido é arquivado, não excluído. |
+| Company | Adicionados `operationalStatus` e `archivedAt`. | `relationshipStatus` é preservado apenas para leitura temporária; a relação comercial é derivada de oportunidade e projeto. |
+| ExecutionProject | Adicionada `phase`; `blocked` legado passa a ser fase `in_progress`. | Blockers são registros próprios em `project_blockers`, sem sobrescrever a fase. |
+| Blockers | Adicionada tabela com título, motivo, abertura, resolução, responsáveis e status. | Encerramento é bloqueado enquanto houver impedimento aberto; o histórico é preservado. |
+
+O backfill transforma status de propostas sem presumir aprovações internas inexistentes, preserva `sentAt` quando existente e grava a decisão com base em evidência temporal disponível. Leads já qualificados ou em estágio comercial posterior são convertidos somente uma vez, com origem, motivo, prioridade, próxima ação e snapshot regulatório preservados no registro resultante.
+
+Uma consulta somente leitura posterior confirmou: **1 empresa ativa**, **1 proposta emitida com decisão pendente**, **0 projetos**, **0 blockers**, **0 leads qualificados ativos sem Opportunity convertida** e **0 conversões órfãs**. A proposta 58/2026 permaneceu emitida, sem aceite presumido.
+
+## Validação final após a remodelagem
+
+Foram executados `pnpm exec tsc --noEmit`, `pnpm test`, `pnpm build` e `git diff --check` após a migration, o backfill e as adaptações de backend/interface. Resultado: **103 testes aprovados em 21 arquivos**, TypeScript sem erro, build concluído e diff íntegro. O aviso de chunk Vite acima de 500 kB e o aviso de configuração pnpm permanecem fora do escopo de domínio.
+
+| Limite residual | Estado |
+|---|---|
+| Filtros e gráficos ainda aceitam parte do `status` legado | **DOCUMENTADO.** A camada nova está disponível; a remoção final exigirá depreciação controlada de API/UI. |
+| Tempo histórico exato de aprovação interna | **NÃO VALIDADO.** `approvedAt` não foi inventado no backfill. |
+| Concorrência física de conversão em duas sessões TiDB | **NÃO VALIDADA.** Há transação e unicidade, mas não foi aplicado teste de estresse no banco operacional. |
+| Teste ponta a ponta com proposta realmente aceita | **BLOQUEADO.** Nenhuma proposta aceita foi autorizada; a 58/2026 continua emitida. |
+
+> **Conclusão:** a remodelagem foi aditiva, reversível por aplicação e rastreável. O domínio novo separa documento, envio, decisão, relação comercial e impedimento de execução sem reclassificar a proposta 58/2026, criar clientes fictícios ou excluir o histórico legado.

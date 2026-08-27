@@ -96,6 +96,7 @@ export const companies = mysqlTable("companies", {
   registrationStatus: varchar("registrationStatus", { length: 80 }),
   companySize: varchar("companySize", { length: 80 }),
   relationshipStatus: mysqlEnum("relationshipStatus", ["prospect", "client", "inactive"]).default("prospect").notNull(),
+  operationalStatus: mysqlEnum("operationalStatus", ["active", "inactive"]).default("active").notNull(),
   mainCnae: varchar("mainCnae", { length: 20 }),
   address: varchar("address", { length: 255 }),
   addressNumber: varchar("addressNumber", { length: 30 }),
@@ -114,6 +115,7 @@ export const companies = mysqlTable("companies", {
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  archivedAt: timestamp("archivedAt"),
 }, (table) => ({
   cnpjUnique: uniqueIndex("companies_cnpj_unique").on(table.cnpj),
   cityIdx: index("companies_city_idx").on(table.city),
@@ -201,6 +203,7 @@ export const opportunities = mysqlTable("opportunities", {
   companyId: int("companyId").notNull(),
   unitId: int("unitId"),
   regulatoryActId: int("regulatoryActId"),
+  legacyLeadId: int("legacyLeadId"),
   ownerId: int("ownerId"),
   title: varchar("title", { length: 255 }).notNull(),
   serviceType: varchar("serviceType", { length: 160 }).notNull(),
@@ -223,6 +226,7 @@ export const opportunities = mysqlTable("opportunities", {
   stageIdx: index("opportunities_stage_idx").on(table.stage),
   ownerIdx: index("opportunities_owner_idx").on(table.ownerId),
   actionIdx: index("opportunities_action_idx").on(table.nextActionAt),
+  legacyLeadUnique: uniqueIndex("opportunities_legacy_lead_unique").on(table.legacyLeadId),
 }));
 
 export type Opportunity = typeof opportunities.$inferSelect;
@@ -244,6 +248,8 @@ export const proposals = mysqlTable("proposals", {
   ownerId: int("ownerId"),
   professional: varchar("professional", { length: 120 }),
   status: mysqlEnum("status", proposalStatuses).default("draft").notNull(),
+  documentStatus: mysqlEnum("documentStatus", ["draft", "technical_review", "commercial_review", "approved_internal", "issued"]).default("draft").notNull(),
+  decisionStatus: mysqlEnum("decisionStatus", ["pending", "accepted", "rejected", "cancelled"]).default("pending").notNull(),
   clientSnapshot: text("clientSnapshot").notNull(),
   serviceSnapshot: text("serviceSnapshot").notNull(),
   scopeSnapshot: text("scopeSnapshot").notNull(),
@@ -259,8 +265,10 @@ export const proposals = mysqlTable("proposals", {
   sourceMap: text("sourceMap"),
   notes: text("notes"),
   reviewedBy: int("reviewedBy"),
+  approvedAt: timestamp("approvedAt"),
   issuedAt: timestamp("issuedAt"),
   sentAt: timestamp("sentAt"),
+  decidedAt: timestamp("decidedAt"),
   cancelledAt: timestamp("cancelledAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -270,6 +278,8 @@ export const proposals = mysqlTable("proposals", {
   companyIdx: index("proposals_company_idx").on(table.companyId),
   serviceIdx: index("proposals_service_idx").on(table.serviceId),
   statusIdx: index("proposals_status_idx").on(table.status),
+  documentStatusIdx: index("proposals_document_status_idx").on(table.documentStatus),
+  decisionStatusIdx: index("proposals_decision_status_idx").on(table.decisionStatus),
   seriesVersionUnique: uniqueIndex("proposals_series_version_unique").on(table.seriesKey, table.version),
   numberVersionUnique: uniqueIndex("proposals_number_version_unique").on(table.proposalNumber, table.version),
   companyFk: foreignKey({ name: "proposals_company_fk", columns: [table.companyId], foreignColumns: [companies.id] }),
@@ -291,6 +301,7 @@ export const executionProjects = mysqlTable("execution_projects", {
   ownerId: int("ownerId"),
   title: varchar("title", { length: 255 }).notNull(),
   status: mysqlEnum("status", executionProjectStatuses).default("planning").notNull(),
+  phase: mysqlEnum("phase", ["planning", "in_progress", "delivered", "accepted", "closed", "cancelled"]).default("planning").notNull(),
   scopeSnapshot: text("scopeSnapshot").notNull(),
   deliverablesSnapshot: text("deliverablesSnapshot").notNull(),
   exclusionsSnapshot: text("exclusionsSnapshot"),
@@ -309,6 +320,7 @@ export const executionProjects = mysqlTable("execution_projects", {
   companyIdx: index("execution_projects_company_idx").on(table.companyId),
   opportunityIdx: index("execution_projects_opportunity_idx").on(table.opportunityId),
   statusIdx: index("execution_projects_status_idx").on(table.status),
+  phaseIdx: index("execution_projects_phase_idx").on(table.phase),
   proposalFk: foreignKey({ name: "execution_projects_proposal_fk", columns: [table.proposalId], foreignColumns: [proposals.id] }),
   opportunityFk: foreignKey({ name: "execution_projects_opportunity_fk", columns: [table.opportunityId], foreignColumns: [opportunities.id] }),
   companyFk: foreignKey({ name: "execution_projects_company_fk", columns: [table.companyId], foreignColumns: [companies.id] }),
@@ -316,6 +328,31 @@ export const executionProjects = mysqlTable("execution_projects", {
 
 export type ExecutionProject = typeof executionProjects.$inferSelect;
 export type InsertExecutionProject = typeof executionProjects.$inferInsert;
+
+export const projectBlockerStatuses = ["open", "resolved", "cancelled"] as const;
+export type ProjectBlockerStatus = (typeof projectBlockerStatuses)[number];
+
+export const projectBlockers = mysqlTable("project_blockers", {
+  id: int("id").autoincrement().primaryKey(),
+  projectId: int("projectId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  reason: text("reason").notNull(),
+  status: mysqlEnum("status", projectBlockerStatuses).default("open").notNull(),
+  ownerId: int("ownerId"),
+  openedAt: timestamp("openedAt").defaultNow().notNull(),
+  resolvedAt: timestamp("resolvedAt"),
+  resolvedBy: int("resolvedBy"),
+  resolutionNotes: text("resolutionNotes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  projectIdx: index("project_blockers_project_idx").on(table.projectId),
+  statusIdx: index("project_blockers_status_idx").on(table.status),
+  projectFk: foreignKey({ name: "project_blockers_project_fk", columns: [table.projectId], foreignColumns: [executionProjects.id] }),
+}));
+
+export type ProjectBlocker = typeof projectBlockers.$inferSelect;
+export type InsertProjectBlocker = typeof projectBlockers.$inferInsert;
 
 export const projectTaskStatuses = ["open", "in_progress", "blocked", "done", "cancelled"] as const;
 export const projectTasks = mysqlTable("project_tasks", {
@@ -510,13 +547,18 @@ export const leads = mysqlTable("leads", {
   nextActionAt: timestamp("nextActionAt"),
   lastContactedAt: timestamp("lastContactedAt"),
   discardedReason: varchar("discardedReason", { length: 180 }),
+  convertedOpportunityId: int("convertedOpportunityId"),
+  convertedAt: timestamp("convertedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  archivedAt: timestamp("archivedAt"),
 }, (table) => ({
   companyIdx: index("leads_company_idx").on(table.companyId),
   statusIdx: index("leads_commercial_status_idx").on(table.commercialStatus),
   actionIdx: index("leads_next_action_idx").on(table.nextActionAt),
   sourceKeyUnique: uniqueIndex("leads_source_key_unique").on(table.source, table.sourceRecordKey),
+  convertedOpportunityIdx: index("leads_converted_opportunity_idx").on(table.convertedOpportunityId),
+  convertedOpportunityFk: foreignKey({ name: "leads_converted_opportunity_fk", columns: [table.convertedOpportunityId], foreignColumns: [opportunities.id] }),
 }));
 
 export type Lead = typeof leads.$inferSelect;

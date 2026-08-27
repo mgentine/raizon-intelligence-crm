@@ -18,6 +18,7 @@ export type CompanyFormDraft = {
   segment: string;
   notes: string;
   relationshipStatus: "prospect" | "client" | "inactive";
+  operationalStatus: "active" | "inactive";
 };
 
 export type CompanyLookupResult = {
