@@ -52,3 +52,10 @@ A política de archive existente foi coberta por teste puro: registros com `arch
 `pnpm exec tsc --noEmit`, `pnpm test`, `pnpm build` e `git diff --check` foram executados após as alterações. Resultado: **99 testes aprovados em 21 arquivos**, TypeScript sem erro, build concluído e diff sem erro. Permanecem os avisos de configuração pnpm e chunk Vite acima de 500 kB.
 
 > **Estado recomendado:** manter o modelo físico atual em compatibilidade, sem migration destrutiva. A próxima decisão de negócio necessária é aprovar, ou não, uma proposta de separação de estados, Company e Lead após inventário dos registros persistidos. Nenhum desses itens deve ser aplicado automaticamente.
+
+
+## Compatibilidade aditiva aplicada
+
+Foram adicionados classificadores puros em `shared/domainRules.ts`. Para Proposal, eles derivam `documentLifecycle`, `decisionStatus` e `communicationEvent` a partir do `status` legado. Para ExecutionProject, derivam `phase` e `hasOpenBlocker`, interpretando `blocked` como fase `execution` com condição de bloqueio aberta. Essa camada não cria `project_blockers`, não altera enums, não muda queries persistidas e não presume que todo bloqueio deva ser materializado como novo registro.
+
+Os estados legados foram cobertos por testes. A separação física das dimensões continua pendente de decisão de domínio, inventário dos registros e plano de compatibilidade; portanto nenhuma migration foi gerada ou aplicada nesta extensão.

@@ -584,3 +584,8 @@
 - [x] Adicionar regras puras para distinguir data civil regulatória de instante UTC e testar virada de dia
 - [x] Formalizar a política de archive existente e testar que registros arquivados não aparecem em consultas operacionais
 - [x] Revalidar todas as alterações com TypeScript, testes, build e diff-check
+
+# Rodada estrutural 2 — compatibilidade aditiva
+
+- [x] Criar classificadores puros de dimensão documental/decisão da Proposal e de fase/condição do ExecutionProject, sem alterar enums persistidos
+- [x] Criar testes de compatibilidade para estados legados e documentar que nenhuma migration física é necessária nesta etapa

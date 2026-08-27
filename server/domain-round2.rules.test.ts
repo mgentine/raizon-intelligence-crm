@@ -31,3 +31,20 @@ describe("Rodada estrutural 2 — dinheiro, timezone e archive", () => {
     expect(onlyActive(rows).map((row) => row.id)).toEqual([1]);
   });
 });
+
+import { deriveExecutionDimensions, deriveProposalDimensions } from "../shared/domainRules";
+
+describe("Dimensões derivadas compatíveis", () => {
+  it("separa decisão, comunicação e ciclo documental sem alterar o status legado", () => {
+    expect(deriveProposalDimensions("issued")).toEqual({ documentLifecycle: "issued", decisionStatus: "pending", communicationEvent: "none" });
+    expect(deriveProposalDimensions("sent")).toEqual({ documentLifecycle: "communicated", decisionStatus: "pending", communicationEvent: "sent" });
+    expect(deriveProposalDimensions("negotiating")).toEqual({ documentLifecycle: "communicated", decisionStatus: "pending", communicationEvent: "negotiating" });
+    expect(deriveProposalDimensions("accepted")).toEqual({ documentLifecycle: "communicated", decisionStatus: "accepted", communicationEvent: "none" });
+  });
+
+  it("interpreta blocked como execução com condição de bloqueio", () => {
+    expect(deriveExecutionDimensions("blocked")).toEqual({ phase: "execution", hasOpenBlocker: true });
+    expect(deriveExecutionDimensions("in_progress")).toEqual({ phase: "execution", hasOpenBlocker: false });
+    expect(deriveExecutionDimensions("delivered")).toEqual({ phase: "delivery", hasOpenBlocker: false });
+  });
+});
