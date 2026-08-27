@@ -370,7 +370,7 @@
 - [x] Implementar persistência e listagem de evidências técnicas por projeto
 - [x] Implementar upload de evidências técnicas ao S3 com limite de 5 MB e metadados no banco
 - [x] Integrar anexos técnicos à ficha do projeto na Central de Execução
-- [x] Validar TypeScript, 57 testes Vitest e build de produção
+- [x] Validar TypeScript, 58 testes Vitest e build de produção
 - [x] Validar visualmente a Central de Execução em desktop e mobile com banco vazio
 - [ ] Executar transição ponta a ponta com dados reais do ambiente, sem inserir dados artificiais
 - [x] Finalizar documentação operacional e critérios de aceite da Fase 2
