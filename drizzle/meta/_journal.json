@@ -64,6 +64,13 @@
       "when": 1787792038648,
       "tag": "0008_mighty_patch",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1787793159797,
+      "tag": "0009_silent_karma",
+      "breakpoints": true
     }
   ]
 }

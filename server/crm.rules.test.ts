@@ -18,25 +18,27 @@ describe("CRM rules", () => {
 
   it("normalizes CNPJ input and preserves manual company edits when applying lookup data", () => {
     expect(normalizeCnpjInput("12.345.678/0001-90 extra")).toBe("12345678000190");
-    const draft = applyCompanyLookupToDraft({ cnpj: "12.345.678/0001-90", legalName: "Nome digitado", tradeName: "Fantasia digitada", registrationStatus: "ATIVA", mainCnae: "4321-5", address: "Rua A", addressNumber: "10", addressComplement: "", neighborhood: "Centro", postalCode: "15500-000", city: "Votuporanga", state: "SP", phone: "", email: "", website: "", segment: "SST", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "BAIXADA", mainCnae: "1234567", city: "São Paulo", state: "SP" });
+    const draft = applyCompanyLookupToDraft({ cnpj: "12.345.678/0001-90", legalName: "Nome digitado", tradeName: "Fantasia digitada", registrationStatus: "ATIVA", companySize: "Média", mainCnae: "4321-5", address: "Rua A", addressNumber: "10", addressComplement: "", neighborhood: "Centro", postalCode: "15500-000", city: "Votuporanga", state: "SP", phone: "", email: "", website: "", segment: "SST", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "BAIXADA", companySize: "Grande", mainCnae: "1234567", city: "São Paulo", state: "SP" });
     expect(draft.legalName).toBe("Nome digitado");
     expect(draft.city).toBe("Votuporanga");
     expect(draft.segment).toBe("SST");
     expect(draft.tradeName).toBe("Fantasia digitada");
     expect(draft.registrationStatus).toBe("ATIVA");
     expect(draft.mainCnae).toBe("4321-5");
-    const emptyDraft = applyCompanyLookupToDraft({ cnpj: "", legalName: "", tradeName: "", registrationStatus: "", mainCnae: "", address: "", addressNumber: "", addressComplement: "", neighborhood: "", postalCode: "", city: "", state: "SP", phone: "", email: "", website: "", segment: "", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "ATIVA", mainCnae: "1234567", city: "São Paulo", state: "RJ" });
+    expect(draft.companySize).toBe("Média");
+    const emptyDraft = applyCompanyLookupToDraft({ cnpj: "", legalName: "", tradeName: "", registrationStatus: "", companySize: "", mainCnae: "", address: "", addressNumber: "", addressComplement: "", neighborhood: "", postalCode: "", city: "", state: "SP", phone: "", email: "", website: "", segment: "", notes: "", relationshipStatus: "client" }, { cnpj: "12345678000190", legalName: "Nome da consulta", tradeName: "Fantasia da consulta", registrationStatus: "ATIVA", companySize: "Grande", mainCnae: "1234567", city: "São Paulo", state: "RJ" });
     expect(emptyDraft.legalName).toBe("Nome da consulta");
     expect(emptyDraft.city).toBe("São Paulo");
     expect(emptyDraft.state).toBe("RJ");
     expect(emptyDraft.tradeName).toBe("Fantasia da consulta");
     expect(emptyDraft.registrationStatus).toBe("ATIVA");
     expect(emptyDraft.mainCnae).toBe("1234567");
+    expect(emptyDraft.companySize).toBe("Grande");
   });
 
   it("accepts nullable BrasilAPI fields and normalizes the provider result", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ cnpj: "56431364000180", razao_social: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", nome_fantasia: null, descricao_situacao_cadastral: "ATIVA", cnae_fiscal: 1012101, municipio: "VOTUPORANGA", uf: "SP" }), { status: 200, headers: { "content-type": "application/json" } })));
-    await expect(lookupCnpj("56.431.364/0001-80")).resolves.toMatchObject({ legalName: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", tradeName: null, city: "VOTUPORANGA", state: "SP", mainCnae: "1012101" });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ cnpj: "56431364000180", razao_social: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", nome_fantasia: null, descricao_situacao_cadastral: "ATIVA", porte: "DEMAIS", cnae_fiscal: 1012101, logradouro: "AVENIDA DOUTOR AUGUSTO", numero: "3.545", complemento: null, bairro: "PARQUE INDUSTRIAL II", cep: "15507000", ddd_telefone_1: "1734059500", email: "contabil@example.com", municipio: "VOTUPORANGA", uf: "SP" }), { status: 200, headers: { "content-type": "application/json" } })));
+    await expect(lookupCnpj("56.431.364/0001-80")).resolves.toMatchObject({ legalName: "FRIGORIFICO AVICOLA VOTUPORANGA LTDA", tradeName: null, companySize: "DEMAIS", address: "AVENIDA DOUTOR AUGUSTO", addressNumber: "3.545", neighborhood: "PARQUE INDUSTRIAL II", postalCode: "15507000", phone: "1734059500", email: "contabil@example.com", city: "VOTUPORANGA", state: "SP", mainCnae: "1012101" });
     vi.unstubAllGlobals();
   });
 

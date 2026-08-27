@@ -294,3 +294,10 @@
 - [x] Persistir os novos campos no modelo canônico de empresas sem quebrar registros existentes
 - [x] Manter o preenchimento automático por CNPJ sem sobrescrever dados editados manualmente
 - [x] Adicionar testes e validar o formulário ampliado em desktop e mobile
+
+# Autofill cadastral de endereço e porte — solicitação 27/08/2026
+
+- [x] Adicionar porte empresarial ao modelo e ao formulário de cliente
+- [x] Normalizar endereço retornado pelos provedores BrasilAPI e CNPJ.ws
+- [x] Preencher endereço e porte por CNPJ sem sobrescrever edições manuais
+- [x] Testar o contrato cadastral e validar a exibição desktop/mobile

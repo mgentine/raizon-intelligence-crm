@@ -33,6 +33,7 @@ export const companies = mysqlTable("companies", {
   legalName: varchar("legalName", { length: 255 }).notNull(),
   tradeName: varchar("tradeName", { length: 255 }),
   registrationStatus: varchar("registrationStatus", { length: 80 }),
+  companySize: varchar("companySize", { length: 80 }),
   relationshipStatus: mysqlEnum("relationshipStatus", ["prospect", "client", "inactive"]).default("prospect").notNull(),
   mainCnae: varchar("mainCnae", { length: 20 }),
   address: varchar("address", { length: 255 }),

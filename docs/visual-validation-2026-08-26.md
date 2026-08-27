@@ -43,3 +43,11 @@ Em desktop 1280×720, a tela **Empresas** apresenta navegação sem Contatos, bu
 ## Formulário ampliado de cliente — 27/08/2026
 
 Com o parâmetro controlado `openCompanyForm=1`, o formulário foi revisado em desktop 1280×720 e mobile 390×844. A versão desktop apresenta seções de **Dados cadastrais**, **Endereço e operação** e **Canais e relacionamento**, com observações e ações no rodapé. No mobile, os campos empilham linearmente, o textarea permanece legível e os botões continuam acessíveis; não foi observado overflow horizontal. A validação de persistência com dados reais depende de cadastro controlado pelo usuário e não foi simulada.
+
+## Autofill de endereço e porte — 27/08/2026
+
+O formulário foi revisado novamente em desktop 1280×720 e mobile 390×844. O campo editável **Porte da empresa** aparece na seção de dados cadastrais; os campos de endereço permanecem organizados em seção própria. No mobile, o novo campo empilha sem overflow e o rodapé com cancelar/salvar continua acessível. A consulta efetiva contra provedor externo e persistência de um novo cliente não foram simuladas nesta rodada para não inserir dados artificiais.
+
+### Evidência técnica
+
+Os adapters BrasilAPI e CNPJ.ws agora normalizam porte, logradouro, número, complemento, bairro, CEP, telefone e e-mail. O helper de autofill só aplica esses valores quando o respectivo campo está vazio.
