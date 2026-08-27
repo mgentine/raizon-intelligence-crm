@@ -59,3 +59,7 @@ O formulário foi revisado em desktop 1280×720 e mobile 390×844 após a inclus
 ## Jornada pós-venda no quadro de oportunidades — 27/08/2026
 
 O quadro foi revisado em desktop 1280×720 e mobile 390×844. As colunas **Contratação**, **Execução**, **Entrega**, **Encerradas** e **Pós-venda** aparecem após **Ganhas**. No desktop, o quadro usa quatro colunas por linha; no mobile, as nove etapas empilham verticalmente sem overflow horizontal. Como o banco permanece sem oportunidades, a revisão confirmou estrutura e estados vazios, mas não a transição com um caso persistido.
+
+## Fluxograma da jornada do cliente — 27/08/2026
+
+A primeira renderização horizontal preservava o fluxo, mas ficou excessivamente larga para leitura. A versão final foi reorganizada em orientação vertical, com decisões explícitas para aprovação comercial, pendências na entrega e nova demanda/recorrência. O PNG final apresenta o percurso completo desde a entrada do lead até relacionamento ativo e nova oportunidade, com loops de negociação, ajustes técnicos e renovação.

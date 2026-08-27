@@ -1,0 +1,33 @@
+flowchart TD
+    A[Entrada do lead<br/>CETESB, SP Águas, indicação ou manual] --> B[Enriquecimento<br/>CNPJ, porte, endereço, segmento]
+    B --> C[Acionável<br/>prioridade e motivo definidos]
+    C --> D[Primeiro contato<br/>contato válido e atividade registrada]
+    D --> E[Qualificação<br/>necessidade, decisor e prazo]
+    E --> F[Diagnóstico técnico<br/>atos, unidades, documentos e riscos]
+    F --> G[Definição de escopo<br/>entregáveis, exclusões e premissas]
+    G --> H[Proposta<br/>valor, prazo e validade]
+    H --> I{Decisão comercial}
+    I -->|Ajustar| J[Negociação<br/>histórico e contraproposta]
+    J --> I
+    I -->|Aprovada| K[Venda ganha<br/>aceite e escopo final]
+    I -->|Não aprovada| L[Perdida ou nutrição<br/>motivo e próxima revisão]
+    K --> M[Contratação<br/>contrato/OS, responsáveis e cronograma]
+    M --> N[Kickoff e planejamento<br/>documentos e agenda]
+    N --> O[Execução técnica<br/>medições, relatórios e protocolos]
+    O --> P[Revisão interna<br/>qualidade e pendências]
+    P --> Q[Entrega ao cliente<br/>protocolo e aceite]
+    Q --> R{Pendências ou ajustes?}
+    R -->|Sim| O
+    R -->|Não| S[Encerramento<br/>aceite final, faturamento e histórico]
+    S --> T[Pós-venda<br/>follow-up e satisfação]
+    T --> U{Nova demanda ou recorrência?}
+    U -->|Sim| V[Nova oportunidade<br/>renovação, obrigação ou novo serviço]
+    V --> F
+    U -->|Não| W[Relacionamento ativo<br/>monitoramento e próxima revisão]
+
+    classDef commercial fill:#fbe5e3,stroke:#e13b32,color:#16221f;
+    classDef technical fill:#e8efea,stroke:#315349,color:#16221f;
+    classDef decision fill:#fff3d6,stroke:#a56b00,color:#16221f;
+    class A,B,C,D,E,H,I,J,K,L commercial;
+    class F,G,M,N,O,P,Q,R,S,T,U,V,W technical;
+    class I,R,U decision;

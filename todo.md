@@ -316,3 +316,7 @@
 - [x] Implementar no CRM os estados de diagnóstico, proposta, contratação, execução, entrega, encerramento e pós-venda
 - [x] Exibir responsável, próxima ação, prazo, entregáveis e pendências em cada etapa
 - [ ] Testar o fluxo ponta a ponta sem inserir dados artificiais e validar desktop/mobile
+
+# Fluxograma da jornada do cliente — solicitação 27/08/2026
+
+- [x] Gerar fluxograma visual e fonte editável da jornada ponta a ponta do cliente
