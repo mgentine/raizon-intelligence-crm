@@ -51,9 +51,9 @@ export async function getDb() {
 
 export async function getRaizonProfile() {
   const db = await getDb();
-  if (!db) return undefined;
+  if (!db) return null;
   const rows = await db.select().from(raizonProfiles).where(eq(raizonProfiles.profileKey, "default")).limit(1);
-  return rows[0];
+  return rows[0] ?? null;
 }
 
 export async function upsertRaizonProfile(input: Omit<typeof raizonProfiles.$inferInsert, "id" | "profileKey" | "createdAt" | "updatedAt">) {
@@ -113,7 +113,7 @@ export async function createProposalFromRefs(input: { opportunityId: number; com
   const professional = input.professional?.trim() || undefined;
   const serviceSnapshot = JSON.stringify({ id: service.id, name: service.name, category: service.category, agency: service.agency, state: service.state, summary: service.summary });
   const [latest] = await db.select({ version: proposals.version, proposalNumber: proposals.proposalNumber }).from(proposals).where(eq(proposals.seriesKey, `opportunity:${input.opportunityId}`)).orderBy(desc(proposals.version)).limit(1);
-  const result = await db.insert(proposals).values({ seriesKey: `opportunity:${input.opportunityId}`, version: (latest?.version ?? 0) + 1, proposalNumber: latest?.proposalNumber ?? undefined, opportunityId: input.opportunityId, companyId: input.companyId, unitId: input.unitId, contactId: input.contactId, serviceId: input.serviceId, ownerId: input.ownerId, professional, clientSnapshot, serviceSnapshot, scopeSnapshot: service.scope, deliverablesSnapshot: service.deliverables, exclusionsSnapshot: service.exclusions, requiredDocumentsSnapshot: service.requiredDocuments, investment: input.investment, paymentTerms: input.paymentTerms, validityDays: input.validityDays ?? 20, visitsIncluded: input.visitsIncluded ?? service.defaultVisits, missingInformation: input.missingInformation, sourceMap: JSON.stringify(buildProposalSourceMap()), notes: input.notes });
+  const result = await db.insert(proposals).values({ seriesKey: `opportunity:${input.opportunityId}`, version: (latest?.version ?? 0) + 1, proposalNumber: latest?.proposalNumber ?? undefined, opportunityId: input.opportunityId, companyId: input.companyId, unitId: input.unitId, contactId: input.contactId, serviceId: input.serviceId, ownerId: input.ownerId, professional, clientSnapshot, serviceSnapshot, scopeSnapshot: service.scope, deliverablesSnapshot: service.deliverables, assumptionsSnapshot: service.assumptions, exclusionsSnapshot: service.exclusions, requiredDocumentsSnapshot: service.requiredDocuments, investment: input.investment, paymentTerms: input.paymentTerms, validityDays: input.validityDays ?? 20, visitsIncluded: input.visitsIncluded ?? service.defaultVisits, missingInformation: input.missingInformation, sourceMap: JSON.stringify(buildProposalSourceMap()), notes: input.notes });
   return Number(result[0].insertId);
 }
 
@@ -139,7 +139,7 @@ export async function createProposalVersion(id: number, ownerId: number) {
   if (!db) throw new Error("Database unavailable");
   const [current] = await db.select().from(proposals).where(eq(proposals.id, id)).limit(1);
   if (!current) throw new Error("Proposta não encontrada.");
-  const result = await db.insert(proposals).values({ seriesKey: current.seriesKey, version: current.version + 1, proposalNumber: current.proposalNumber, opportunityId: current.opportunityId, companyId: current.companyId, unitId: current.unitId ?? undefined, contactId: current.contactId ?? undefined, serviceId: current.serviceId, ownerId, professional: current.professional ?? undefined, status: "draft", clientSnapshot: current.clientSnapshot, serviceSnapshot: current.serviceSnapshot, scopeSnapshot: current.scopeSnapshot, deliverablesSnapshot: current.deliverablesSnapshot, exclusionsSnapshot: current.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: current.requiredDocumentsSnapshot ?? undefined, investment: current.investment, paymentTerms: current.paymentTerms ?? undefined, validityDays: current.validityDays, visitsIncluded: current.visitsIncluded, missingInformation: current.missingInformation ?? undefined, sourceMap: current.sourceMap ?? undefined, notes: current.notes ?? undefined });
+  const result = await db.insert(proposals).values({ seriesKey: current.seriesKey, version: current.version + 1, proposalNumber: current.proposalNumber, opportunityId: current.opportunityId, companyId: current.companyId, unitId: current.unitId ?? undefined, contactId: current.contactId ?? undefined, serviceId: current.serviceId, ownerId, professional: current.professional ?? undefined, status: "draft", clientSnapshot: current.clientSnapshot, serviceSnapshot: current.serviceSnapshot, scopeSnapshot: current.scopeSnapshot, deliverablesSnapshot: current.deliverablesSnapshot, assumptionsSnapshot: current.assumptionsSnapshot ?? undefined, exclusionsSnapshot: current.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: current.requiredDocumentsSnapshot ?? undefined, investment: current.investment, paymentTerms: current.paymentTerms ?? undefined, validityDays: current.validityDays, visitsIncluded: current.visitsIncluded, missingInformation: current.missingInformation ?? undefined, sourceMap: current.sourceMap ?? undefined, notes: current.notes ?? undefined });
   return Number(result[0].insertId);
 }
 
@@ -192,7 +192,7 @@ export async function createExecutionProjectFromProposal(input: { proposalId: nu
     const [existing] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, input.proposalId)).limit(1);
     if (existing) return existing.id;
     const title = input.title?.trim() || `Execução — ${proposal.proposalNumber || `Proposta #${proposal.id}`}`;
-    const inserted = await tx.insert(executionProjects).values({ proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, ownerId: input.ownerId, title, scopeSnapshot: proposal.scopeSnapshot, deliverablesSnapshot: proposal.deliverablesSnapshot, exclusionsSnapshot: proposal.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: proposal.requiredDocumentsSnapshot ?? undefined, startAt: input.startAt, dueAt: input.dueAt }).$returningId();
+    const inserted = await tx.insert(executionProjects).values({ proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, ownerId: input.ownerId, title, scopeSnapshot: proposal.scopeSnapshot, deliverablesSnapshot: proposal.deliverablesSnapshot, assumptionsSnapshot: proposal.assumptionsSnapshot ?? undefined, exclusionsSnapshot: proposal.exclusionsSnapshot ?? undefined, requiredDocumentsSnapshot: proposal.requiredDocumentsSnapshot ?? undefined, startAt: input.startAt, dueAt: input.dueAt }).$returningId();
     const projectId = Number(inserted[0]?.id);
     const documents = String(proposal.requiredDocumentsSnapshot || "").split(/\\r?\\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
     if (documents.length) await tx.insert(projectChecklist).values(documents.map((title) => ({ projectId, title, required: 1, ownerId: input.ownerId })));

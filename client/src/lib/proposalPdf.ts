@@ -15,6 +15,7 @@ export type ProposalPdfInput = {
     serviceSnapshot: string;
     scopeSnapshot: string;
     deliverablesSnapshot: string;
+    assumptionsSnapshot?: string | null;
     exclusionsSnapshot?: string | null;
     requiredDocumentsSnapshot?: string | null;
     missingInformation?: string | null;
@@ -76,6 +77,7 @@ export async function buildProposalPdf(input: ProposalPdfInput) {
   writeSection("Escopo", proposal.scopeSnapshot);
   writeSection("Entregáveis", proposal.deliverablesSnapshot);
   writeSection("Documentos e informações necessários", proposal.requiredDocumentsSnapshot);
+  writeSection("Premissas e limites do escopo", proposal.assumptionsSnapshot);
   writeSection("Exclusões", proposal.exclusionsSnapshot);
   writeSection("Informações pendentes", proposal.missingInformation);
   writeSection("Observações", proposal.notes);

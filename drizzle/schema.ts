@@ -247,6 +247,7 @@ export const proposals = mysqlTable("proposals", {
   serviceSnapshot: text("serviceSnapshot").notNull(),
   scopeSnapshot: text("scopeSnapshot").notNull(),
   deliverablesSnapshot: text("deliverablesSnapshot").notNull(),
+  assumptionsSnapshot: text("assumptionsSnapshot"),
   exclusionsSnapshot: text("exclusionsSnapshot"),
   requiredDocumentsSnapshot: text("requiredDocumentsSnapshot"),
   investment: decimal("investment", { precision: 12, scale: 2 }).notNull(),

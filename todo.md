@@ -460,3 +460,16 @@
 - [x] Adicionar transição suave e alerta visual de sucesso após mudança de status por swipe
 - [x] Criar modo de demonstração local com propostas simuladas, sem gravar dados no banco
 - [x] Validar gestos, ordenação e distinção visual entre dados demonstrativos e dados persistidos
+
+# Proposta nº 58/2026 — Tansa Indústria Química Ltda.
+
+- [x] Revisar a proposta anexada sob os aspectos técnico, comercial, documental e regulatório
+- [x] Cadastrar o cliente, oportunidade e proposta nº 58/2026 com rastreabilidade documental e sem presumir dados ausentes
+- [x] Incorporar ao template oficial de propostas os controles reutilizáveis identificados na revisão
+- [x] Congelar premissas do serviço no snapshot da proposta e propagar o conteúdo à execução técnica
+- [x] Atualizar o PDF para exibir premissas e limites mensuráveis do escopo comercial
+
+# Correção de perfil mestre detectada na validação
+
+- [x] Garantir que a consulta do perfil mestre Raizon retorne `null`, e nunca `undefined`, quando o cadastro ainda não existir
+- [x] Adicionar teste de regressão para a consulta do perfil mestre sem registro persistido
