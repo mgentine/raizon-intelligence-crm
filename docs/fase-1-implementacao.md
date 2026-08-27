@@ -52,3 +52,7 @@ O formulário registra valor em reais, condição de pagamento, validade em dias
 O serviço é selecionado do catálogo ativo. Usuários com perfil administrador ou técnico podem abrir o cadastro rápido de um novo serviço com nome, categoria, escopo e entregáveis; após salvar, o serviço fica disponível para futuras propostas e pode ser selecionado no mesmo fluxo. O catálogo continua sujeito à governança técnica existente.
 
 A proposta permanece como rascunho até as etapas de revisão e emissão. O snapshot preserva os dados cadastrais e o escopo do serviço no momento da criação; alterações posteriores no catálogo não reescrevem a proposta já criada.
+
+### Evidência visual da melhoria
+
+A revisão reproduzível com `?view=Propostas&openProposalForm=1` confirmou em desktop 1280×720 a hierarquia dos campos de cliente por CNPJ, oportunidade, serviço, profissional, valor, pagamento, validade e observações. Em viewport móvel 390×844, o formulário reorganiza os campos em uma coluna, mantém os controles legíveis e não apresenta overflow horizontal. Como o banco de homologação permaneceu sem registros artificiais, os seletores exibem estado vazio; a validação de persistência com uma proposta real permanece dependente de dados autorizados.

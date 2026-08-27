@@ -31,7 +31,7 @@ export function ProposalCenterView() {
   const companies = trpc.companies.list.useQuery({});
   const opportunities = trpc.opportunities.list.useQuery();
   const services = trpc.services.list.useQuery();
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(() => new URLSearchParams(window.location.search).get("openProposalForm") === "1");
   const [showServiceForm, setShowServiceForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [serviceForm, setServiceForm] = useState(emptyServiceForm);
