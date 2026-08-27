@@ -29,12 +29,15 @@ describe("lead and regulatory rules", () => {
     const now = new Date("2026-08-26T12:00:00Z");
     expect(normalizeRegulatoryStatus("Vigente", new Date("2026-09-01T12:00:00Z"), now)).toBe("expiring");
     expect(normalizeRegulatoryStatus("Vigente", new Date("2026-08-01T12:00:00Z"), now)).toBe("expired");
+    expect(normalizeRegulatoryStatus("Vigente", new Date("2027-03-22T12:00:00Z"), now, true)).toBe("Validação pendente");
   });
 
   it("decorates regulatory act list rows with normalized status", () => {
-    const row = decorateRegulatoryActRow({ act: { publishedStatus: "Vigente", expiresAt: new Date("2026-08-01T12:00:00Z") } }, new Date("2026-08-26T12:00:00Z"));
+    const row = decorateRegulatoryActRow({ act: { publishedStatus: "Vigente", expiresAt: new Date("2026-08-01T12:00:00Z"), needsValidation: 0 } }, new Date("2026-08-26T12:00:00Z"));
     expect(row.act.publishedStatus).toBe("Vigente");
     expect(row.regulatoryStatus).toBe("expired");
+    const pending = decorateRegulatoryActRow({ act: { publishedStatus: "Vigente", expiresAt: new Date("2027-03-22T12:00:00Z"), needsValidation: 1 } }, new Date("2026-08-26T12:00:00Z"));
+    expect(pending.regulatoryStatus).toBe("Validação pendente");
   });
 
   it("groups notifications by key and keeps the highest severity", () => {

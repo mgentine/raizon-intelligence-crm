@@ -44,9 +44,10 @@ export function completeRecurringStatus(status: RecurringStatus): "done" {
   return "done";
 }
 
-export type RegulatoryStatusClass = "valid" | "expiring" | "expired" | "suspended" | "unknown";
+export type RegulatoryStatusClass = "Validação pendente" | "valid" | "expiring" | "expired" | "suspended" | "unknown";
 
-export function normalizeRegulatoryStatus(value: string | undefined | null, expiresAt?: Date | null, now = new Date()): RegulatoryStatusClass {
+export function normalizeRegulatoryStatus(value: string | undefined | null, expiresAt?: Date | null, now = new Date(), needsValidation = false): RegulatoryStatusClass {
+  if (needsValidation) return "Validação pendente";
   const normalized = normalizeText(value);
   if (normalized.includes("suspens")) return "suspended";
   if (expiresAt) {

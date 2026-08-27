@@ -536,8 +536,8 @@ export async function archiveRegulatoryAct(id: number) {
   await db.update(regulatoryActs).set({ archivedAt: new Date(), updatedAt: new Date() }).where(eq(regulatoryActs.id, id));
   return { success: true } as const;
 }
-export function decorateRegulatoryActRow<T extends { act: { publishedStatus: string | null; expiresAt: Date | null } }>(row: T, now = new Date()) {
-  return { ...row, regulatoryStatus: normalizeRegulatoryStatus(row.act.publishedStatus, row.act.expiresAt, now) };
+export function decorateRegulatoryActRow<T extends { act: { publishedStatus: string | null; expiresAt: Date | null; needsValidation: number } }>(row: T, now = new Date()) {
+  return { ...row, regulatoryStatus: normalizeRegulatoryStatus(row.act.publishedStatus, row.act.expiresAt, now, row.act.needsValidation === 1) };
 }
 
 export function filterRegulatoryActRows<T extends { act: { archivedAt: Date | null } }>(rows: T[]): T[] {
@@ -737,7 +737,7 @@ export async function listLeads(filters?: { commercialStatus?: string; ownerId?:
   if (filters?.ownerId) conditions.push(eq(leads.ownerId, filters.ownerId));
   const query = db.select({ lead: leads, company: companies, act: regulatoryActs }).from(leads).leftJoin(companies, eq(leads.companyId, companies.id)).leftJoin(regulatoryActs, eq(leads.regulatoryActId, regulatoryActs.id)).orderBy(asc(leads.nextActionAt), desc(leads.updatedAt)).limit(filters?.limit ?? 100);
   const rows = conditions.length ? await query.where(and(...conditions)) : await query;
-  return rows.map((row) => ({ ...row, regulatoryStatus: normalizeRegulatoryStatus(row.lead.regulatoryStatusSnapshot, row.act?.expiresAt) }));
+  return rows.map((row) => ({ ...row, regulatoryStatus: normalizeRegulatoryStatus(row.lead.regulatoryStatusSnapshot, row.act?.expiresAt, new Date(), row.act?.needsValidation === 1) }));
 }
 
 export async function getCommercialFunnelSummary() {

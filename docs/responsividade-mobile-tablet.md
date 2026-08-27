@@ -42,3 +42,9 @@ O painel recebeu ordenação por data de criação, maior investimento e validad
 Após uma alteração de status pelo painel de ações revelado no swipe, a interface exibe uma confirmação verde, com ícone de sucesso e transição suave de entrada. A mensagem tem região `aria-live` e desaparece automaticamente em operação normal. A captura de validação mostra a confirmação de mudança para **Negociação** sem interferir nos filtros ou nos cards.
 
 Para permitir avaliação dos gestos sem poluir o CRM, o painel inclui um modo de demonstração local. Ele exibe três propostas identificadas como **Demonstração**, com valores e status diversos, somente em memória. As mudanças de status e cancelamentos nesses cards não acionam procedures, não criam dados persistidos, não permitem PDF, emissão ou duplicação e não se misturam a qualquer métrica real após sair do modo.
+
+## Lista de atos regulatórios com dados reais
+
+A validação com quatro registros reais de captação subterrânea identificou que o layout original mantinha ações fora da área visível em 390×844. O card foi reorganizado para fluxo vertical nessa largura: identificação e fonte ficam no topo, vencimento e selo de validação aparecem em duas colunas e as ações **Editar**, **Arquivar** e **Evidências** ocupam uma grade de três colunas com área de toque adequada. A verificação posterior confirmou todas as ações visíveis, sem overflow horizontal.
+
+Os registros de origem documental também exibem **Validação pendente**, em vez de “válido”, quando `needsValidation = 1`, ainda que tenham data de vencimento futura. Isso preserva a distinção entre dado extraído de proposta e situação regulatória confirmada.

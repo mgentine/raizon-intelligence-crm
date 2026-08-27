@@ -54,6 +54,18 @@ O caso foi cadastrado de maneira idempotente, sem dados fictícios, sob a propos
 | Evidência | PDF original preservado em armazenamento do CRM | Evidência documental com hash registrado. |
 | Atos preliminares | Quatro requerimentos extraídos do PDF | **Necessitam validação no ato oficial**; não são declaração de situação regulatória. |
 
+## 6.1 Correção de classificação regulatória no CRM
+
+Durante a validação com os quatro registros reais, foi identificado que uma data futura poderia levar a interface a exibir o status técnico interno `valid`, mesmo com o campo `needsValidation = 1`. A regra foi corrigida: **a necessidade de validação agora tem precedência** sobre qualquer cálculo de vencimento ou texto publicado. Assim, a lista exibe “Validação pendente” até que um responsável registre evidência de consulta e revisão no fluxo próprio.
+
+Essa correção evita inferência indevida de regularidade a partir de data extraída de documento não confirmado. O teste de regressão cobre especificamente o caso de data futura com validação pendente e a revisão visual foi realizada com os quatro requerimentos deste caso.
+
+## 6.2 Evidência de histórico contextual
+
+Foi registrada uma atividade interna real, vinculada simultaneamente à empresa e à oportunidade, documentando a revisão, o cadastro e a próxima ação de solicitação do ato completo e dos documentos técnicos. A tela **Atividades** foi verificada com o vínculo contextual visível; não foi criada atividade simulada para esse teste.
+
+A consulta tRPC utilizada pela tela, filtrada por `companyId = 1` e `opportunityId = 1`, retornou exclusivamente a atividade nº 1, com o objetivo “Revisar e cadastrar a proposta nº 58/2026 no CRM.” Essa evidência confirma tanto o vínculo persistido quanto a filtragem contextual aplicada na interface.
+
 ## 6. Próxima ação recomendada
 
 O próximo passo é solicitar ao cliente, em uma única comunicação, a cópia integral do ato/outorga e dos processos, a confirmação de titularidade e finalidade de uso, os dados de cada poço/captação, os registros de medição e a autorização de representação no SOE, quando aplicável. A equipe deve confrontar esses documentos com os quatro requerimentos registrados no CRM antes de classificar vencimento, protocolar qualquer pedido ou assumir compromisso de prazo.

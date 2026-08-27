@@ -110,7 +110,7 @@
 
 # Limitações de validação com banco vazio
 
-- [ ] Validar visualmente a tela de Atos regulatórios com registros reais/populados exibindo regulatoryStatus normalizado ao lado do vencimento
+- [x] Validar visualmente a tela de Atos regulatórios com registros reais/populados exibindo regulatoryStatus normalizado ao lado do vencimento
 - [x] Capturar e registrar explicitamente o estado de erro do funil comercial em mobile usando ?forceChartError=1
 - [x] Adicionar teste de integração/unidade do contrato de listRegulatoryActs confirmando regulatoryStatus normalizado
 
@@ -157,7 +157,8 @@
 - [x] Exibir empresa e oportunidade relacionada em cada linha do histórico
 - [x] Permitir registrar atividade vinculada a uma oportunidade pela UI
 - [x] Criar seções contextuais claras por empresa e oportunidade, não apenas filtro por ID
-- [ ] Validar o histórico contextual com atividade efetivamente vinculada a oportunidade sem inserir dados artificiais no banco
+- [x] Validar o histórico contextual com atividade efetivamente vinculada a oportunidade sem inserir dados artificiais no banco
+- [x] Comprovar a listagem contextual da atividade real por meio da query tRPC utilizada pela tela Atividades
 
 # Seções dedicadas de histórico
 
@@ -473,3 +474,13 @@
 
 - [x] Garantir que a consulta do perfil mestre Raizon retorne `null`, e nunca `undefined`, quando o cadastro ainda não existir
 - [x] Adicionar teste de regressão para a consulta do perfil mestre sem registro persistido
+
+# Correção de validação regulatória pendente
+
+- [x] Impedir que ato com `needsValidation = 1` apareça como válido apenas por possuir vencimento futuro
+- [x] Exibir status explícito de validação pendente na lista de atos e cobrir o caso com teste de regressão
+
+# Correção mobile da lista de atos regulatórios
+
+- [x] Eliminar overflow horizontal dos cards de atos em telas de 390 px, mantendo visíveis Editar, Arquivar e Evidências
+- [x] Validar a lista de atos real em desktop e celular após a reorganização das ações
