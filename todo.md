@@ -435,3 +435,9 @@
 - [x] Implementar alertas visuais para propostas próximas da validade ou vencidas
 - [x] Implementar exportação de proposta em PDF profissional baseada em snapshots confirmados
 - [x] Validar dados, PDF, alertas, responsividade, testes e build
+
+# Correção do menu móvel
+
+- [x] Redesenhar o drawer móvel com rótulos, largura adequada e ação explícita de fechar
+- [x] Escurecer o conteúdo de fundo e bloquear sua rolagem enquanto o menu estiver aberto
+- [x] Validar menu aberto/fechado em celular e tablet sem corte ou sobreposição indevida

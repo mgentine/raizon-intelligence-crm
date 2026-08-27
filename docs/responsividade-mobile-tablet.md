@@ -18,3 +18,9 @@ Os grids críticos se reorganizam para uma coluna em celular e preservam duas ou
 | Inteligência | Sim | Sim | Formulários, painéis e ações reorganizados para leitura e toque. |
 
 > As telas populadas por propostas, projetos, atos e históricos reais ainda requerem uma rodada de homologação com dados autorizados. Não foram inseridos registros artificiais para produzir uma falsa validação visual.
+
+## Correção do drawer móvel
+
+O menu lateral móvel foi substituído por um drawer com largura de até 80% da tela e limite de 300 px. Os rótulos agora permanecem visíveis ao lado dos ícones; o menu possui botão explícito de fechamento, fechamento ao tocar no overlay e suporte à tecla Escape. O conteúdo da página fica escurecido e sua rolagem é bloqueada enquanto a navegação está aberta.
+
+Na verificação em 390×844, o drawer exibiu a lista de navegação completa, com texto legível e sem competir com o conteúdo de fundo. O botão de abertura do menu e o ícone de notificações passaram a ter área de toque de 40×40 px no cabeçalho; os demais botões mobile mantêm a regra geral de 44 px.
