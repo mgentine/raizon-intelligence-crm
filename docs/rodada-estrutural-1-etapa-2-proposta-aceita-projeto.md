@@ -87,3 +87,16 @@ A migration `0020_glamorous_paper_doll.sql` foi aplicada após checagem de dupli
 ## Conclusão
 
 O estado `accepted` não pode mais ser persistido pelo caminho normal da aplicação sem que o projeto e seus itens de checklist sejam criados no mesmo commit ou que a transação seja revertida. O comportamento é idempotente para reexecuções e protegido contra duplicação pela combinação de lock, retry e constraint física. Tarefas e evidências não fazem parte do setup automático atual e não foram simuladas ou introduzidas nesta rodada.
+
+## 7. Correções complementares de integridade
+
+Após a validação inicial do fluxo, foram corrigidos dois caminhos que ainda poderiam comprometer o agregado após a criação do projeto. Primeiro, `updateProposalDetails` passou a bloquear edição de conteúdo fora dos estados `draft`, `technical_review` e `commercial_review`; uma proposta aprovada internamente, emitida, aceita ou já vinculada a projeto deve ser revista por nova versão, preservando o snapshot usado pelo projeto.
+
+Segundo, `updateExecutionProjectStatus` passou a executar em transação com lock pessimista do projeto e, no encerramento, dos itens de checklist. Assim, nenhuma atualização concorrente pode concluir o projeto usando uma leitura desatualizada de pendências obrigatórias. Os testes passaram a cobrir a edição bloqueada após emissão e o bloqueio do encerramento na presença de checklist obrigatório pendente.
+
+| Verificação complementar | Resultado |
+|---|---|
+| Edição de proposta emitida | **COMPROVADO:** bloqueada antes de qualquer `UPDATE`. |
+| Encerramento com checklist pendente | **COMPROVADO:** bloqueado dentro da transação, sem `UPDATE` do projeto. |
+| Lock do projeto e checklist no fechamento | **COMPROVADO:** presente na implementação e no teste estrutural. |
+| Suíte após as correções complementares | **87/87 testes aprovados em 18 arquivos**. |

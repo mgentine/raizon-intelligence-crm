@@ -147,8 +147,15 @@ export async function createProposalFromRefs(input: { opportunityId: number; com
 export async function updateProposalDetails(id: number, input: Partial<typeof proposals.$inferInsert>) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(proposals).set({ ...input, updatedAt: new Date() }).where(eq(proposals.id, id));
-  return { success: true } as const;
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [current] = await tx.select({ id: proposals.id, status: proposals.status }).from(proposals).where(eq(proposals.id, id)).limit(1).for("update");
+    if (!current) throw new Error("Proposta não encontrada.");
+    if (!["draft", "technical_review", "commercial_review"].includes(current.status)) throw new Error("A proposta não pode ser alterada após aprovação interna, emissão ou aceite. Crie uma nova versão para revisar o conteúdo.");
+    const [project] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.proposalId, id)).limit(1);
+    if (project) throw new Error("A proposta está vinculada a um projeto de execução e não pode ser alterada. Crie uma nova versão para revisar o conteúdo.");
+    await tx.update(proposals).set({ ...input, updatedAt: new Date() }).where(eq(proposals.id, id));
+    return { success: true } as const;
+  }));
 }
 
 export async function updateProposalStatus(id: number, status: ProposalStatus, reviewedBy: number) {
@@ -259,13 +266,18 @@ export async function createExecutionProjectFromProposal(input: { proposalId: nu
 export async function updateExecutionProjectStatus(id: number, status: string, acceptanceNotes?: string) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const [current] = await db.select().from(executionProjects).where(eq(executionProjects.id, id)).limit(1);
-  if (!current) throw new Error("Projeto de execução não encontrado.");
-  if (!canTransitionExecution(current.status, status as ExecutionStatus)) throw new Error(`Transição de execução inválida: ${current.status} → ${status}.`);
-  if (status === "closed") { const checklist = await db.select({ required: projectChecklist.required, status: projectChecklist.status }).from(projectChecklist).where(eq(projectChecklist.projectId, id)); if (!canCloseExecution("accepted", checklist)) throw new Error("Não é possível encerrar enquanto houver documentos obrigatórios pendentes."); }
-  const now = new Date();
-  await db.update(executionProjects).set({ status: status as any, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
-  return { success: true } as const;
+  return withTransactionRetry(() => db.transaction(async (tx) => {
+    const [current] = await tx.select().from(executionProjects).where(eq(executionProjects.id, id)).limit(1).for("update");
+    if (!current) throw new Error("Projeto de execução não encontrado.");
+    if (!canTransitionExecution(current.status, status as ExecutionStatus)) throw new Error(`Transição de execução inválida: ${current.status} → ${status}.`);
+    if (status === "closed") {
+      const checklist = await tx.select({ required: projectChecklist.required, status: projectChecklist.status }).from(projectChecklist).where(eq(projectChecklist.projectId, id)).for("update");
+      if (!canCloseExecution("accepted", checklist)) throw new Error("Não é possível encerrar enquanto houver documentos obrigatórios pendentes.");
+    }
+    const now = new Date();
+    await tx.update(executionProjects).set({ status: status as any, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
+    return { success: true } as const;
+  }));
 }
 
 export async function createProjectTask(input: { projectId: number; title: string; category?: string; ownerId?: number; dueAt?: Date; notes?: string }) {

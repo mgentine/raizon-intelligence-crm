@@ -519,3 +519,10 @@
 - [x] Criar testes de rollback para falha em checklist/tarefas e reexecução idempotente da criação de projeto
 - [x] Documentar o fluxo comprovado e quaisquer estruturas que não sejam criadas automaticamente
 - [x] Tornar atômico o aceite comercial e a criação idempotente de projeto/checklist, evitando proposta aceita sem setup de execução
+
+# Rodada estrutural 1 — Imutabilidade e transições críticas
+
+- [x] Impedir alteração de conteúdo comercial em proposta emitida, aceita ou vinculada a projeto de execução
+- [x] Serializar a transição de status do projeto, incluindo validação de checklist no encerramento, para evitar corrida entre leitura e gravação
+- [x] Criar testes de regressão para edição bloqueada e encerramento concorrente de execução
+- [x] Documentar a auditoria e a evidência das correções de imutabilidade e transição

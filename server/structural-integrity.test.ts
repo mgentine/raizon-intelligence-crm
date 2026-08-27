@@ -70,4 +70,14 @@ describe("contratos estruturais P0", () => {
     expect(body).toContain("A tarefa informada não pertence ao projeto de execução.");
     expect(body).toContain("db.transaction");
   });
+
+  it("serializa o encerramento da execução com o checklist sob lock", () => {
+    const source = readFileSync(new URL("./db.ts", import.meta.url), "utf8");
+    const body = functionBody(source, "updateExecutionProjectStatus", "createProjectTask");
+
+    expect(body).toContain("withTransactionRetry");
+    expect(body).toContain("db.transaction");
+    expect(body).toContain('.for("update")');
+    expect(body).toContain("tx.select({ required: projectChecklist.required, status: projectChecklist.status })");
+  });
 });

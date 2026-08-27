@@ -18,11 +18,15 @@ function transaction(work: (tx: any) => Promise<unknown>) {
   const stagedUpdates: Array<{ table: unknown; values: unknown }> = [];
   const tx = {
     select: () => ({
-      from: () => ({
-        where: () => ({
-          limit: () => lockable((state.selectResults.shift() ?? []) as unknown[]),
-        }),
-      }),
+      from: () => {
+        const rows = lockable((state.selectResults.shift() ?? []) as unknown[]);
+        return {
+          where: () => ({
+            limit: () => rows,
+            for: () => rows,
+          }),
+        };
+      },
     }),
     update: (table: unknown) => ({
       set: (values: unknown) => ({
@@ -51,7 +55,7 @@ const fakeDb = { transaction: vi.fn(transaction) };
 
 vi.mock("drizzle-orm/mysql2", () => ({ drizzle: vi.fn(() => fakeDb) }));
 
-import { updateProposalStatus } from "./db";
+import { updateExecutionProjectStatus, updateProposalDetails, updateProposalStatus } from "./db";
 
 const acceptedCandidate = {
   id: 44,
@@ -112,5 +116,21 @@ describe("aceite de proposta e setup atômico de execução", () => {
 
     expect(state.committedUpdates).toEqual([]);
     expect(state.committedInserts).toEqual([]);
+  });
+
+  it("bloqueia edição de conteúdo depois que a proposta foi emitida", async () => {
+    state.selectResults = [[{ id: 44, status: "issued" }]];
+
+    await expect(updateProposalDetails(44, { investment: "4900.00" })).rejects.toThrow("não pode ser alterada");
+
+    expect(state.committedUpdates).toEqual([]);
+  });
+
+  it("não encerra projeto enquanto houver checklist obrigatório pendente", async () => {
+    state.selectResults = [[{ id: 701, status: "accepted", acceptanceNotes: null, deliveredAt: null, acceptedAt: new Date(), closedAt: null }], [{ required: 1, status: "pending" }]];
+
+    await expect(updateExecutionProjectStatus(701, "closed")).rejects.toThrow("documentos obrigatórios pendentes");
+
+    expect(state.committedUpdates).toEqual([]);
   });
 });
