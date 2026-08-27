@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { aggregateProposalValueByStatus, filterProposalPanelRows } from "../shared/proposalPanelRules";
+import { aggregateProposalValueByStatus, filterProposalPanelRows, sortProposalPanelRows } from "../shared/proposalPanelRules";
 
 const rows = [
   { proposal: { status: "sent", professional: "Miguel Gentine", investment: "2500", proposalNumber: "001/2026" }, company: { tradeName: "Pedreira Alfa", legalName: "Alfa Mineracao Ltda" }, service: { name: "Renovação de LO" } },
@@ -21,5 +21,16 @@ describe("Proposal panel rules", () => {
       { status: "accepted", label: "Aceita", value: 4800 },
       { status: "rejected", label: "Recusada", value: 1500 },
     ]);
+  });
+
+  it("ordena por criação, investimento e validade", () => {
+    const sortable = [
+      { proposal: { status: "sent", proposalNumber: "A", investment: "200", createdAt: "2026-08-01", validityDays: 30 } },
+      { proposal: { status: "draft", proposalNumber: "B", investment: "900", createdAt: "2026-08-10", validityDays: 10 } },
+      { proposal: { status: "issued", proposalNumber: "C", investment: "500", createdAt: "2026-08-05", validityDays: 5 } },
+    ];
+    expect(sortProposalPanelRows(sortable, "created_desc").map((row) => row.proposal.proposalNumber)).toEqual(["B", "C", "A"]);
+    expect(sortProposalPanelRows(sortable, "investment_desc").map((row) => row.proposal.proposalNumber)).toEqual(["B", "C", "A"]);
+    expect(sortProposalPanelRows(sortable, "validity_asc").map((row) => row.proposal.proposalNumber)).toEqual(["C", "B", "A"]);
   });
 });

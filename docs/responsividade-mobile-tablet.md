@@ -30,3 +30,9 @@ Na verificação em 390×844, o drawer exibiu a lista de navegação completa, c
 O painel de propostas não utiliza tabela horizontal em dispositivos móveis. Em 390×844, filtros, gráfico e propostas são apresentados em fluxo vertical; as propostas são cards empilhados com status, validade, investimento, profissional e ações organizadas em grade de uma coluna. Dessa forma, exportar PDF, alterar status ou duplicar uma proposta não exige deslocamento horizontal.
 
 O formulário de nova proposta também foi revisado nessa largura: a consulta por CNPJ, a seleção de serviço, os campos comerciais e as ações de rascunho permanecem empilhados e utilizáveis. Essa estrutura é preferível à rolagem horizontal porque preserva contexto e área de toque em uma operação comercial frequente.
+
+## Gestos e ordenação em propostas móveis
+
+Os cards de propostas em celular aceitam deslize horizontal. O gesto para a esquerda revela as ações rápidas de alteração de status e cancelamento; um gesto para a direita recolhe essas ações. A alteração só ocorre após a seleção explícita do novo status. O cancelamento solicita confirmação e apenas atualiza o status para `cancelled`, mantendo proposta, snapshots e versões no histórico. Não existe exclusão física por gesto.
+
+O painel recebeu ordenação por data de criação, maior investimento e validade mais próxima. A ordenação é executada sobre os dados persistidos já filtrados e foi coberta por teste unitário. A verificação visual em 390×844 confirmou o seletor de ordenação e o fluxo vertical; a abertura do swipe sobre card populado depende de uma proposta real autorizada, que não foi criada artificialmente.

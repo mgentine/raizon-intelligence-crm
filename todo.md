@@ -447,3 +447,10 @@
 - [x] Auditar cards, filtros, gráfico e ações do painel em celular
 - [x] Ajustar a estrutura mobile para cartões empilhados sem rolagem horizontal de conteúdo crítico
 - [x] Validar a visualização mobile e documentar a decisão de layout
+
+# Gestos e ordenação de propostas em celular
+
+- [x] Implementar swipe em cards móveis para revelar ações rápidas sem executar alterações acidentais
+- [x] Implementar cancelamento/arquivamento com confirmação e preservação de histórico, em vez de exclusão física
+- [x] Implementar ordenação por criação, valor e validade no painel de propostas
+- [x] Validar regras, gestos, ordenação, acessibilidade e responsividade em celular
