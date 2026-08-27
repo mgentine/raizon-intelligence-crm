@@ -286,4 +286,4 @@
 - [x] Remover Contatos da navegação lateral e da aba independente
 - [x] Incorporar listagem e cadastro de contatos ao contexto da empresa/cliente
 - [x] Preservar vínculos de contatos com unidades, atividades e oportunidades
-- [ ] Validar permissões, estados vazio/erro e responsividade da seção contextual
+- [x] Validar permissões, estados vazio/erro e responsividade da seção contextual

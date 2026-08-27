@@ -35,3 +35,7 @@ Em 26/08/2026, a view `/?view=Empresas` foi revisada em desktop. O botão **Cada
 ## Navegação após incorporação de Contatos à ficha de Empresas — 27/08/2026
 
 A captura desktop confirmou que a navegação lateral não exibe mais a aba independente **Contatos** e que o atalho **Cadastrar cliente** permanece visível no dashboard. A captura mobile confirmou que o menu colapsável continua utilizável e que os atalhos de cadastro se reorganizam sem overflow. A ficha contextual de contatos depende da abertura de uma empresa real; como o banco permanece vazio, o estado populado e as operações de edição/arquivamento não foram executados nesta rodada.
+
+## View Empresas após integração contextual — 27/08/2026
+
+Em desktop 1280×720, a tela **Empresas** apresenta navegação sem Contatos, busca, filtro de relacionamento, CTA **Cadastrar cliente** e estado vazio sem sobreposição. Em mobile 390×844, o menu colapsado, título, busca, CTA, filtro e mensagem vazia permanecem legíveis; a busca fica estreita, mas utilizável, e não foi observado overflow horizontal. Não foi possível abrir a ficha contextual nem testar edição/arquivamento visualmente porque não existem empresas/contatos reais populados nesta sessão.
