@@ -102,20 +102,60 @@ As cláusulas de não garantia de aprovação e de dependência dos prazos do ó
 
 A transição para contratação deve exigir, no mínimo, cliente, serviço, escopo, valor, responsável, condição de pagamento e próxima ação. A transição para execução deve exigir aceite ou evidência equivalente, responsável técnico, entregáveis e prazo. O encerramento deve exigir status das pendências, entrega realizada, aceite ou justificativa e histórico final.
 
-## 8. Roadmap recomendado
+## 8. Roadmap recomendado em três fases
 
-| Ordem | Entrega | Decisão recomendada |
-|---:|---|---|
-| 1 | Catálogo de serviços e biblioteca de escopos | Implementar primeiro |
-| 2 | Cadastro mestre da Raizon | Implementar junto do catálogo |
-| 3 | Propostas com rascunho, revisão, emissão, número e versão | Primeiro MVP comercial |
-| 4 | Geração DOCX a partir de template oficial | Implementar com um modelo real piloto |
-| 5 | Checklist de documentos e evidências | Conectar à execução técnica |
-| 6 | Conversão de proposta aprovada em entrega/projeto | Segunda entrega prioritária |
-| 7 | Follow-ups, painel de propostas e Radar comercial | Automatizar após estabilizar o fluxo |
-| 8 | Precificação por fatores com aprovação manual | Implementar após catálogo piloto |
-| 9 | IA para interpretação e redação controlada | Implementar somente com trilha de revisão |
-| 10 | Financeiro, assinatura e integrações externas | Avaliar em projeto separado |
+A proposta deve ser executada em três fases, com uma fronteira clara entre o que é necessário para vender, o que é necessário para executar e o que é necessário para escalar. Cada fase deve gerar valor utilizável antes da seguinte começar.
+
+### Fase 1 — Base comercial e motor de propostas
+
+**Objetivo:** transformar uma oportunidade qualificada em uma proposta profissional, rastreável e pronta para revisão.
+
+| Frente | Entrega |
+|---|---|
+| Dados mestres | Cadastro da Raizon, responsáveis, assinatura, dados bancários/comerciais e regras administrativas |
+| Catálogo | Serviços, categorias, órgão provável, escopo aprovado, entregáveis, documentos, premissas e exclusões |
+| Precificação | Preço-base e fatores de porte, complexidade, distância, visitas e urgência, sempre com aprovação manual |
+| Proposta | Rascunho, revisão técnica, revisão comercial, emissão, envio, negociação e aprovação/perda |
+| Documento | Template DOCX oficial, marcadores permitidos, número anual, validade e versão |
+| Governança | Origem de cada campo, informações pendentes, trilha de alteração e bloqueio contra invenção de dados |
+
+**Critério de aceite:** selecionar um serviço piloto, montar uma proposta a partir de uma empresa e unidade reais, revisar, emitir com numeração anual, gerar uma segunda versão e preservar o histórico da primeira.
+
+**Fora do escopo:** financeiro completo, assinatura eletrônica, IA autônoma, integração ampla com órgãos públicos e geração de todos os serviços simultaneamente.
+
+### Fase 2 — Conversão da venda em execução técnica
+
+**Objetivo:** fazer a proposta aprovada gerar uma operação controlada, sem redigitação e sem perda do escopo contratado.
+
+| Frente | Entrega |
+|---|---|
+| Conversão | Proposta aprovada convertida em projeto ou entrega técnica vinculada à empresa, unidade e oportunidade |
+| Escopo | Cópia congelada do escopo, entregáveis, premissas, exclusões, valor e condição de pagamento aprovados |
+| Documentos | Checklist por serviço com recebido, pendente, incompleto e evidências anexadas |
+| Execução | Tarefas, responsáveis, prazos, revisão interna, protocolo quando contratado, entrega e aceite |
+| Pendências | Registro de bloqueios, solicitações ao cliente, ajustes e reprocessamento da entrega |
+| Histórico | Linha do tempo da contratação, documentos, atividades, alterações, aceite e encerramento |
+
+**Critério de aceite:** aprovar uma proposta, gerar automaticamente a entrega técnica, solicitar documentos, registrar uma pendência, concluir a revisão, entregar o resultado e encerrar com aceite ou justificativa documentada.
+
+**Fora do escopo:** substituir avaliação técnica por IA, afirmar aprovação de órgão público ou considerar uma licença vencida como irregularidade jurídica sem validação documental.
+
+### Fase 3 — Inteligência, automação e escala
+
+**Objetivo:** reduzir trabalho repetitivo e melhorar previsão comercial depois que o processo básico estiver comprovado.
+
+| Frente | Entrega |
+|---|---|
+| Radar | Vencimentos, obrigações, riscos e sinais comerciais ligados a oportunidades qualificadas |
+| Follow-up | Atividades automáticas após envio de proposta, com prazos e intervenção humana |
+| Indicadores | Propostas no mês, valor proposto, valor fechado, conversão, ticket, motivos de perda e ciclo médio |
+| IA assistiva | Sugestão de serviço, resumo executivo, adaptação controlada de escopo e identificação de campos faltantes |
+| Validação externa | Consulta permitida a fontes oficiais, com URL, data, retorno bruto essencial e nível de confiança |
+| Integrações | Assinatura eletrônica, financeiro, e-mail e fontes externas somente quando houver provedor e credenciais adequados |
+
+**Critério de aceite:** as automações devem ser idempotentes, auditáveis e reversíveis; a IA deve apresentar sugestões com origem e exigir aprovação humana; nenhuma automação deve emitir proposta, prometer aprovação ou criar obrigação jurídica sem confirmação.
+
+**Fora do escopo:** financeiro contábil completo sem requisitos próprios, scraping de portais protegidos, contorno de CAPTCHA ou uso de fonte oficial sem autorização.
 
 ## 9. Piloto recomendado
 

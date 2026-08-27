@@ -332,3 +332,8 @@
 - [x] Analisar viabilidade da arquitetura de propostas, catálogo, operação, financeiro e Radar
 - [x] Separar capacidades implementáveis, dependências externas e controles obrigatórios
 - [x] Priorizar roadmap por valor, risco e esforço sem iniciar módulos não aprovados
+
+# Roadmap em três fases — solicitação 27/08/2026
+
+- [x] Reorganizar a evolução do sistema técnico-comercial em três fases
+- [x] Definir entregas, dependências, critérios de aceite e limites de cada fase
