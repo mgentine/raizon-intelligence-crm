@@ -1,4 +1,4 @@
-type ProposalPdfInput = {
+export type ProposalPdfInput = {
   proposal: {
     id?: number;
     proposalNumber?: string | null;

@@ -454,3 +454,9 @@
 - [x] Implementar cancelamento/arquivamento com confirmação e preservação de histórico, em vez de exclusão física
 - [x] Implementar ordenação por criação, valor e validade no painel de propostas
 - [x] Validar regras, gestos, ordenação, acessibilidade e responsividade em celular
+
+# Feedback de swipe e modo de demonstração local
+
+- [x] Adicionar transição suave e alerta visual de sucesso após mudança de status por swipe
+- [x] Criar modo de demonstração local com propostas simuladas, sem gravar dados no banco
+- [x] Validar gestos, ordenação e distinção visual entre dados demonstrativos e dados persistidos
