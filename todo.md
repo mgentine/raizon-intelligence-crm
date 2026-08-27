@@ -399,3 +399,7 @@
 - [x] Permitir selecionar serviço cadastrado e cadastrar serviço reutilizável para futuras propostas
 - [x] Permitir selecionar profissional responsável: Miguel Gentine ou Laleska Fernanda
 - [x] Validar persistência, governança, testes e responsividade do novo formulário de proposta
+
+# Refinamento do cliente por CNPJ na proposta
+
+- [x] Adicionar campo digitável de busca por CNPJ no formulário de proposta, mantendo a seleção do cliente cadastrado

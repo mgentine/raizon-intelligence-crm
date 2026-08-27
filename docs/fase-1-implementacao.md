@@ -56,3 +56,7 @@ A proposta permanece como rascunho até as etapas de revisão e emissão. O snap
 ### Evidência visual da melhoria
 
 A revisão reproduzível com `?view=Propostas&openProposalForm=1` confirmou em desktop 1280×720 a hierarquia dos campos de cliente por CNPJ, oportunidade, serviço, profissional, valor, pagamento, validade e observações. Em viewport móvel 390×844, o formulário reorganiza os campos em uma coluna, mantém os controles legíveis e não apresenta overflow horizontal. Como o banco de homologação permaneceu sem registros artificiais, os seletores exibem estado vazio; a validação de persistência com uma proposta real permanece dependente de dados autorizados.
+
+### Refinamento da busca por CNPJ
+
+O formulário passou a oferecer um campo digitável para localizar empresa por CNPJ ou nome, seguido da seleção da empresa encontrada. A revisão com `?view=Propostas&openProposalForm=1` confirmou em 1280×720 e 390×844 que o campo fica no topo do fluxo, a seleção de oportunidade permanece dependente do cliente e não há overflow horizontal. Quando nenhum registro corresponde à busca, a interface informa claramente que não há cliente cadastrado correspondente. A lista vazia observada na revisão decorre do banco de homologação sem dados artificiais.
