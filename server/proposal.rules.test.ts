@@ -3,7 +3,7 @@ import { buildProposalSourceMap, calculateSuggestedPrice, canCreateProposalFromO
 
 describe("Proposal rules", () => {
   it("calcula preço sugerido com fatores e adicionais explícitos", () => {
-    expect(calculateSuggestedPrice({ basePrice: 2000, sizeFactor: 1.25, complexityFactor: 1.1, distanceAmount: 300, visitAmount: 200 })).toBe(3250);
+    expect(calculateSuggestedPrice({ basePrice: 2000, sizeFactor: 1.25, complexityFactor: 1.1, distanceAmount: 300, visitAmount: 200 })).toBe("3250.00");
   });
 
   it("bloqueia proposta para oportunidade antes da etapa de proposta", () => {

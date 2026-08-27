@@ -555,3 +555,32 @@
 - [x] Confrontar os requisitos P0 do arquivo com schema, migration, transações, locks e testes atuais
 - [x] Reexecutar TypeScript, testes e build sem alterar dados operacionais
 - [x] Registrar a conclusão e os limites de validação da reverificação
+
+# Rodada estrutural 2 — simplificação e correção de domínio
+
+- [x] Confirmar no código e nos testes as proteções P0 da rodada anterior
+- [x] Documentar a máquina atual de estados de Proposal e separar dimensões somente se houver inconsistência comprovada
+- [x] Auditar Opportunity como fonte do funil e mapear a fronteira Lead × Opportunity
+- [x] Auditar Company.relationshipStatus e definir migração segura sem destruição de dados, se necessário
+- [x] Auditar ExecutionProject.blocked e avaliar estrutura de blockers sem criar funcionalidade não autorizada
+- [x] Auditar todos os valores monetários, cálculos e moeda BRL
+- [x] Auditar classificação de datas civis versus instantes e política de timezone
+- [x] Auditar archive/hard delete/soft delete por entidade e preservar histórico importante
+- [x] Definir migrations compatíveis e reversíveis somente para inconsistências comprovadas — nenhuma migration física aplicada nesta fase de auditoria e regras puras
+- [x] Adicionar testes de domínio, migration e regressão antes de qualquer aplicação
+- [x] Validar TypeScript, suíte, build e ausência de corrupção
+- [x] Documentar modelo antigo, modelo recomendado, dados afetados, compatibilidade e riscos restantes
+
+# Operação autorizada de configuração
+
+- [x] Manter Manus OAuth e não implementar login próprio, recuperação de senha ou MFA nesta rodada
+- [x] Não ativar jobs externos, CETESB/SP Águas, agenda real ou execução real sem dados/autorização específicos
+- [x] Preservar a proposta 58/2026 como emitida, sem aceite presumido
+- [x] Manter prévia de clientes limitada a staging até aprovação explícita
+
+# Rodada estrutural 2 — correções técnicas não destrutivas
+
+- [x] Adicionar regras puras de dinheiro em centavos/BRL para cálculos de sugestão, parcelas e totais sem perda de precisão
+- [x] Adicionar regras puras para distinguir data civil regulatória de instante UTC e testar virada de dia
+- [x] Formalizar a política de archive existente e testar que registros arquivados não aparecem em consultas operacionais
+- [x] Revalidar todas as alterações com TypeScript, testes, build e diff-check

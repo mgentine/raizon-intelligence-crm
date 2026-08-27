@@ -22,11 +22,21 @@ describe("Intelligence rules", () => {
       { stage: "lost", estimatedValue: "6000", lossReason: "prazo" },
     ], now);
     expect(metrics.proposalsThisMonth).toBe(2);
-    expect(metrics.proposedValueThisMonth).toBe(15000);
-    expect(metrics.closedValueThisMonth).toBe(10000);
+    expect(metrics.proposedValueThisMonth).toBe("15000.00");
+    expect(metrics.closedValueThisMonth).toBe("10000.00");
     expect(metrics.conversionRate).toBe(33);
-    expect(metrics.averageTicket).toBe(10000);
+    expect(metrics.averageTicket).toBe("10000.00");
     expect(metrics.averageCycleDays).toBe(5);
     expect(metrics.lossReasons).toEqual([{ reason: "prazo", count: 2 }]);
+  });
+
+  it("mantém precisão de centavos nas métricas agregadas", () => {
+    const metrics = calculateCommercialMetrics([
+      { createdAt: new Date("2026-08-02"), updatedAt: new Date("2026-08-02"), investment: "0,10", status: "sent", sentAt: null },
+      { createdAt: new Date("2026-08-03"), updatedAt: new Date("2026-08-03"), investment: "0,20", status: "sent", sentAt: null },
+    ], [], now);
+    expect(metrics.proposedValueThisMonth).toBe("0.30");
+    expect(metrics.closedValueThisMonth).toBe("0.00");
+    expect(metrics.averageTicket).toBe("0.00");
   });
 });

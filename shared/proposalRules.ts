@@ -1,5 +1,7 @@
+import { centsToDecimal, moneyToCents } from "./moneyRules";
+
 export type PricingFactors = {
-  basePrice: number;
+  basePrice: string | number;
   sizeFactor?: number;
   complexityFactor?: number;
   distanceAmount?: number;
@@ -8,10 +10,21 @@ export type PricingFactors = {
   documentationAmount?: number;
 };
 
-export function calculateSuggestedPrice(input: PricingFactors) {
-  const amounts = [input.basePrice, input.distanceAmount, input.visitAmount, input.urgencyAmount, input.documentationAmount].map((value) => Number(value || 0));
-  const factor = Math.max(0, Number(input.sizeFactor ?? 1)) * Math.max(0, Number(input.complexityFactor ?? 1));
-  return Number((amounts[0] * factor + amounts.slice(1).reduce((total, value) => total + value, 0)).toFixed(2));
+function roundDivide(numerator: bigint, denominator: bigint): bigint {
+  if (denominator <= BigInt(0)) throw new Error("Divisor monetário inválido.");
+  const remainder = numerator % denominator;
+  const absoluteRemainder = remainder < BigInt(0) ? -remainder : remainder;
+  const rounded = absoluteRemainder * BigInt(2) >= denominator ? (numerator < BigInt(0) ? BigInt(-1) : BigInt(1)) : BigInt(0);
+  return numerator / denominator + rounded;
+}
+
+export function calculateSuggestedPrice(input: PricingFactors): string {
+  const additions = [input.distanceAmount, input.visitAmount, input.urgencyAmount, input.documentationAmount].reduce((total, value) => total + moneyToCents(value || 0), BigInt(0));
+  const base = moneyToCents(input.basePrice || 0);
+  const sizeFactor = moneyToCents(input.sizeFactor ?? 1);
+  const complexityFactor = moneyToCents(input.complexityFactor ?? 1);
+  const weightedBase = roundDivide(base * sizeFactor * complexityFactor, BigInt(10_000));
+  return centsToDecimal(weightedBase + additions);
 }
 
 export const proposalCreationStages = ["proposal", "negotiation", "approved", "won", "contracting", "execution", "delivery", "closed", "aftercare"] as const;

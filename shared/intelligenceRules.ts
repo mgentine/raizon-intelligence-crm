@@ -1,3 +1,5 @@
+import { centsToDecimal, moneyToCents } from "./moneyRules";
+
 export type IntelligenceProposalInput = {
   createdAt: Date;
   updatedAt: Date;
@@ -25,13 +27,14 @@ export function calculateCommercialMetrics(proposals: IntelligenceProposalInput[
   const accepted = proposals.filter((row) => row.status === "accepted");
   const reasons = new Map<string, number>();
   opportunities.filter((row) => row.stage === "lost" && row.lossReason).forEach((row) => reasons.set(row.lossReason!, (reasons.get(row.lossReason!) || 0) + 1));
-  const closedValue = closed.reduce((sum, row) => sum + Number(row.estimatedValue || 0), 0);
+  const closedValueCents = closed.reduce((sum, row) => sum + moneyToCents(row.estimatedValue || 0), BigInt(0));
+  const proposedValueCents = proposalsThisMonth.reduce((sum, row) => sum + moneyToCents(row.investment || 0), BigInt(0));
   return {
     proposalsThisMonth: proposalsThisMonth.length,
-    proposedValueThisMonth: proposalsThisMonth.reduce((sum, row) => sum + Number(row.investment || 0), 0),
-    closedValueThisMonth: closedValue,
+    proposedValueThisMonth: centsToDecimal(proposedValueCents),
+    closedValueThisMonth: centsToDecimal(closedValueCents),
     conversionRate: decided.length ? Math.round((closed.length / decided.length) * 100) : 0,
-    averageTicket: closed.length ? Math.round(closedValue / closed.length) : 0,
+    averageTicket: closed.length ? centsToDecimal(closedValueCents / BigInt(closed.length)) : "0.00",
     averageCycleDays: accepted.length ? Math.round(accepted.reduce((sum, row) => sum + Math.max(0, row.updatedAt.getTime() - row.createdAt.getTime()) / 86400000, 0) / accepted.length) : 0,
     lossReasons: Array.from(reasons.entries()).map(([reason, count]) => ({ reason, count })).sort((a, b) => b.count - a.count),
   };
