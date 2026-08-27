@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { lookupCnpj } from "./integrations/cnpj";
 import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
-import { applyCompanyLookupToDraft, normalizeCnpjInput } from "../shared/companyFormRules";
+import { applyCompanyLookupToDraft, formatCepInput, formatCnpjInput, normalizeCnpjInput } from "../shared/companyFormRules";
 
 describe("CRM rules", () => {
   it("prepara perda com motivo obrigatório para o card do funil", () => {
@@ -14,6 +14,13 @@ describe("CRM rules", () => {
     expect(normalizeCnpj("12.345.678/0001-90")).toBe("12345678000190");
     expect(isValidCnpj("12.345.678/0001-90")).toBe(true);
     expect(isValidCnpj("123")).toBe(false);
+  });
+
+  it("formats CNPJ and CEP while preserving only valid digit limits", () => {
+    expect(formatCnpjInput("56431364000180")).toBe("56.431.364/0001-80");
+    expect(formatCnpjInput("56.431.364/0001-80999")).toBe("56.431.364/0001-80");
+    expect(formatCepInput("15507000")).toBe("15507-000");
+    expect(formatCepInput("15507-000 extra")).toBe("15507-000");
   });
 
   it("normalizes CNPJ input and preserves manual company edits when applying lookup data", () => {

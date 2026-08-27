@@ -41,7 +41,7 @@ export type CompanyLookupResult = {
 export function applyCompanyLookupToDraft(current: CompanyFormDraft, lookup: CompanyLookupResult): CompanyFormDraft {
   return {
     ...current,
-    cnpj: lookup.cnpj || current.cnpj,
+    cnpj: current.cnpj || formatCnpjInput(lookup.cnpj || ""),
     legalName: current.legalName || lookup.legalName || "",
     tradeName: current.tradeName || lookup.tradeName || "",
     registrationStatus: current.registrationStatus || lookup.registrationStatus || "",
@@ -61,4 +61,14 @@ export function applyCompanyLookupToDraft(current: CompanyFormDraft, lookup: Com
 
 export function normalizeCnpjInput(value: string): string {
   return value.replace(/\D/g, "").slice(0, 14);
+}
+
+export function formatCnpjInput(value: string): string {
+  const digits = normalizeCnpjInput(value);
+  return digits.replace(/^(\d{2})(\d)/, "$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3").replace(/\.(\d{3})(\d)/, ".$1/$2").replace(/(\d{4})(\d)/, "$1-$2");
+}
+
+export function formatCepInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  return digits.replace(/^(\d{5})(\d)/, "$1-$2");
 }

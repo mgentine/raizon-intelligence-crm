@@ -301,3 +301,10 @@
 - [x] Normalizar endereço retornado pelos provedores BrasilAPI e CNPJ.ws
 - [x] Preencher endereço e porte por CNPJ sem sobrescrever edições manuais
 - [x] Testar o contrato cadastral e validar a exibição desktop/mobile
+
+# UX da consulta por CNPJ — solicitação 27/08/2026
+
+- [x] Exibir loading visual durante a consulta cadastral por CNPJ
+- [x] Aplicar máscaras automáticas de CNPJ e CEP durante a digitação
+- [x] Exibir mensagens claras para CNPJ inválido e empresa não encontrada
+- [x] Testar regras de máscara, estados de erro/loading e responsividade

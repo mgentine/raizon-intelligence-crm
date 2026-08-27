@@ -51,3 +51,7 @@ O formulário foi revisado novamente em desktop 1280×720 e mobile 390×844. O c
 ### Evidência técnica
 
 Os adapters BrasilAPI e CNPJ.ws agora normalizam porte, logradouro, número, complemento, bairro, CEP, telefone e e-mail. O helper de autofill só aplica esses valores quando o respectivo campo está vazio.
+
+## UX da consulta por CNPJ — 27/08/2026
+
+O formulário foi revisado em desktop 1280×720 e mobile 390×844 após a inclusão das máscaras. O campo CNPJ mantém a largura e hierarquia adequadas; o CEP permanece integrado à seção de endereço. No mobile, os campos continuam empilhados sem overflow e o espaço destinado ao feedback abaixo do CNPJ não desloca os botões para fora do formulário. O spinner e as mensagens dependem do estado da consulta e foram implementados no DOM; não foi forçada uma chamada externa durante a captura visual.
