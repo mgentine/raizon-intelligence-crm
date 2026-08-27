@@ -30,3 +30,25 @@ html, body, #root { min-height: 100%; }
 body { margin: 0; font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; background: #f7f8f6; color: #16221f; }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
+
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  button[data-slot="button"] {
+    min-height: 44px;
+  }
+
+  button[data-slot="button"][data-size="icon"],
+  button[data-slot="button"][data-size="icon-sm"],
+  button[data-slot="button"][data-size="icon-lg"] {
+    min-width: 44px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}

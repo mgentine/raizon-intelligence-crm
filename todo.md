@@ -421,3 +421,10 @@
 - [x] Implementar filtros rápidos de status e profissional com contagem de resultados
 - [x] Implementar gráfico de valores de propostas por status baseado exclusivamente em dados persistidos
 - [x] Validar cálculo, estado sem dados, responsividade, testes e build
+
+# Responsividade para celular e tablet
+
+- [x] Ajustar navegação e cabeçalho para celulares e tablets
+- [x] Ajustar formulários, painéis, filtros e ações de propostas para telas menores
+- [x] Ajustar Central de Execução e Central de Inteligência para tablet e celular
+- [x] Validar as telas críticas em 390×844, 768×1024 e desktop, sem overflow horizontal
