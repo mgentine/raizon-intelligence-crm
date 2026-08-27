@@ -357,12 +357,12 @@
 
 # Fase 2 — conversão da venda em execução técnica — solicitação 27/08/2026
 
-- [ ] Criar projeto de execução a partir de proposta aceita
-- [ ] Congelar escopo, entregáveis, premissas, exclusões e documentos da proposta
-- [ ] Implementar checklist de documentos e pendências com responsáveis e prazos
-- [ ] Implementar tarefas técnicas, evidências e acompanhamento de execução
-- [ ] Implementar entrega, aceite, encerramento e registro do pós-atendimento inicial
-- [ ] Adicionar testes de transição, RBAC, persistência e validar desktop/mobile
+- [x] Criar projeto de execução a partir de proposta aceita
+- [x] Congelar escopo, entregáveis, premissas, exclusões e documentos da proposta
+- [x] Implementar checklist de documentos e pendências com responsáveis e prazos
+- [x] Implementar tarefas técnicas, evidências e acompanhamento de execução
+- [x] Implementar entrega, aceite, encerramento e registro do pós-atendimento inicial
+- [x] Adicionar testes de transição, RBAC, persistência e validar desktop/mobile
 
 # Fase 2 — execução e entrega técnica
 
@@ -374,9 +374,20 @@
 - [x] Validar visualmente a Central de Execução em desktop e mobile com banco vazio
 - [ ] Executar transição ponta a ponta com dados reais do ambiente, sem inserir dados artificiais
 - [x] Finalizar documentação operacional e critérios de aceite da Fase 2
-- [ ] Iniciar Fase 3 — Inteligência, automação e escala
+- [x] Iniciar Fase 3 — Inteligência, automação e escala
 
 # Melhoria solicitada — progresso da execução
 
 - [x] Adicionar indicador visual de progresso baseado em tarefas e checklist na Central de Execução
 - [x] Validar o indicador em desktop/mobile e atualizar testes/documentação
+
+# Fase 3 — inteligência, automação e escala
+
+- [x] Implementar radar operacional de vencimentos, pendências, riscos e sinais comerciais
+- [x] Implementar follow-ups automáticos idempotentes após envio de propostas, com intervenção humana
+- [x] Implementar indicadores comerciais de propostas, conversão, ticket, ciclo e motivos de perda
+- [x] Implementar inteligência de carteira e recomendações determinísticas com origem rastreável
+- [x] Implementar IA assistiva governada para sugestão de serviço, resumo e campos faltantes, exigindo aprovação humana
+- [x] Implementar consulta externa controlada com fonte, data, retorno essencial e confiança quando houver provedor autorizado
+- [x] Validar segurança, RBAC, idempotência, reversibilidade, testes e responsividade da Fase 3
+- [x] Avaliar o sistema completo, riscos, lacunas, maturidade e próximos passos

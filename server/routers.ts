@@ -5,7 +5,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { bulkUpsertCompanies, createImportFailureNotification, createActivity, createCompany, createContact, createRegulatoryAct, createEvidenceFile, createImportRun, decideImportConflict, completeRecurringItem, createLead, createOpportunity, createRecurringItem, archiveEvidenceFile, updateRegulatoryAct, archiveRegulatoryAct, createUnit, updateUnit, updateContact, archiveUnit, archiveContact, finishImportRun, getCommercialFunnelSummary, getDashboardStats, getLeadTransitionEvidence, getOperationalCoverage, getCetesbLeadStatus, convertLeadToClient, updateOpportunityDetails, listCompanies, listContacts, listEvidenceFiles, listImportRuns, listPendingImportConflicts, listLeads, listNotifications, listOpportunities, listOperationalQueue, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateLeadCommercialStatus, updateOpportunityStage, updateOpportunityStageWithLossReason, getRaizonProfile, upsertRaizonProfile, listServiceCatalog, createServiceCatalogItem, updateServiceCatalogItem, archiveServiceCatalogItem, listProposals, createProposalFromRefs, updateProposalDetails, updateProposalStatus, createProposalVersion, issueProposal, listExecutionProjects, getExecutionProjectDetails, createExecutionProjectFromProposal, updateExecutionProjectStatus, createProjectTask, updateProjectTaskStatus, updateProjectChecklistStatus, listProjectEvidence, createProjectEvidence } from "./db";
+import { bulkUpsertCompanies, createImportFailureNotification, createActivity, createCompany, createContact, createRegulatoryAct, createEvidenceFile, createImportRun, decideImportConflict, completeRecurringItem, createLead, createOpportunity, createRecurringItem, archiveEvidenceFile, updateRegulatoryAct, archiveRegulatoryAct, createUnit, updateUnit, updateContact, archiveUnit, archiveContact, finishImportRun, getCommercialFunnelSummary, getDashboardStats, getLeadTransitionEvidence, getOperationalCoverage, getCetesbLeadStatus, convertLeadToClient, updateOpportunityDetails, listCompanies, listContacts, listEvidenceFiles, listImportRuns, listPendingImportConflicts, listLeads, listNotifications, listOpportunities, listOperationalQueue, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateLeadCommercialStatus, updateOpportunityStage, updateOpportunityStageWithLossReason, getRaizonProfile, upsertRaizonProfile, listServiceCatalog, createServiceCatalogItem, updateServiceCatalogItem, archiveServiceCatalogItem, listProposals, createProposalFromRefs, updateProposalDetails, updateProposalStatus, createProposalVersion, issueProposal, listExecutionProjects, getExecutionProjectDetails, createExecutionProjectFromProposal, updateExecutionProjectStatus, createProjectTask, updateProjectTaskStatus, updateProjectChecklistStatus, listProjectEvidence, createProjectEvidence, getIntelligenceRadar, getCommercialMetrics, runProposalFollowUps, recordRegulatoryValidation, listIntelligenceSuggestions, createIntelligenceSuggestion, reviewIntelligenceSuggestion } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 import { storagePut } from "./storage";
 import { normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
@@ -13,6 +13,7 @@ import { validateDocxTemplateMetadata } from "../shared/templateRules";
 import { canUploadProjectEvidence, MAX_PROJECT_EVIDENCE_BYTES } from "../shared/executionRules";
 import { canProfileUpdateProposalStatus } from "../shared/proposalRules";
 import { sendTitanEmail } from "./email";
+import { invokeLLM } from "./_core/llm";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
 const leadStageSchema = z.enum(["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"]);
@@ -70,6 +71,30 @@ export const appRouter = router({
       const info = await sendTitanEmail({ subject: input.subject, text: "Teste controlado de integração SMTP Titan do Raizon Intelligence CRM." });
       return { sent: true, messageId: info.messageId };
     }),
+  }),
+  intelligence: router({
+    radar: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getIntelligenceRadar(); }),
+    metrics: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getCommercialMetrics(); }),
+    followUps: protectedProcedure.mutation(({ ctx }) => { requireProfile(ctx, ["admin", "commercial"]); return runProposalFollowUps(); }),
+    suggestions: protectedProcedure.input(z.object({ status: z.enum(["pending", "approved", "rejected"]).optional() }).optional()).query(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listIntelligenceSuggestions(input?.status); }),
+    generateSuggestion: protectedProcedure.input(z.object({ entityType: z.enum(["opportunity", "company", "proposal"]), entityId: z.number().int().positive().optional(), suggestionType: z.enum(["service", "summary", "missing_fields"]), sourceSnapshot: z.string().min(2).max(20_000) })).mutation(async ({ ctx, input }) => {
+      requireProfile(ctx, ["admin", "commercial", "technical"]);
+      const result = await invokeLLM({
+        model: "gpt-5-mini",
+        messages: [
+          { role: "system", content: "Você é um assistente interno da Raizon Ambiental. Analise somente os dados fornecidos. Não declare irregularidade jurídica, não invente dados, não emita proposta e não crie obrigação. Retorne JSON objetivo com suggestion, rationale, missingFields e confidence. Toda saída é uma sugestão que exige aprovação humana." },
+          { role: "user", content: `Tipo de sugestão: ${input.suggestionType}. Dados de origem: ${input.sourceSnapshot}` },
+        ],
+        response_format: { type: "json_schema", json_schema: { name: "raizon_intelligence_suggestion", strict: true, schema: { type: "object", properties: { suggestion: { type: "string" }, rationale: { type: "string" }, missingFields: { type: "array", items: { type: "string" } }, confidence: { type: "number", minimum: 0, maximum: 1 } }, required: ["suggestion", "rationale", "missingFields", "confidence"], additionalProperties: false } } },
+      });
+      const content = result.choices[0]?.message?.content;
+      const suggestion = typeof content === "string" ? content : JSON.stringify(content || { suggestion: "", rationale: "", missingFields: [], confidence: 0 });
+      let confidence = 0;
+      try { confidence = Math.max(0, Math.min(1, Number(JSON.parse(suggestion).confidence || 0))); } catch { confidence = 0; }
+      return createIntelligenceSuggestion({ entityType: input.entityType, entityId: input.entityId, suggestionType: input.suggestionType, sourceSnapshot: input.sourceSnapshot, suggestion, confidence: confidence.toFixed(2), status: "pending", createdBy: ctx.user.id });
+    }),
+    reviewSuggestion: protectedProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["approved", "rejected"]) })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return reviewIntelligenceSuggestion(input.id, input.status, ctx.user.id); }),
+    recordValidation: protectedProcedure.input(z.object({ regulatoryActId: z.number().int().positive(), sourceVersion: z.string().trim().max(120).optional(), publishedStatus: z.string().trim().max(120).optional(), expiresAt: z.date().optional(), evidenceUrl: z.string().url().max(700), rawEssential: z.string().trim().min(2).max(20_000), confidence: z.number().min(0).max(1), validationStatus: z.enum(["unverified", "confirmed", "needs_review"]) })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "technical"]); return recordRegulatoryValidation({ ...normalizePersistedDates(input, ["expiresAt"]), validatedBy: ctx.user.id }); }),
   }),
   dashboard: router({
     stats: protectedProcedure.query(() => getDashboardStats()),

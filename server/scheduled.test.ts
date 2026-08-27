@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const authenticateRequestMock = vi.hoisted(() => vi.fn());
 const getDbMock = vi.hoisted(() => vi.fn());
@@ -6,6 +6,7 @@ const getUserByOpenIdMock = vi.hoisted(() => vi.fn());
 const refreshUserNotificationsMock = vi.hoisted(() => vi.fn());
 const recordBlockedSourceAttemptMock = vi.hoisted(() => vi.fn(async (source: string) => source === "cetesb" ? 101 : 102));
 const sendOperationalDigestEmailMock = vi.hoisted(() => vi.fn(async () => ({ sent: true, skipped: false, messageId: "test-message" })));
+const runProposalFollowUpsMock = vi.hoisted(() => vi.fn(async () => ({ scanned: 4, created: 2, skipped: 2 })));
 
 vi.mock("./_core/sdk", () => ({ sdk: { authenticateRequest: authenticateRequestMock } }));
 vi.mock("./email", () => ({ sendOperationalDigestEmail: sendOperationalDigestEmailMock }));
@@ -15,9 +16,10 @@ vi.mock("./db", () => ({
   getUserByOpenId: getUserByOpenIdMock,
   refreshUserNotifications: refreshUserNotificationsMock,
   recordBlockedSourceAttempt: recordBlockedSourceAttemptMock,
+  runProposalFollowUps: runProposalFollowUpsMock,
 }));
 
-import { refreshRegulatoryPriorities } from "./scheduled";
+import { refreshCommercialFollowUps, refreshRegulatoryPriorities } from "./scheduled";
 
 function responseDouble() {
   const response = {
@@ -85,5 +87,25 @@ describe("callback periódico regulatório", () => {
       startedAt: expect.any(String),
       finishedAt: expect.any(String),
     }));
+  });
+});
+
+
+describe("callback periódico de follow-up comercial", () => {
+  beforeEach(() => runProposalFollowUpsMock.mockClear());
+  it("bloqueia chamadas que não são de cron", async () => {
+    authenticateRequestMock.mockResolvedValueOnce({ isCron: false, taskUid: undefined });
+    const res = responseDouble();
+    await refreshCommercialFollowUps(requestDouble(), res);
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(runProposalFollowUpsMock).not.toHaveBeenCalled();
+  });
+
+  it("executa follow-ups para identidade cron e retorna métricas", async () => {
+    authenticateRequestMock.mockResolvedValueOnce({ isCron: true, taskUid: "task-followup" });
+    const res = responseDouble();
+    await refreshCommercialFollowUps(requestDouble(), res);
+    expect(runProposalFollowUpsMock).toHaveBeenCalledTimes(1);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ ok: true, taskUid: "task-followup", scanned: 4, created: 2, skipped: 2 }));
   });
 });

@@ -364,6 +364,30 @@ export const projectEvidence = mysqlTable("project_evidence", {
 export type ProjectEvidence = typeof projectEvidence.$inferSelect;
 export type InsertProjectEvidence = typeof projectEvidence.$inferInsert;
 
+export const intelligenceSuggestionStatuses = ["pending", "approved", "rejected"] as const;
+export type IntelligenceSuggestionStatus = (typeof intelligenceSuggestionStatuses)[number];
+
+export const intelligenceSuggestions = mysqlTable("intelligence_suggestions", {
+  id: int("id").autoincrement().primaryKey(),
+  entityType: varchar("entityType", { length: 60 }).notNull(),
+  entityId: int("entityId"),
+  suggestionType: varchar("suggestionType", { length: 80 }).notNull(),
+  sourceSnapshot: text("sourceSnapshot").notNull(),
+  suggestion: text("suggestion").notNull(),
+  confidence: decimal("confidence", { precision: 5, scale: 2 }),
+  status: mysqlEnum("status", intelligenceSuggestionStatuses).default("pending").notNull(),
+  createdBy: int("createdBy").notNull(),
+  reviewedBy: int("reviewedBy"),
+  reviewedAt: timestamp("reviewedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  entityIdx: index("intelligence_suggestions_entity_idx").on(table.entityType, table.entityId),
+  statusIdx: index("intelligence_suggestions_status_idx").on(table.status),
+}));
+
+export type IntelligenceSuggestion = typeof intelligenceSuggestions.$inferSelect;
+export type InsertIntelligenceSuggestion = typeof intelligenceSuggestions.$inferInsert;
+
 export const activities = mysqlTable("activities", {
   id: int("id").autoincrement().primaryKey(),
   companyId: int("companyId").notNull(),
@@ -371,6 +395,7 @@ export const activities = mysqlTable("activities", {
   ownerId: int("ownerId"),
   channel: varchar("channel", { length: 60 }).notNull(),
   objective: varchar("objective", { length: 255 }),
+  automationKey: varchar("automationKey", { length: 180 }),
   outcome: text("outcome"),
   nextAction: varchar("nextAction", { length: 255 }),
   nextActionAt: timestamp("nextActionAt"),
@@ -378,8 +403,9 @@ export const activities = mysqlTable("activities", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   companyIdx: index("activities_company_idx").on(table.companyId),
-  nextActionIdx: index("activities_next_action_idx").on(table.nextActionAt),
-}));
+    nextActionIdx: index("activities_next_action_idx").on(table.nextActionAt),
+    automationKeyUnique: uniqueIndex("activities_automation_key_unique").on(table.automationKey),
+  }));
 
 export type Activity = typeof activities.$inferSelect;
 export type InsertActivity = typeof activities.$inferInsert;
@@ -528,6 +554,10 @@ export const regulatoryVersions = mysqlTable("regulatory_versions", {
   publishedStatus: varchar("publishedStatus", { length: 120 }),
   expiresAt: timestamp("expiresAt"),
   evidenceUrl: varchar("evidenceUrl", { length: 700 }),
+  rawEssential: text("rawEssential"),
+  confidence: decimal("confidence", { precision: 5, scale: 2 }),
+  validationStatus: mysqlEnum("validationStatus", ["unverified", "confirmed", "needs_review"]).default("unverified").notNull(),
+  validatedBy: int("validatedBy"),
   collectedAt: timestamp("collectedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({

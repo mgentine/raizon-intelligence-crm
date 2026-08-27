@@ -8,7 +8,7 @@ import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { refreshRegulatoryPriorities } from "../scheduled";
+import { refreshCommercialFollowUps, refreshRegulatoryPriorities } from "../scheduled";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -38,6 +38,7 @@ async function startServer() {
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   app.post("/api/scheduled/refresh-regulatory-priorities", refreshRegulatoryPriorities);
+  app.post("/api/scheduled/refresh-commercial-follow-ups", refreshCommercialFollowUps);
   // tRPC API
   app.use(
     "/api/trpc",

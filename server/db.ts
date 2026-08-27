@@ -25,6 +25,7 @@ import {
   projectTasks,
   projectChecklist,
   projectEvidence,
+  intelligenceSuggestions,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { normalizeRegulatoryStatus, shouldCreateOpenNotification } from "../shared/crmRules";
@@ -32,6 +33,7 @@ import { onlyActive, onlyActiveBy } from "../shared/archiveRules";
 import { buildBlockedSourceAttempt } from "../shared/sourceReadiness";
 import { validateProposalTransition, buildProposalSourceMap, canCreateProposalFromOpportunity, type ProposalStatus } from "../shared/proposalRules";
 import { canTransitionExecution, canCloseExecution, type ExecutionStatus } from "../shared/executionRules";
+import { calculateCommercialMetrics, isEligibleForProposalFollowUp } from "../shared/intelligenceRules";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -358,6 +360,88 @@ export async function getDashboardStats() {
     overdueActivities: Number(overdueCount[0]?.count ?? 0),
     forecastRevenue: Number(forecast[0]?.value ?? 0),
   };
+}
+
+export async function getIntelligenceRadar() {
+  const db = await getDb();
+  if (!db) return { regulatory: [], recurring: [], overdueActivities: [], staleOpportunities: [] };
+  const now = new Date();
+  const next90Days = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+  const staleSince = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const [regulatory, recurring, overdueActivities, staleOpportunities] = await Promise.all([
+    db.select({ act: regulatoryActs, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName } }).from(regulatoryActs).leftJoin(companies, eq(regulatoryActs.companyId, companies.id)).where(and(isNull(regulatoryActs.archivedAt), isNotNull(regulatoryActs.expiresAt), lte(regulatoryActs.expiresAt, next90Days))).orderBy(asc(regulatoryActs.expiresAt)).limit(25),
+    db.select({ item: recurringItems, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName } }).from(recurringItems).leftJoin(companies, eq(recurringItems.companyId, companies.id)).where(and(eq(recurringItems.status, "open"), lte(recurringItems.dueAt, next90Days))).orderBy(asc(recurringItems.dueAt)).limit(25),
+    db.select({ activity: activities, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName }, opportunity: { id: opportunities.id, title: opportunities.title } }).from(activities).leftJoin(companies, eq(activities.companyId, companies.id)).leftJoin(opportunities, eq(activities.opportunityId, opportunities.id)).where(and(isNotNull(activities.nextActionAt), lt(activities.nextActionAt, now))).orderBy(asc(activities.nextActionAt)).limit(25),
+    db.select({ opportunity: opportunities, company: { id: companies.id, legalName: companies.legalName, tradeName: companies.tradeName } }).from(opportunities).leftJoin(companies, eq(opportunities.companyId, companies.id)).where(and(sql`${opportunities.stage} not in ('won','lost','discarded')`, lt(opportunities.updatedAt, staleSince))).orderBy(asc(opportunities.updatedAt)).limit(25),
+  ]);
+  return { regulatory, recurring, overdueActivities, staleOpportunities };
+}
+
+export async function getCommercialMetrics() {
+  const db = await getDb();
+  if (!db) return { proposalsThisMonth: 0, proposedValueThisMonth: 0, closedValueThisMonth: 0, conversionRate: 0, averageTicket: 0, averageCycleDays: 0, lossReasons: [] };
+  const [proposalRows, opportunityRows] = await Promise.all([db.select().from(proposals), db.select().from(opportunities)]);
+  return calculateCommercialMetrics(proposalRows, opportunityRows);
+}
+
+export async function recordRegulatoryValidation(input: { regulatoryActId: number; sourceVersion?: string; publishedStatus?: string; expiresAt?: Date; evidenceUrl?: string; rawEssential: string; confidence: number; validationStatus: "unverified" | "confirmed" | "needs_review"; validatedBy: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [act] = await db.select().from(regulatoryActs).where(eq(regulatoryActs.id, input.regulatoryActId)).limit(1);
+  if (!act) throw new Error("Ato regulatório não encontrado.");
+  const fingerprint = createHash("sha256").update(JSON.stringify({ regulatoryActId: input.regulatoryActId, sourceVersion: input.sourceVersion || null, publishedStatus: input.publishedStatus || null, expiresAt: input.expiresAt?.toISOString() || null, evidenceUrl: input.evidenceUrl || null, rawEssential: input.rawEssential.trim() })).digest("hex");
+  const [existing] = await db.select({ id: regulatoryVersions.id }).from(regulatoryVersions).where(and(eq(regulatoryVersions.regulatoryActId, input.regulatoryActId), eq(regulatoryVersions.payloadFingerprint, fingerprint))).limit(1);
+  if (existing) return { id: existing.id, created: false } as const;
+  const result = await db.insert(regulatoryVersions).values({ regulatoryActId: input.regulatoryActId, sourceVersion: input.sourceVersion, payloadFingerprint: fingerprint, publishedStatus: input.publishedStatus, expiresAt: input.expiresAt, evidenceUrl: input.evidenceUrl, rawEssential: input.rawEssential.trim(), confidence: input.confidence.toFixed(2), validationStatus: input.validationStatus, validatedBy: input.validatedBy, collectedAt: new Date() });
+  await db.update(regulatoryActs).set({ publishedStatus: input.publishedStatus, expiresAt: input.expiresAt, evidenceUrl: input.evidenceUrl, sourceVersion: input.sourceVersion, collectedAt: new Date(), rawFingerprint: fingerprint, needsValidation: input.validationStatus === "confirmed" ? 0 : 1, updatedAt: new Date() }).where(eq(regulatoryActs.id, input.regulatoryActId));
+  return { id: Number(result[0].insertId), created: true } as const;
+}
+
+export async function runProposalFollowUps() {
+  const db = await getDb();
+  if (!db) return { scanned: 0, created: 0, skipped: 0 };
+  const candidates = (await db.select().from(proposals).where(or(eq(proposals.status, "sent"), eq(proposals.status, "negotiating"))).limit(100)).filter((proposal) => isEligibleForProposalFollowUp(proposal));
+  let created = 0;
+  let skipped = 0;
+  for (const proposal of candidates) {
+    const objective = `auto_followup:proposal:${proposal.id}`;
+    const existing = await db.select({ id: activities.id }).from(activities).where(and(eq(activities.opportunityId, proposal.opportunityId), eq(activities.objective, objective))).limit(1);
+    if (existing.length) { skipped++; continue; }
+    const followUpAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    try {
+      await db.insert(activities).values({ companyId: proposal.companyId, opportunityId: proposal.opportunityId, ownerId: proposal.ownerId, channel: "automação", objective, automationKey: objective, outcome: "Follow-up criado automaticamente após envio da proposta; intervenção humana necessária.", nextAction: "Confirmar recebimento e obter retorno da proposta", nextActionAt: followUpAt, happenedAt: new Date() });
+    } catch (error) {
+      if (String(error).toLowerCase().includes("duplicate") || String(error).toLowerCase().includes("unique")) { skipped++; continue; }
+      throw error;
+    }
+    if (proposal.ownerId) {
+      const groupingKey = `proposal_followup:${proposal.id}`;
+      const alreadyNotified = await db.select({ id: notifications.id }).from(notifications).where(and(eq(notifications.userId, proposal.ownerId), eq(notifications.groupingKey, groupingKey))).limit(1);
+      if (!alreadyNotified.length) await db.insert(notifications).values({ userId: proposal.ownerId, type: "proposal_followup", severity: "info", groupingKey, title: "Follow-up de proposta criado", body: `A proposta ${proposal.proposalNumber || `#${proposal.id}`} está sem retorno registrado.`, entityType: "proposal", entityId: proposal.id });
+    }
+    created++;
+  }
+  return { scanned: candidates.length, created, skipped };
+}
+
+export async function listIntelligenceSuggestions(status?: "pending" | "approved" | "rejected") {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(intelligenceSuggestions).where(status ? eq(intelligenceSuggestions.status, status) : undefined).orderBy(desc(intelligenceSuggestions.createdAt)).limit(50);
+}
+
+export async function createIntelligenceSuggestion(input: typeof intelligenceSuggestions.$inferInsert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const result = await db.insert(intelligenceSuggestions).values(input);
+  return Number(result[0].insertId);
+}
+
+export async function reviewIntelligenceSuggestion(id: number, status: "approved" | "rejected", reviewedBy: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(intelligenceSuggestions).set({ status, reviewedBy, reviewedAt: new Date() }).where(eq(intelligenceSuggestions.id, id));
+  return { success: true } as const;
 }
 
 export async function getOperationalCoverage() {
