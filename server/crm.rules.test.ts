@@ -38,6 +38,16 @@ describe("CRM rules", () => {
     await expect(lookupCnpj("123")).rejects.toThrow("14 dígitos");
   });
 
+  it("uses CNPJ.ws when BrasilAPI is blocked with 403", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response("forbidden", { status: 403 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ razao_social: "Empresa Fallback", estabelecimento: { nome_fantasia: "Fallback", situacao_cadastral: "ATIVA", atividade_principal: { id: "1234567" }, cidade: { nome: "Votuporanga" }, estado: { sigla: "SP" } } }), { status: 200, headers: { "content-type": "application/json" } }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(lookupCnpj("56.431.364/0001-80")).resolves.toMatchObject({ source: "cnpj.ws", legalName: "Empresa Fallback", city: "Votuporanga", state: "SP" });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    vi.unstubAllGlobals();
+  });
+
   it("maps a missing company response to a safe not-found error", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("not found", { status: 404 })));
     await expect(lookupCnpj("56.431.364/0001-80")).rejects.toThrow("CNPJ_NOT_FOUND");

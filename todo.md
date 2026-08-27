@@ -274,3 +274,9 @@
 - [x] Diferenciar CNPJ inválido, empresa não encontrada e indisponibilidade do provedor
 - [x] Exibir mensagem orientada sem bloquear o preenchimento manual
 - [x] Testar os três estados do provider cadastral
+
+# Fallback da consulta CNPJ após HTTP 403
+
+- [x] Adicionar fallback cadastral quando a rota principal retornar 403
+- [x] Preservar distinção entre CNPJ não encontrado e provedor bloqueado/indisponível
+- [x] Testar 403, fallback bem-sucedido e falha conjunta dos provedores
