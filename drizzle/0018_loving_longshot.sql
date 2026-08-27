@@ -1,0 +1,1 @@
+ALTER TABLE `proposals` ADD `professional` varchar(120);

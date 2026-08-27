@@ -98,7 +98,7 @@ export async function listProposals() {
     .orderBy(desc(proposals.updatedAt)).limit(100);
 }
 
-export async function createProposalFromRefs(input: { opportunityId: number; companyId: number; unitId?: number; contactId?: number; serviceId: number; ownerId: number; investment: string; paymentTerms?: string; validityDays?: number; visitsIncluded?: number; missingInformation?: string; notes?: string }) {
+export async function createProposalFromRefs(input: { opportunityId: number; companyId: number; unitId?: number; contactId?: number; serviceId: number; ownerId: number; professional?: string; investment: string; paymentTerms?: string; validityDays?: number; visitsIncluded?: number; missingInformation?: string; notes?: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   const [company] = await db.select().from(companies).where(eq(companies.id, input.companyId)).limit(1);
@@ -110,9 +110,10 @@ export async function createProposalFromRefs(input: { opportunityId: number; com
   if (input.unitId) { const [unit] = await db.select({ id: units.id }).from(units).where(and(eq(units.id, input.unitId), eq(units.companyId, company.id))).limit(1); if (!unit) throw new Error("A unidade selecionada não pertence à empresa."); }
   if (input.contactId) { const [contact] = await db.select({ id: contacts.id }).from(contacts).where(and(eq(contacts.id, input.contactId), eq(contacts.companyId, company.id))).limit(1); if (!contact) throw new Error("O contato selecionado não pertence à empresa."); }
   const clientSnapshot = JSON.stringify({ id: company.id, cnpj: company.cnpj, legalName: company.legalName, tradeName: company.tradeName, address: company.address, addressNumber: company.addressNumber, city: company.city, state: company.state });
+  const professional = input.professional?.trim() || undefined;
   const serviceSnapshot = JSON.stringify({ id: service.id, name: service.name, category: service.category, agency: service.agency, state: service.state, summary: service.summary });
   const [latest] = await db.select({ version: proposals.version, proposalNumber: proposals.proposalNumber }).from(proposals).where(eq(proposals.seriesKey, `opportunity:${input.opportunityId}`)).orderBy(desc(proposals.version)).limit(1);
-  const result = await db.insert(proposals).values({ seriesKey: `opportunity:${input.opportunityId}`, version: (latest?.version ?? 0) + 1, proposalNumber: latest?.proposalNumber ?? undefined, opportunityId: input.opportunityId, companyId: input.companyId, unitId: input.unitId, contactId: input.contactId, serviceId: input.serviceId, ownerId: input.ownerId, clientSnapshot, serviceSnapshot, scopeSnapshot: service.scope, deliverablesSnapshot: service.deliverables, exclusionsSnapshot: service.exclusions, requiredDocumentsSnapshot: service.requiredDocuments, investment: input.investment, paymentTerms: input.paymentTerms, validityDays: input.validityDays ?? 20, visitsIncluded: input.visitsIncluded ?? service.defaultVisits, missingInformation: input.missingInformation, sourceMap: JSON.stringify(buildProposalSourceMap()), notes: input.notes });
+  const result = await db.insert(proposals).values({ seriesKey: `opportunity:${input.opportunityId}`, version: (latest?.version ?? 0) + 1, proposalNumber: latest?.proposalNumber ?? undefined, opportunityId: input.opportunityId, companyId: input.companyId, unitId: input.unitId, contactId: input.contactId, serviceId: input.serviceId, ownerId: input.ownerId, professional, clientSnapshot, serviceSnapshot, scopeSnapshot: service.scope, deliverablesSnapshot: service.deliverables, exclusionsSnapshot: service.exclusions, requiredDocumentsSnapshot: service.requiredDocuments, investment: input.investment, paymentTerms: input.paymentTerms, validityDays: input.validityDays ?? 20, visitsIncluded: input.visitsIncluded ?? service.defaultVisits, missingInformation: input.missingInformation, sourceMap: JSON.stringify(buildProposalSourceMap()), notes: input.notes });
   return Number(result[0].insertId);
 }
 

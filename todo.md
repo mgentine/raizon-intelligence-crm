@@ -391,3 +391,11 @@
 - [x] Implementar consulta externa controlada com fonte, data, retorno essencial e confiança quando houver provedor autorizado
 - [x] Validar segurança, RBAC, idempotência, reversibilidade, testes e responsividade da Fase 3
 - [x] Avaliar o sistema completo, riscos, lacunas, maturidade e próximos passos
+
+# Melhoria da geração de propostas — solicitação 27/08/2026
+
+- [x] Adicionar seleção de cliente cadastrado por CNPJ no formulário de proposta
+- [x] Adicionar valor, condição de pagamento, validade e observações à proposta
+- [x] Permitir selecionar serviço cadastrado e cadastrar serviço reutilizável para futuras propostas
+- [x] Permitir selecionar profissional responsável: Miguel Gentine ou Laleska Fernanda
+- [x] Validar persistência, governança, testes e responsividade do novo formulário de proposta

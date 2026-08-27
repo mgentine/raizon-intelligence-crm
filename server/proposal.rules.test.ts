@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildProposalSourceMap, calculateSuggestedPrice, canCreateProposalFromOpportunity, canProfileUpdateProposalStatus, validateProposalTransition } from "../shared/proposalRules";
+import { buildProposalSourceMap, calculateSuggestedPrice, canCreateProposalFromOpportunity, canProfileUpdateProposalStatus, proposalProfessionals, validateProposalTransition } from "../shared/proposalRules";
 
 describe("Proposal rules", () => {
   it("calcula preço sugerido com fatores e adicionais explícitos", () => {
@@ -27,6 +27,10 @@ describe("Proposal rules", () => {
 
   it("exige conteúdo antes das revisões", () => {
     expect(() => validateProposalTransition("draft", "technical_review", false)).toThrow("investimento");
+  });
+
+  it("restringe o profissional responsável aos nomes autorizados", () => {
+    expect(proposalProfessionals).toEqual(["Miguel Gentine", "Laleska Fernanda"]);
   });
 
   it("declara as fontes do snapshot para auditoria", () => {

@@ -42,3 +42,13 @@ Estados disponíveis: rascunho, revisão técnica, revisão comercial, aprovada 
 A Fase 1 não gera DOCX/PDF automaticamente, não calcula impostos ou margem financeira, não integra assinatura eletrônica e não cria dados de catálogo por seed. O template é armazenado e vinculado ao serviço, deixando a renderização documental para uma etapa posterior, depois que o padrão visual oficial for aprovado.
 
 O fluxo está pronto para ser validado com dados reais de uma empresa, uma oportunidade e um serviço piloto. A validação automatizada não insere registros artificiais no banco.
+
+## Complemento — formulário comercial de proposta
+
+A criação de proposta agora começa pela seleção de uma empresa já cadastrada, exibindo CNPJ formatado, nome e oportunidades vinculadas à empresa escolhida. A oportunidade é filtrada pelo `companyId`, evitando que uma proposta seja criada para empresa diferente da oportunidade.
+
+O formulário registra valor em reais, condição de pagamento, validade em dias, observações, informações pendentes e profissional responsável. Os profissionais aceitos pelo contrato são **Miguel Gentine** e **Laleska Fernanda**; o proprietário da operação (`ownerId`) continua sendo mantido separadamente para auditoria e controle de acesso.
+
+O serviço é selecionado do catálogo ativo. Usuários com perfil administrador ou técnico podem abrir o cadastro rápido de um novo serviço com nome, categoria, escopo e entregáveis; após salvar, o serviço fica disponível para futuras propostas e pode ser selecionado no mesmo fluxo. O catálogo continua sujeito à governança técnica existente.
+
+A proposta permanece como rascunho até as etapas de revisão e emissão. O snapshot preserva os dados cadastrais e o escopo do serviço no momento da criação; alterações posteriores no catálogo não reescrevem a proposta já criada.

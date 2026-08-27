@@ -127,6 +127,13 @@
       "when": 1787800575031,
       "tag": "0017_brown_timeslip",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1787828342788,
+      "tag": "0018_loving_longshot",
+      "breakpoints": true
     }
   ]
 }

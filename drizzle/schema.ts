@@ -241,6 +241,7 @@ export const proposals = mysqlTable("proposals", {
   contactId: int("contactId"),
   serviceId: int("serviceId").notNull(),
   ownerId: int("ownerId"),
+  professional: varchar("professional", { length: 120 }),
   status: mysqlEnum("status", proposalStatuses).default("draft").notNull(),
   clientSnapshot: text("clientSnapshot").notNull(),
   serviceSnapshot: text("serviceSnapshot").notNull(),

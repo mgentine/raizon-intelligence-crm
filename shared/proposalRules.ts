@@ -21,6 +21,9 @@ export function canCreateProposalFromOpportunity(stage: string) {
   return (proposalCreationStages as readonly string[]).includes(stage);
 }
 
+export const proposalProfessionals = ["Miguel Gentine", "Laleska Fernanda"] as const;
+export type ProposalProfessional = (typeof proposalProfessionals)[number];
+
 export const proposalStatuses = ["draft", "technical_review", "commercial_review", "approved_internal", "issued", "sent", "negotiating", "accepted", "rejected", "cancelled"] as const;
 export type ProposalStatus = (typeof proposalStatuses)[number];
 
