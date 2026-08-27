@@ -308,3 +308,11 @@
 - [x] Aplicar máscaras automáticas de CNPJ e CEP durante a digitação
 - [x] Exibir mensagens claras para CNPJ inválido e empresa não encontrada
 - [x] Testar regras de máscara, estados de erro/loading e responsividade
+
+# Jornada ponta a ponta do cliente — solicitação 27/08/2026
+
+- [x] Definir jornada do primeiro contato ao pós-atendimento com etapas e critérios de passagem
+- [x] Conectar a jornada a lead, empresa, contato, oportunidade, atividades, atos, recorrências e histórico
+- [x] Implementar no CRM os estados de diagnóstico, proposta, contratação, execução, entrega, encerramento e pós-venda
+- [x] Exibir responsável, próxima ação, prazo, entregáveis e pendências em cada etapa
+- [ ] Testar o fluxo ponta a ponta sem inserir dados artificiais e validar desktop/mobile

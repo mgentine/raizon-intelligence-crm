@@ -71,6 +71,20 @@
       "when": 1787793159797,
       "tag": "0009_silent_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1787795075519,
+      "tag": "0010_remarkable_nightcrawler",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1787795282973,
+      "tag": "0011_dark_kree",
+      "breakpoints": true
     }
   ]
 }

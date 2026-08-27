@@ -1,0 +1,1 @@
+ALTER TABLE `opportunities` MODIFY COLUMN `stage` enum('new','enrichment','actionable','contacted','qualified','diagnosis','scoping','proposal','negotiation','approved','won','contracting','execution','delivery','closed','aftercare','lost','nurture','discarded') NOT NULL DEFAULT 'new';

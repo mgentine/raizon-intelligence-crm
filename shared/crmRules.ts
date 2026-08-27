@@ -60,7 +60,7 @@ export function normalizeRegulatoryStatus(value: string | undefined | null, expi
 }
 
 export function requiresNextAction(stage: string) {
-  return !["won", "lost", "discarded"].includes(stage);
+  return !["closed", "lost", "discarded"].includes(stage);
 }
 
 export const importConflictDecisions = ["accept_incoming", "keep_current", "review", "reject"] as const;
@@ -81,7 +81,7 @@ export function buildOpportunityStageChange(stage: string, lossReason?: string) 
 
 export function validateCommercialTransition(stage: string, nextAction?: string | null, requirements?: { hasValidContact?: boolean; hasDiagnosis?: boolean; hasProposal?: boolean; lossReason?: string | null }) {
   if (requiresNextAction(stage) && !nextAction?.trim()) throw new Error("Etapas comerciais abertas exigem próxima ação definida");
-  if (["contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved"].includes(stage) && requirements?.hasValidContact !== true) throw new Error("A etapa exige contato válido registrado");
+  if (["contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "contracting", "execution", "delivery", "aftercare"].includes(stage) && requirements?.hasValidContact !== true) throw new Error("A etapa exige contato válido registrado");
   if (["proposal", "negotiation", "approved"].includes(stage) && requirements?.hasDiagnosis !== true) throw new Error("A etapa exige diagnóstico registrado");
   if (["negotiation", "approved"].includes(stage) && requirements?.hasProposal !== true) throw new Error("A etapa exige proposta registrada");
   if (stage === "lost" && !requirements?.lossReason?.trim()) throw new Error("O motivo da perda é obrigatório");

@@ -132,7 +132,7 @@ export const regulatoryActs = mysqlTable("regulatory_acts", {
 export type RegulatoryAct = typeof regulatoryActs.$inferSelect;
 export type InsertRegulatoryAct = typeof regulatoryActs.$inferInsert;
 
-export const opportunityStages = ["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"] as const;
+export const opportunityStages = ["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "contracting", "execution", "delivery", "closed", "aftercare", "lost", "nurture", "discarded"] as const;
 export type OpportunityStage = (typeof opportunityStages)[number];
 
 export const opportunities = mysqlTable("opportunities", {
@@ -154,6 +154,8 @@ export const opportunities = mysqlTable("opportunities", {
   nextActionAt: timestamp("nextActionAt"),
   lossReason: varchar("lossReason", { length: 180 }),
   notes: text("notes"),
+  deliverables: text("deliverables"),
+  pendingItems: text("pendingItems"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({

@@ -1,9 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
 import { lookupCnpj } from "./integrations/cnpj";
-import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj } from "../shared/crmRules";
+import { buildOpportunityStageChange, classifyCommercialPriority, completeRecurringStatus, dedupeCompanyRows, isValidCnpj, normalizeCnpj, requiresNextAction } from "../shared/crmRules";
 import { applyCompanyLookupToDraft, formatCepInput, formatCnpjInput, normalizeCnpjInput } from "../shared/companyFormRules";
 
 describe("CRM rules", () => {
+  it("modela o fechamento e o pós-venda como etapas distintas", () => {
+    expect(requiresNextAction("execution")).toBe(true);
+    expect(requiresNextAction("delivery")).toBe(true);
+    expect(requiresNextAction("aftercare")).toBe(true);
+    expect(requiresNextAction("closed")).toBe(false);
+  });
+
   it("prepara perda com motivo obrigatório para o card do funil", () => {
     expect(buildOpportunityStageChange("lost", "  Orçamento incompatível  ")).toEqual({ stage: "lost", lossReason: "Orçamento incompatível" });
     expect(() => buildOpportunityStageChange("lost", "  ")).toThrow("Informe o motivo da perda.");

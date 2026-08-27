@@ -55,3 +55,7 @@ Os adapters BrasilAPI e CNPJ.ws agora normalizam porte, logradouro, número, com
 ## UX da consulta por CNPJ — 27/08/2026
 
 O formulário foi revisado em desktop 1280×720 e mobile 390×844 após a inclusão das máscaras. O campo CNPJ mantém a largura e hierarquia adequadas; o CEP permanece integrado à seção de endereço. No mobile, os campos continuam empilhados sem overflow e o espaço destinado ao feedback abaixo do CNPJ não desloca os botões para fora do formulário. O spinner e as mensagens dependem do estado da consulta e foram implementados no DOM; não foi forçada uma chamada externa durante a captura visual.
+
+## Jornada pós-venda no quadro de oportunidades — 27/08/2026
+
+O quadro foi revisado em desktop 1280×720 e mobile 390×844. As colunas **Contratação**, **Execução**, **Entrega**, **Encerradas** e **Pós-venda** aparecem após **Ganhas**. No desktop, o quadro usa quatro colunas por linha; no mobile, as nove etapas empilham verticalmente sem overflow horizontal. Como o banco permanece sem oportunidades, a revisão confirmou estrutura e estados vazios, mas não a transição com um caso persistido.
