@@ -543,3 +543,15 @@
 - [x] Cobrir o contrato de prévia e a remoção do caminho tRPC de escrita direta com testes de regressão
 - [x] Adicionar bloqueio explícito de escrita aos callbacks periódicos até autorização operacional de ativação
 - [x] Exigir CNPJ com comprimento e dígitos verificadores válidos na prévia antes de classificar a linha como apta
+
+# Prévia autorizada de importação de clientes — arquivo real recebido
+
+- [x] Inspecionar formato, estrutura e qualidade do arquivo recebido sem alterar entidades canônicas — anexo continha instruções técnicas, não CSV/XLSX nem registros de clientes
+- [ ] Mapear e registrar somente a prévia transacional em `import_runs`, `import_staging` e `import_conflicts`
+- [ ] Verificar relatório, conflitos, duplicidades e ausência de escrita em `companies` antes de solicitar aprovação
+
+# Reverificação de aderência às instruções P0 reenviadas
+
+- [x] Confrontar os requisitos P0 do arquivo com schema, migration, transações, locks e testes atuais
+- [x] Reexecutar TypeScript, testes e build sem alterar dados operacionais
+- [x] Registrar a conclusão e os limites de validação da reverificação
