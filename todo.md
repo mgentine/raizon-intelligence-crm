@@ -550,6 +550,13 @@
 - [ ] Mapear e registrar somente a prévia transacional em `import_runs`, `import_staging` e `import_conflicts`
 - [ ] Verificar relatório, conflitos, duplicidades e ausência de escrita em `companies` antes de solicitar aprovação
 
+# Análise documental para homologação controlada
+
+- [x] Inventariar propostas, contratos e relatório técnico recebidos sem alterar dados do CRM
+- [x] Extrair evidências de assinatura, aceite, contratação, escopo, responsável e execução por documento
+- [x] Confrontar os dados documentais com registros existentes e identificar lacunas sem inferência
+- [x] Entregar matriz de homologação para autorização explícita por proposta/empresa antes de qualquer mutation
+
 # Reverificação de aderência às instruções P0 reenviadas
 
 - [x] Confrontar os requisitos P0 do arquivo com schema, migration, transações, locks e testes atuais

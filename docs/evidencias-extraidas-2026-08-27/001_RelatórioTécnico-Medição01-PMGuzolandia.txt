@@ -1,0 +1,3235 @@
+RELATÓRIO TÉCNICO DE EXECUÇÃO E MEDIÇÃO Nº 01
+Contrato nº 006/2026 — Município de Guzolândia/SP
+
+
+
+1. Identificação contratual
+
+    Contratante               Município de Guzolândia/SP
+
+    CNPJ da contratante       45.746.112/0001-24
+
+    Contratada                Miguel Henrique Gentine de Sousa Engenharia Ltda
+
+    CNPJ da contratada        59.786.718/0001-06
+
+    Contrato                  Nº 006/2026
+
+    Processo
+                              572/2026
+    administrativo
+
+    Processo licitatório /
+                              Processo Licitatório nº 010/2026 — Dispensa nº 006/2026
+    dispensa
+
+                              Contratação de empresa especializada para Plano Municipal de
+    Objeto contratual         Gestão Integrada de Resíduos Sólidos (PMGIRS) do Município
+                              de Guzolândia/SP e instrumentos correlatos.
+
+    Valor global do
+                              R$ 33.000,00 (trinta e três mil reais)
+    contrato
+
+    Data de assinatura        05/02/2026
+
+    Responsável técnico       Eng. Miguel Gentine — CREA/SP 5070449007
+
+
+
+
+2. Finalidade e critério desta medição
+
+      O presente relatório tem por finalidade documentar, de forma objetiva e tecnicamente
+rastreável, os serviços já executados no âmbito do Contrato nº 006/2026, para subsidiar a
+Medição nº 01 e a emissão da respectiva Nota Fiscal pela contratada.
+
+      A medição contempla somente os itens efetivamente executados nesta etapa:
+respostas técnicas vinculadas à CETESB, instrução técnica da renovação da Licença de
+Operação do Aterro Municipal, uma visita técnica in loco, deslocamento técnico de ida e
+volta e elaboração do Plano de Contingência em sua Fase 1 completa.
+
+        A emissão de licença, manifestação conclusiva ou qualquer decisão administrativa
+de órgão ambiental não integra ato de controle da contratada. O serviço ora medido
+corresponde à execução técnica, documental, instrutória e de acompanhamento prevista
+no contrato e na proposta técnica.
+
+
+        3. Quadro síntese dos serviços executados
+   Item
+                                                                             Situação    Valor
+   contratu    Serviço executado nesta medição
+                                                                             técnica     (R$)
+   al
+
+               Respostas técnicas aos documentos, termos e exigências
+   6           ambientais vinculados à CETESB (TRCA, conforme                Executado   3.000,00
+               denominação contratual)
+
+   7           Renovação da Licença de Operação do Aterro Municipal          Executado   3.500,00
+
+   8           Visita técnica - 01 visita in loco                            Executado   1.200,00
+
+   9           Deslocamento técnico - ida e volta                            Executado   800,00
+
+               Plano de Contingência - diretrizes de Defesa Civil - Fase 1
+   3                                                                         Executado   3.500,00
+               completa
+
+   -           Total da Medição nº 01                                        -           12.000,00
+
+
+
+
+4. Detalhamento técnico das entregas
+
+4.1 Item 6 — Respostas técnicas aos documentos e exigências ambientais da
+CETESB
+        Foi realizada análise técnica dos documentos, termos e exigências ambientais
+vinculados aos processos municipais junto à CETESB, com organização dos pontos de
+atendimento, conferência dos elementos disponíveis e elaboração das respostas técnicas
+necessárias à instrução dos processos.
+
+        O serviço compreendeu a preparação de manifestações técnicas, justificativas e
+peças complementares, com foco no atendimento das solicitações do órgão ambiental e na
+manutenção da rastreabilidade documental do Município. Para fins de compatibilização
+com o contrato, este item corresponde às “Respostas Técnicas aos TRCA da CETESB”,
+conforme denominação constante do instrumento contratual.
+
+Valor correspondente nesta medição: R$ 3.000,00.
+
+4.2 Item 7 — Renovação da Licença de Operação do Aterro Municipal
+      Foram executadas as atividades técnicas necessárias à instrução e ao
+acompanhamento do processo de renovação da Licença de Operação do Aterro Municipal
+de Guzolândia, incluindo avaliação de pendências, organização documental, análise das
+informações operacionais disponíveis e compatibilização dos elementos técnicos
+necessários ao processo.
+
+      A etapa técnica contratada encontra-se executada para fins de medição. A emissão
+final da Licença de Operação permanece condicionada à análise, diligências, prazos e
+decisão da CETESB, não se confundindo a presente medição com resultado decisório do
+órgão ambiental.
+
+Valor correspondente nesta medição: R$ 3.500,00.
+
+
+4.3 Item 8 — Visita técnica in loco
+      Foi realizada uma visita técnica presencial ao Município de Guzolândia/SP para
+levantamento de informações, reconhecimento das condições locais, alinhamento com
+representantes municipais e coleta de subsídios técnicos aplicáveis aos instrumentos em
+elaboração.
+
+      A visita subsidiou especialmente a regularização ambiental do aterro municipal, a
+estruturação dos planos relacionados à gestão de resíduos sólidos e a consolidação das
+informações necessárias ao Plano de Contingência e demais produtos técnicos
+contratados.
+
+Valor correspondente nesta medição: R$ 1.200,00.
+
+4.4 Item 9 — Deslocamento técnico
+      Foi executado o deslocamento técnico de ida e volta necessário à realização da visita
+presencial, reuniões e levantamentos in loco no Município de Guzolândia/SP.
+      O deslocamento compõe item próprio do quadro contratual e está diretamente
+associado à execução da visita técnica prevista no escopo.
+
+Valor correspondente nesta medição: R$ 800,00.
+
+4.5 Item 3 — Plano de Contingência — Fase 1 completa
+      Foi elaborada a Fase 1 do Plano de Contingência Municipal, com estruturação inicial
+das diretrizes de Proteção e Defesa Civil, organização dos cenários prioritários, definição
+preliminar dos fluxos de acionamento, atribuições institucionais e protocolos básicos de
+resposta.
+
+      Nesta fase, o documento foi tratado como produto autônomo e funcional, voltado ao
+atendimento institucional inicial, à organização da resposta municipal e ao suporte às
+demandas de Defesa Civil e Ministério Público relacionadas ao tema.
+
+      A Fase 1 contempla a base do PLANCON e permite ao Município dispor de um
+instrumento técnico inicial para organização de responsabilidades, comunicação de risco,
+níveis de resposta e diretrizes operacionais. As ações complementares, simulações,
+detalhamentos cartográficos, integração ampliada com órgãos externos e cenários
+adicionais deverão compor a Fase 2.
+
+Valor correspondente nesta medição: R$ 3.500,00.
+
+6. Conclusão técnica
+
+      Com base nas atividades descritas neste relatório, conclui-se que os itens 3 (Fase
+1), 6, 7, 8 e 9 do Contrato nº 006/2026 possuem execução técnica suficiente para fins de
+medição e faturamento nesta etapa, totalizando R$ 12.000,00 (doze mil reais).
+
+
+                                                                             Guzolândia/SP, 15 de maio de 2026.
+                                                           Assinado digitalmente por MIGUEL HENRIQUE
+                              MIGUEL HENRIQUEGENTINE    DE SOUSA:37876866816
+                                              ND: C=BR, CN=MIGUEL HENRIQUE
+                                GENTINE DE    GENTINE DE SOUSA:37876866816, L=
+                                              VOTUPORANGA, O=ICP-Brasil, OU=AC
+                                              SyngularID Multipla, ST=SP
+                              SOUSA:3787686681Razão:  Eu sou o autor deste documento
+                                              Localização:
+                                     6        Data: 2026.05.15 08:31:10-03'00'
+
+                           ________________________________________
+                                              Foxit PDF Reader Versão: 2026.1.0
+
+
+                                               Miguel Gentine
+            Engenheiro Sanitarista, Ambiental e de Segurança do Trabalho — CREA/SP 5070449007
+                          Técnico em Segurança do Trabalho — MTE 0119910/SP
+                              Responsável Técnico — MHGS Engenharia Ltda
+                                                              Raizon Ambiental | RVT 001/2026 | Aterro Guzolândia/SP
+
+
+                                  RELATÓRIO DE VISITA TÉCNICA
+
+                            Aterro Sanitário Municipal de Guzolândia/SP
+
+    Levantamento de dados em campo para instrução do processo de Renovação da Licença de
+                                      Operação (LO) – CETESB
+
+1. IDENTIFICAÇÃO
+
+ Documento                       Relatório de Visita Técnica nº 001/2026 — Raizon Ambiental
+
+ Contrato vinculado              Contrato nº 006/2026 (Dispensa nº 006/2026, Lei nº 14.133/2021)
+
+ Empreendimento                  Aterro Sanitário Municipal em Valas
+
+ Empreendedor                    Prefeitura Municipal de Guzolândia — CNPJ 45.746.112/0001-24
+
+ Localização                     Rod. Feliciano Salles da Cunha (SP-310), km 578+900m — Guzolândia/SP
+
+ Coordenadas                     20°38'20"S 50°41'02"W (20,639020° S; 50,683927° W) — datum WGS-84
+
+ Data e horário da visita        Sábado, 28/03/2026 — 08h55 às 09h20
+
+ Condições climáticas            Tempo aberto, sem precipitação nas 24 h anteriores
+
+ Responsável Técnico             Eng. Miguel H. Gentine de Sousa — CREA/SP 5070449007
+
+ Acompanhamento municipal        Sra. Flávia Marino Cruz — Diretora de Agricultura e Meio Ambiente
+
+
+
+
+2. OBJETIVO DA VISITA
+
+A visita técnica teve por finalidade realizar o levantamento de dados em campo necessários à
+instrução do processo de Renovação da Licença de Operação (LO) do Aterro Sanitário Municipal de
+Guzolândia, junto à Companhia Ambiental do Estado de São Paulo (CETESB), nos termos do escopo
+contratado (itens 6 e 7 do Contrato nº 006/2026).
+
+Foram observadas as condições locacionais, estruturais e operacionais do empreendimento, com
+registro fotográfico georreferenciado e datado, em atendimento à metodologia de inspeção adotada
+pela CETESB para aterros de pequeno porte (Resolução CONAMA nº 404/2008) e ao cálculo do Índice
+de Qualidade de Aterro de Resíduos em Valas (IQR-Valas).
+
+
+
+
+                                              Página 1 de 4
+                                                                Raizon Ambiental | RVT 001/2026 | Aterro Guzolândia/SP
+
+
+
+
+3. CARACTERIZAÇÃO DO EMPREENDIMENTO
+
+ Tipologia                   Aterro sanitário de pequeno porte em valas (RSU < 20 t/dia)
+
+ Enquadramento legal         Resolução CONAMA nº 404/2008; Lei nº 12.305/2010 (PNRS)
+
+                             Valas escavadas em solo, com cobertura periódica por material de
+ Sistema de disposição
+                             empréstimo (solo argiloso local)
+
+                             Resíduos Sólidos Urbanos (RSU) domiciliares e comerciais do município de
+ Resíduos recebidos
+                             Guzolândia
+
+ Acesso                      Via portão de acesso na Rod. SP-310 (20°38'13"S 50°41'01"W)
+
+
+4. METODOLOGIA E DADOS LEVANTADOS
+
+A visita seguiu protocolo de inspeção técnica com percurso por todo o perímetro operacional,
+observação direta das frentes de trabalho e registro fotográfico georreferenciado por meio do
+aplicativo Timemark. Os seguintes elementos foram observados, registrados e/ou coletados:
+
+  • Localização e acesso ao empreendimento (Rod. SP-310, com coordenadas registradas);
+
+  • Condições do portão e do sistema de isolamento perimetral;
+
+  • Frente de operação ativa — vala em uso, disposição dos resíduos e cobertura;
+
+  • Material de cobertura disponível em pátio (solo de empréstimo);
+
+  • Configuração geométrica das valas (taludes, profundidade, extensão);
+
+  • Área de expansão (campo limpo adjacente à célula atual);
+
+  • Indícios de atratividade de vetores e dispersão de resíduos volantes.
+
+Os dados aqui consolidados subsidiarão a elaboração do memorial descritivo da operação, das
+respostas técnicas a eventuais TRCA e do conjunto documental a ser protocolado via sistema e-
+CETESB.
+
+
+
+
+                                             Página 2 de 4
+                                                                               Raizon Ambiental | RVT 001/2026 | Aterro Guzolândia/SP
+
+5. REGISTRO FOTOGRÁFICO GEORREFERENCIADO
+
+Todas as imagens foram capturadas em 28/03/2026 com georreferenciamento, conforme imagens:
+
+
+
+
+             Figura 1. Equipe técnica em campo                      Figura 2. Portão de acesso ao aterro na Rod. SP-310 —
+                                                                      20,636865°S; 50,683726°W — 28/03/2026, 09h18.
+
+
+
+
+Figura 3. Vala recém-aberta — vista da geometria e taludes da        Figura 4. Material de empréstimo (solo argiloso local)
+  trincheira de disposição — 20,638973°S; 50,683947°W —          estocado em pátio, destinado à cobertura periódica das valas
+                           09h00.                                           — 20,639020°S; 50,683927°W — 09h00.
+
+
+
+
+  Figura 5. Frente operacional ativa — disposição de RSU na      Figura 6. Vala em operação com presença de aves no topo da
+   vala, com presença de resíduos volantes — 20,639049°S;            pilha de solo — indício de necessidade de melhoria na
+                  50,683973°W — 08h57.                           cobertura periódica — 20,638999°S; 50,683986°W — 08h57.
+
+
+
+
+                                                            Página 3 de 4
+                                                                    Raizon Ambiental | RVT 001/2026 | Aterro Guzolândia/SP
+
+6. CONSIDERAÇÕES FINAIS
+
+A visita técnica foi efetivamente realizada em 28/03/2026, conforme escopo do Contrato nº
+006/2026, com o levantamento integral dos dados de campo necessários à instrução do processo
+de Renovação da Licença de Operação (LO) do Aterro Sanitário Municipal de Guzolândia junto à
+CETESB.
+
+As informações, observações e registros fotográficos georreferenciados consolidados neste relatório
+constituem evidência documental da inspeção realizada e subsidiarão as etapas subsequentes do
+processo de licenciamento, em especial a elaboração do memorial descritivo da operação, a resposta
+a eventuais TRCA da CETESB e a formalização do pedido de renovação via sistema e-CETESB.
+
+Foram identificadas pendências operacionais pontuais a serem tratadas no plano de adequação a ser
+anexado à instrução processual, sem prejuízo da continuidade do empreendimento. Tais pontos
+serão detalhados em documento técnico específico (Plano de Ações Corretivas), em conformidade
+com o disposto na Resolução CONAMA nº 404/2008 e nos critérios de avaliação do IQR-Valas da
+CETESB.
+
+                                                                               Guzolândia – SP, maio de 2026.
+
+
+
+
+                                            Assinado digitalmente por MIGUEL
+                               MIGUEL       HENRIQUE GENTINE DE
+                                            SOUSA:37876866816
+                              HENRIQUE ND:      C=BR, CN=MIGUEL HENRIQUE
+                                            GENTINE DE SOUSA:37876866816,
+                             GENTINE DE L=VOTUPORANGA,          O=ICP-Brasil,
+                                            OU=AC SyngularID Multipla, ST=SP
+                            SOUSA:3787686 documento
+                                            Razão: Eu sou o autor deste
+
+                                            Localização:
+                                 6816       Data: 2026.05.18 10:15:10-03'00'
+                      ____________________________________________
+
+                              Eng. Miguel Henrique Gentine de Sousa
+                          Engenheiro Sanitarista, Ambiental e de Segurança do Trabalho
+                                CREA/SP nº 5070449007 — Responsável Técnico
+                               MHGS Engenharia Ltda. (CNPJ 59.786.718/0001-06)
+
+
+
+
+                                                  Página 4 de 4
+                                              Raizon Ambiental | RP 002/2026 | Aterro Guzolândia/SP | Processo CETESB 022773/2026-72
+
+
+                                 RELATÓRIO DE PROTOCOLO — e-CETESB
+                                     Aterro Sanitário Municipal de Guzolândia/SP
+            Atendimento à solicitação de inclusão de documentos no processo de Renovação da Licença de Operação (LO)
+
+
+1. IDENTIFICAÇÃO
+
+ Documento                               Relatório de Protocolo nº 002/2026 — Raizon Ambiental
+
+ Contrato vinculado                      Contrato nº 006/2026 (Dispensa nº 006/2026, Lei nº 14.133/2021)
+
+ Relatório precedente                    Relatório de Visita Técnica nº 001/2026 (RVT 001/2026)
+
+ Empreendimento                          Aterro Sanitário Municipal em Valas — Guzolândia/SP
+
+ Empreendedor                            Prefeitura Municipal de Guzolândia — CNPJ 45.746.112/0001-24
+
+ Órgão licenciador                       Companhia Ambiental do Estado de São Paulo (CETESB)
+
+ Sistema utilizado                       e-CETESB / Sistema de Gestão de Processos Digitais do Governo do Estado
+                                         de São Paulo
+
+ Responsável Técnico                     Eng. Miguel H. Gentine de Sousa — CREA/SP 5070449007
+
+
+2. OBJETO
+
+         O presente relatório tem por objetivo documentar formalmente a realização do protocolo eletrônico
+da documentação técnica solicitada pela CETESB no âmbito do processo de Renovação da Licença de
+Operação (LO) do Aterro Sanitário Municipal de Guzolândia, em atendimento à tarefa “Incluir documentos
+solicitados pelo e-CETESB”, aberta pelo órgão licenciador em 14/04/2026.
+        O protocolo integra o escopo dos itens 6 (Respostas Técnicas aos TRCA da CETESB) e 7 (Renovação da
+Licença de Operação) do Contrato nº 006/2026, dando sequência ao levantamento de campo realizado em
+28/03/2026 e consolidado no Relatório de Visita Técnica nº 001/2026.
+
+
+
+
+3. DADOS DO PROTOCOLO
+
+ Número do processo                      CETESB.022773/2026-72
+
+ Tipo de tarefa                          Incluir documentos solicitados pelo e-CETESB
+
+ Data de criação da tarefa               14/04/2026
+
+ Data efetiva do protocolo               14/05/2026
+
+ Usuário operador no e-CETESB            Laleska Fernanda Barros Silva (Prefeitura Municipal de Guzolândia)
+
+ Plataforma de submissão                 Sistema de Gestão de Processos Digitais — Governo do Estado de São
+                                         Paulo
+
+ Documento comprobatório                 Comprovante de Resposta emitido pelo sistema e-CETESB (anexo ao
+                                         processo administrativo)
+
+ Situação                                Protocolo concluído — aguardando análise técnica pela CETESB
+
+
+
+
+                                                          Página 1 de 2
+                                       Raizon Ambiental | RP 002/2026 | Aterro Guzolândia/SP | Processo CETESB 022773/2026-72
+
+
+
+
+4. SÍNTESE DAS ETAPAS CUMPRIDAS
+
+  A seguir, a cronologia consolidada das ações executadas até a presente data:
+  • 28/01/2026 — Assinatura do Contrato nº 006/2026 entre a Prefeitura Municipal de Guzolândia e a
+    Raizon Ambiental;
+  • 28/03/2026 — Realização da visita técnica em campo ao aterro municipal, com levantamento de
+    dados, registro fotográfico georreferenciado e diagnóstico operacional (RVT 001/2026);
+  • Abril/2026 — Elaboração e consolidação da documentação técnica complementar exigida pela CETESB
+    para subsidiar a renovação da LO;
+  • 14/04/2026 — Abertura, pela CETESB, da tarefa “Incluir documentos solicitados pelo e-CETESB” no
+    processo nº 022773/2026-72;
+  • 14/05/2026 — Protocolo eletrônico da documentação no sistema e-CETESB, dentro do prazo
+    regulamentar;
+  • A partir de 14/05/2026 — Processo em fase de análise técnica pela CETESB.
+
+5. CONSIDERAÇÕES FINAIS
+
+       Declara-se, para os devidos fins, que o protocolo eletrônico da documentação técnica referente à
+renovação da Licença de Operação do Aterro Sanitário Municipal de Guzolândia foi efetivamente realizado em
+14/05/2026, no processo CETESB nº 022773/2026-72, conforme Comprovante de Resposta emitido pelo
+Sistema de Gestão de Processos Digitais do Governo do Estado de São Paulo.
+         O presente relatório, em conjunto com o Comprovante de Resposta do e-CETESB e com o Relatório de
+Visita Técnica nº 001/2026, integra o conjunto documental de comprovação do cumprimento das obrigações
+contratuais relativas aos itens 6 e 7 do Contrato nº 006/2026.
+
+                                                                               Guzolândia – SP, 18 de maio de 2026.
+
+
+
+
+                                  MIGUEL        Assinado digitalmente por MIGUEL
+                                                HENRIQUE GENTINE DE
+                                 HENRIQUE       SOUSA:37876866816
+                                                ND: C=BR, CN=MIGUEL HENRIQUE
+
+                                GENTINE DE GENTINE        DE SOUSA:37876866816,
+                                                L=VOTUPORANGA, O=ICP-Brasil,
+                                                OU=AC SyngularID Multipla, ST=SP
+                              SOUSA:37876866Razão: Eu sou o autor deste documento
+                                                Localização:
+                                     816
+                          ____________________________________________
+                                                Data: 2026.05.18 10:42:07-03'00'
+
+
+
+                                  Eng. Miguel Henrique Gentine de Sousa
+                            Engenheiro Sanitarista, Ambiental e de Segurança do Trabalho
+                                  CREA/SP nº 5070449007 — Responsável Técnico
+                                MHGS Engenharia Ltda. (CNPJ 59.786.718/0001-06)
+
+
+
+
+                                                    Página 2 de 2
+         GOVERNO DO ESTADO DE SÃO PAULO
+         Sistema de Gestão de Processos Digitais
+
+
+
+
+                               COMPROVANTE DE RESPOSTA
+
+
+
+NÚMERO DO PROCESSO: CETESB.022773/2026-72
+
+
+TIPO DE TAREFA:         Incluir documentos solicitados pelo e-CETESB
+
+
+DATA DE CRIAÇÃO:        14/04/2026
+
+
+
+DADOS DA RESPOSTA
+
+
+USUÁRIO DE RESPOSTA: LALESKA FERNANDA BARROS SILVA
+
+
+DATA DA RESPOSTA:       14/05/2026
+                                                         Raizon Ambiental | Relatório de Entrega — PLANCON Fase 1 | Contrato nº 006/2026
+
+
+                                              RAIZON AMBIENTAL
+                                   Engenharia Sanitária, Ambiental e de Segurança do Trabalho
+
+
+
+                           RELATÓRIO DE ENTREGA TÉCNICA — PLANCON FASE 1
+                         Plano de Contingência Municipal de Defesa Civil — Guzolândia/SP
+                         Item 3 do Contrato nº 006/2026 — Plano de Contingência (Diretrizes Defesa Civil)
+
+
+1. IDENTIFICAÇÃO CONTRATUAL
+
+ Contratante                          Município de Guzolândia/SP — CNPJ 45.746.112/0001-24
+
+                                      Miguel Henrique Gentine de Sousa Engenharia Ltda. — CNPJ
+ Contratada
+                                      59.786.718/0001-06
+
+ Contrato                             Nº 006/2026
+
+ Processo administrativo              572/2026
+
+ Processo licitatório / dispensa      Processo Licitatório nº 010/2026 — Dispensa nº 006/2026
+
+ Item contratual entregue             Item 3 — Plano de Contingência (Diretrizes Defesa Civil)
+
+ Responsável Técnico                  Eng. Miguel Gentine — CREA/SP 5070449007
+
+
+2. OBJETO DA ENTREGA
+
+O presente relatório formaliza a entrega técnica da Fase 1 do Plano de Contingência Municipal de Defesa Civil
+(PLANCON) de Guzolândia/SP, em atendimento ao item 3 do Contrato nº 006/2026. A entrega corresponde ao
+serviço já incluído no Relatório de Medição nº 01 (R$ 3.500,00), datado de 15/05/2026, e dá cumprimento ao
+escopo contratado relativo às diretrizes municipais de Defesa Civil.
+A Fase 1 ora entregue foi tratada como produto autônomo e funcional, apto a suportar o atendimento
+institucional inicial do Município, a organização da resposta municipal e às demandas correlatas de Defesa Civil e
+do Ministério Público vinculadas ao tema. Estruturações complementares constituem objeto da Fase 2, conforme
+detalhado no item 6 deste relatório.
+
+3. IDENTIFICAÇÃO DO PRODUTO ENTREGUE
+
+ Título                               Plano de Contingência Municipal de Defesa Civil — PLANCON Guzolândia/SP
+
+                                      Risco tecnológico de rompimento da barragem da UHE Nova Avanhandava
+ Cenário de risco prioritário
+                                      (operada pela Auren Energia, no Rio Tietê)
+
+ Versão / Data                        Versão 1.0 — Fevereiro de 2026
+
+                                      73 páginas, em formato DOCX e PDF, contemplando 17 capítulos, 4
+ Volume
+                                      Procedimentos Operacionais Padrão (POPs) e 8 anexos técnicos
+
+ Base institucional municipal         Lei Municipal nº 1.473/2010 (criação da COMDEC) e Portaria nº 040/2026
+
+                                      Plano integrado ao Plano de Ação de Emergência (PAE) da UHE Nova
+ Vinculação ao PAE
+                                      Avanhandava — articulação cartográfica NAV-45
+
+ Classificação documental             Documento oficial de uso institucional — COMDEC Guzolândia
+
+
+
+
+                                                           Página 1 de 3
+                                                           Raizon Ambiental | Relatório de Entrega — PLANCON Fase 1 | Contrato nº 006/2026
+
+
+
+
+4. ESTRUTURA DO DOCUMENTO ENTREGUE
+
+O PLANCON Fase 1 contempla as seguintes seções:
+
+      Seção                                                    Conteúdo principal
+
+                 Apresentação, finalidade e base legal aplicável (Lei nº 12.608/2012, Lei nº 12.334/2010, Lei nº 14.066/2020,
+ 1e2
+                 Resolução ANEEL nº 1.064/2023)
+
+ 3               Integração com o Plano de Ação de Emergência (PAE) do empreendedor da barragem
+
+                 Caracterização do cenário de risco — UHE Nova Avanhandava, mapas hidrodinâmicos NAV-45, setorização da
+ 4
+                 Zona de Segurança Secundária (ZSS) e identificação da população vulnerável
+
+                 Estrutura de Comando Municipal (ECM) e Centro de Operações de Emergência (COE) — organograma,
+ 5e6
+                 atribuições e infraestrutura mínima
+
+ 7e8             Níveis de acionamento, fluxograma de notificação e Procedimentos Operacionais Padrão (POP-01 a POP-04)
+
+ 9               Plano de Comunicação e Alerta — comunicação interna e alerta à população
+
+ 10              Plano de Evacuação — setorização, rotas de fuga, sinalização e procedimentos por setor
+
+ 11              Abrigamento e Assistência Humanitária — estrutura de abrigos, fluxo de suprimentos e gestão de doações
+
+                 Logística e recursos, segurança e controle de perímetro, saúde e vigilância sanitária, continuidade de serviços
+ 12 a 15
+                 essenciais
+
+ 16 e 17         Plano de Retorno Seguro e Plano de Simulados e Atualização
+
+                 Mapas hidrodinâmicos, ficha técnica da UHE, lista de contatos de emergência, fichas dos abrigos, formulários
+ Anexos A a H
+                 operacionais, legislação, inventário da frota municipal e checklists executivos
+
+
+5. BASE LEGAL APLICADA
+
+     • Lei Federal nº 12.608/2012 — Política Nacional de Proteção e Defesa Civil (PNPDEC);
+     • Lei Federal nº 12.334/2010 — Política Nacional de Segurança de Barragens (PNSB), alterada pela Lei nº
+       14.066/2020;
+     • Resolução Normativa ANEEL nº 1.064/2023 — exige a elaboração de PLANCON municipal articulado ao
+       PAE de barragens classificadas com Dano Potencial Associado Alto;
+     • Lei Municipal nº 1.473/2010 — institui a Coordenadoria Municipal de Proteção e Defesa Civil (COMDEC) de
+       Guzolândia;
+     • Portaria Municipal nº 040/2026 — designação dos integrantes da COMDEC para o exercício de 2026.
+
+6. ESCOPO REMANESCENTE — FASE 2
+
+Conforme já registrado no Relatório de Medição nº 01, as atividades a seguir compõem a Fase 2 do PLANCON, a
+serem desenvolvidas em etapa subsequente, mediante repactuação contratual ou novo instrumento, se assim
+definido pelo Município:
+     • Realização de simulados de emergência com avaliação operacional e relatório técnico de pós-simulado;
+     • Detalhamentos operacionais municipais de rotas de fuga, pontos de encontro e abrigos georreferenciados;
+     • Integração ampliada com órgãos externos — CEPDEC/SP, Corpo de Bombeiros, Polícia Militar, SABESP,
+       CPFL e Auren Energia, incluindo formalização de protocolos de cooperação;
+     • Ciclo de capacitação dos integrantes da COMDEC e dos servidores envolvidos nas funções operacionais.
+
+                                                             Página 2 de 3
+                                                     Raizon Ambiental | Relatório de Entrega — PLANCON Fase 1 | Contrato nº 006/2026
+
+
+
+
+7. CONSIDERAÇÕES FINAIS
+
+Declara-se que a Fase 1 do Plano de Contingência Municipal de Defesa Civil de Guzolândia/SP foi integralmente
+executada e entregue, em atendimento ao item 3 do Contrato nº 006/2026, encontrando-se apta ao uso
+institucional pela Prefeitura Municipal, pela COMDEC e demais órgãos envolvidos na resposta a emergências.
+A entrega contempla documento técnico autônomo, com estrutura legal, operacional e cartográfica adequada ao
+cenário prioritário de risco tecnológico associado à UHE Nova Avanhandava, em articulação ao respectivo Plano de
+Ação de Emergência (PAE) do empreendedor e em conformidade com a legislação federal e estadual aplicável.
+Recomenda-se à Administração Municipal a aprovação formal do documento via Decreto ou Portaria, a publicação
+institucional do PLANCON, o cadastro do plano e da COMDEC no Sistema Integrado de Informações sobre
+Desastres (S2ID — conforme POP-04) e a programação da Fase 2 para os ciclos de simulado, capacitação e
+atualização periódica.
+
+
+
+
+                                                                                         Guzolândia – SP, 18 de maio de 2026.
+
+
+
+
+                                                             Assinado digitalmente por MIGUEL
+                             MIGUEL HENRIQUEHENRIQUE     GENTINE DE
+                                             SOUSA:37876866816
+                                             ND: C=BR, CN=MIGUEL HENRIQUE
+                                GENTINE DE   GENTINE DE SOUSA:37876866816, L=
+
+                             SOUSA:3787686681VOTUPORANGA,      O=ICP-Brasil, OU=AC
+                                             SyngularID Multipla, ST=SP
+                                             Razão: Eu sou o autor deste documento
+                                    6        Localização:
+                             ____________________________________________
+                                             Data: 2026.05.18 11:00:50-03'00'
+
+
+                                     Eng. Miguel Henrique Gentine de Sousa
+                    Engenheiro Sanitarista, Ambiental e de Segurança do Trabalho — CREA/SP 5070449007
+                                   Técnico em Segurança do Trabalho — MTE 0119910/SP
+
+
+
+
+                                                       Página 3 de 3
+ PLANO DE CONTINGÊNCIA
+MUNICIPAL DE DEFESA CIVIL
+
+
+        PLANCON — GUZOLÂNDIA/SP
+
+
+
+
+           CENTRO DE OPERAÇÕES DE EMERGÊNCIA (COE)
+AV. PASCHOAL GUZZO, Nº 1.065 — CEP 15.355-033 — GUZOLÂNDIA/SP
+                   TELEFONE: (17) 3637-8700
+
+
+
+          Lei Municipal nº 1.473/2010 · Portaria nº 040/2026
+          DOCUMENTO OFICIAL — USO INSTITUCIONAL
+
+
+
+
+                         Fevereiro de 2026
+                       CONTATOS DE EMERGÊNCIA
+
+  Plantão COMDEC (24h)                                      (17) 99186-2442
+
+  Prefeitura Municipal                                       (17) 3637-8700
+
+  Auren Energia (24h — COGE)                                 0800 704 0589
+
+  CEPDEC/SP Central (24h)                                    (11) 2193-8888
+
+  Polícia Militar                                        (17) 3637-1129 / 190
+
+  Corpo de Bombeiros
+                                                         (17) 3462-1162 / 193
+  (Fernandópolis)
+
+  CPFL Emergência                                            0800 010 1010
+
+  SABESP Emergência (24h)                                    0800 055 0195
+
+
+
+
+                              Elaboração Técnica:
+            Raizon Ambiental — Engenharia, Segurança e Meio Ambiente
+              Miguel Gentine — Engenheiro Ambiental e de Segurança do Trabalho
+
+
+
+
+PLANCON – GUZOLÂNDIA/SP | COMDEC                                          Versão 1.0 | Fev/2026 — 2
+PLANO DE CONTINGÊNCIA MUNICIPAL DE DEFESA CIVIL
+
+                     PLANCON — GUZOLÂNDIA/SP
+
+
+
+
+                                   Plano de Contingência Municipal elaborado em atendimento
+                                   à Política Nacional de Proteção e Defesa Civil (Lei nº
+                                   12.608/2012), à Política Nacional de Segurança de Barragens
+                                   (Lei nº 12.334/2010) e à Resolução Normativa ANEEL nº
+                                   1.064/2023, para o cenário de risco tecnológico de
+                                   rompimento da barragem da UHE Nova Avanhandava.
+
+
+
+
+                               Guzolândia — SP
+                                        2026
+
+
+
+
+PLANCON – GUZOLÂNDIA/SP | COMDEC                                      Versão 1.0 | Fev/2026 — 3
+SUMÁRIO
+
+1. APRESENTAÇÃO E FINALIDADE..............................................................................10
+
+2. BASE LEGAL...............................................................................................................12
+
+3. INTEGRAÇÃO COM O PLANO DE AÇÃO DE EMERGÊNCIA (PAE).......................14
+
+4. CARACTERIZAÇÃO DO CENÁRIO DE RISCO..........................................................15
+
+   4.1. Dados Gerais do Município de Guzolândia...........................................................15
+
+   4.2. Caracterização da UHE Nova Avanhandava........................................................16
+
+   4.3. Análise Técnica dos Mapas Hidrodinâmicos (Articulação NAV-45).....................16
+
+   4.4. Detalhamento dos Produtos Cartográficos Recebidos.........................................18
+
+   4.5. Síntese do Cenário de Risco para Guzolândia.....................................................20
+
+   4.6. Setorização de Risco e População Vulnerável.....................................................21
+
+5. ESTRUTURA DE COMANDO MUNICIPAL (ECM).....................................................22
+
+   5.1. Organograma Funcional........................................................................................23
+
+   5.2. Atribuições Detalhadas por Departamento...........................................................23
+
+6. CENTRO DE OPERAÇÕES DE EMERGÊNCIA (COE).............................................25
+
+   6.1. Localização e Ativação..........................................................................................25
+
+   6.2. Layout e Infraestrutura Mínima..............................................................................25
+
+7. NÍVEIS DE ACIONAMENTO E FLUXOS DE NOTIFICAÇÃO.....................................27
+
+   7.1. Fluxograma de Acionamento.................................................................................28
+
+8. PROCEDIMENTO OPERACIONAL PADRÃO (POP).................................................29
+
+   POP 01: Recebimento e Verificação da Notificação de Emergência..........................29
+
+   POP 02: Ativação do Centro de Operações de Emergência (COE)............................29
+
+   POP 03: Emissão do Alerta à População.....................................................................30
+
+9. PLANO DE COMUNICAÇÃO E ALERTA....................................................................30
+
+   9.1. Comunicação Interna (Entre Órgãos)...................................................................30
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                                            Versão 1.0 | Fev/2026 — 4
+  9.2. Alerta à População da ZSS...................................................................................31
+
+  9.3. Mensagem de Alerta Padrão.................................................................................31
+
+10. PLANO DE EVACUAÇÃO..........................................................................................32
+
+  10.1. Setorização da ZSS e Rotas de Fuga.................................................................32
+
+  10.2. Procedimentos de Evacuação por Setor.............................................................32
+
+  10.3. Sinalização de Rotas de Fuga.............................................................................33
+
+  10.4. Evacuação de Animais........................................................................................33
+
+11. ABRIGAMENTO E ASSISTÊNCIA HUMANITÁRIA..................................................34
+
+  11.1. Estrutura de Abrigos Temporários.......................................................................34
+
+  11.2. Gestão e Organização dos Abrigos.....................................................................34
+
+  11.3. Fluxo de Suprimentos e Assistência Humanitária...............................................35
+
+  11.4. Kit de Assistência Humanitária............................................................................35
+
+  11.5. Regras de Convivência no Abrigo.......................................................................36
+
+  11.6. Gestão de Doações.............................................................................................36
+
+12. LOGÍSTICA E RECURSOS.......................................................................................37
+
+  12.1. Gerenciamento da Frota Municipal.....................................................................37
+
+  12.2. Mobilização de Recursos Humanos....................................................................37
+
+  12.3. Capacidade Total de Transporte de Pessoas.....................................................38
+
+  12.4. Requisição de Recursos Privados.......................................................................38
+
+  12.5. Suprimentos Estratégicos....................................................................................39
+
+13. SEGURANÇA E CONTROLE DE PERÍMETRO.......................................................40
+
+  13.1. Isolamento e Controle de Acesso à ZSS............................................................40
+
+  13.2. Segurança nos Abrigos e Pontos de Encontro...................................................40
+
+  13.3. Preservação do Patrimônio nas Áreas Evacuadas.............................................40
+
+14. SAÚDE E VIGILÂNCIA SANITÁRIA..........................................................................41
+
+
+   PLANCON – GUZOLÂNDIA/SP | COMDEC                                                        Versão 1.0 | Fev/2026 — 5
+   14.1. Atendimento Pré-Hospitalar (APH)......................................................................41
+
+   14.2. Assistência Médica e Psicossocial nos Abrigos..................................................41
+
+   14.3. Vigilância Sanitária e Epidemiológica.................................................................41
+
+   14.4. Gestão de Óbitos.................................................................................................42
+
+   14.5. Controle de Vetores e Animais Peçonhentos......................................................42
+
+15. CONTINUIDADE DE SERVIÇOS ESSENCIAIS.......................................................43
+
+   15.1. Energia Elétrica...................................................................................................43
+
+   15.2. Água e Saneamento............................................................................................43
+
+   15.3. Telecomunicações...............................................................................................43
+
+16. PLANO DE RETORNO SEGURO............................................................................. 44
+
+   16.1. Critérios para Autorização do Retorno................................................................44
+
+   16.2. Procedimento de Vistoria e Liberação................................................................44
+
+   16.3. Comunicação e Apoio ao Retorno.......................................................................44
+
+17. PLANO DE SIMULADOS E ATUALIZAÇÃO.............................................................45
+
+   17.1. Cronograma e Tipos de Simulados.....................................................................45
+
+   17.2. Avaliação e Melhoria Contínua............................................................................45
+
+   17.3. Revisão do PLANCON........................................................................................45
+
+ANEXOS...........................................................................................................................47
+
+   ANEXO A – Mapas Hidrodinâmicos (Articulação NAV-45)..........................................47
+
+   ANEXO B – Ficha Técnica da UHE Nova Avanhandava.............................................53
+
+   ANEXO C – Lista de Contatos de Emergência............................................................53
+
+   ANEXO D – Fichas de Caracterização dos Abrigos Temporários...............................55
+
+   ANEXO E – Modelos de Formulários Operacionais.....................................................57
+
+   ANEXO F – Legislação Pertinente...............................................................................59
+
+   ANEXO G – Inventário de Recursos (Frota Municipal)................................................60
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                                                Versão 1.0 | Fev/2026 — 6
+   ANEXO H – Checklists Executivos...............................................................................61
+
+18. REFERÊNCIAS..........................................................................................................63
+
+POP-04: PROCEDIMENTO OPERACIONAL PADRÃO – REGISTRO NO SISTEMA
+INTEGRADO DE INFORMAÇÕES SOBRE DESASTRES (S2ID)..................................64
+
+   1. OBJETIVO................................................................................................................64
+
+   2. RESPONSÁVEIS......................................................................................................64
+
+   3. PRAZOS LEGAIS.....................................................................................................64
+
+   4. FLUXO INTERNO DE INFORMAÇÕES...................................................................65
+
+   5. CHECKLIST DE EVIDÊNCIAS PARA INSTRUÇÃO DO PROCESSO...................66
+
+ANEXO I – MENSAGENS PADRÃO DE ALERTA POR CANAL....................................67
+
+   1. OBJETIVO................................................................................................................67
+
+   2. DIRETRIZES GERAIS..............................................................................................67
+
+   3. MENSAGENS PADRÃO POR CANAL.....................................................................67
+
+ANEXO J – ROTAS DE FUGA E PONTOS DE ENCONTRO.........................................70
+
+   1. OBJETIVO................................................................................................................70
+
+   2. SETORIZAÇÃO DA ZSS..........................................................................................70
+
+   3. TABELA DE ROTAS E PONTOS DE ENCONTRO.................................................70
+
+TABELA OPERACIONAL CONSOLIDADA DE ABRIGOS.............................................71
+
+ANEXO K – CRITÉRIOS E GATILHOS DE MONITORAMENTO...................................72
+
+   1. OBJETIVO................................................................................................................72
+
+   2. MATRIZ DE MONITORAMENTO E NÍVEIS DE RESPOSTA..................................72
+
+   3. AÇÕES CORRESPONDENTES A CADA GATILHO...............................................72
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                                             Versão 1.0 | Fev/2026 — 7
+LISTA DE SIGLAS E ABREVIATURAS
+
+                  Sigla                                       Significado
+
+ANEEL                                Agência Nacional de Energia Elétrica
+
+APH                                  Atendimento Pré-Hospitalar
+
+COBRADE                              Codificação Brasileira de Desastres
+
+COE                                  Centro de Operações de Emergência
+
+COMDEC                               Coordenadoria Municipal de Defesa Civil
+
+CPFL                                 Companhia Paulista de Força e Luz
+
+CRI                                  Categoria de Risco
+
+DPA                                  Dano Potencial Associado
+
+ECM                                  Estrutura de Comando Municipal
+
+PM                                   Polícia Militar
+
+IBGE                                 Instituto Brasileiro de Geografia e Estatística
+
+IML                                  Instituto Médico Legal
+
+NR                                   Nível de Resposta
+
+PAE                                  Plano de Ação de Emergência
+
+PLANCON                              Plano de Contingência
+
+PM                                   Polícia Militar
+
+PNPDEC                               Política Nacional de Proteção e Defesa Civil
+
+PNSB                                 Política Nacional de Segurança de Barragens
+
+POP                                  Procedimento Operacional Padrão
+
+SABESP                               Companhia de Saneamento Básico do Estado de São
+                                     Paulo
+
+SCI                                  Sistema de Comando de Incidentes
+
+SEDEC                                Secretaria Nacional de Proteção e Defesa Civil
+
+SIMPDEC                              Sistema Municipal de Proteção e Defesa Civil
+
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                    Versão 1.0 | Fev/2026 — 8
+SINPDEC                              Sistema Nacional de Proteção e Defesa Civil
+
+SNISB                                Sistema Nacional de Informações sobre Segurança de
+                                     Barragens
+
+UHE                                  Usina Hidrelétrica
+
+ZAS                                  Zona de Autossalvamento
+
+ZSS                                  Zona de Segurança Secundária
+
+CEPDEC/SP                            Coordenadoria Estadual de Proteção e Defesa Civil de
+                                     São Paulo
+
+FIDE                                 Formulário de Informações do Desastre
+
+INMET                                Instituto Nacional de Meteorologia
+
+NUPDEC                               Núcleo Comunitário de Proteção e Defesa Civil
+
+S2ID                                 Sistema Integrado de Informações sobre Desastres
+
+
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                  Versão 1.0 | Fev/2026 — 9
+1. APRESENTAÇÃO E FINALIDADE
+
+        O presente Plano de Contingência Municipal de Proteção e Defesa Civil
+(PLANCON) representa o mais importante instrumento de planejamento e gestão de risco
+do Município de Guzolândia para o cenário de desastre tecnológico consubstanciado na
+hipótese de rompimento da barragem da Usina Hidrelétrica (UHE) Nova Avanhandava.
+Este documento não é apenas uma formalidade legal, mas um guia operacional
+detalhado, concebido para ser um documento vivo, dinâmico e, acima de tudo, eficaz na
+proteção da vida humana, que é o bem maior e o objetivo central de todas as ações de
+Defesa Civil.
+
+        A elaboração deste plano parte da premissa de que a prevenção é sempre a
+estratégia mais eficiente. Contudo, a doutrina moderna de Proteção e Defesa Civil
+reconhece que, mesmo com todos os esforços de prevenção e mitigação, o risco residual
+de um evento adverso, especialmente de origem tecnológica, nunca é nulo. Portanto, a
+preparação para a resposta é um pilar indispensável da gestão de riscos. Este PLANCON
+é a materialização dessa preparação.
+
+        Sua finalidade precípua é estabelecer, de forma clara e inequívoca, os papéis, as
+responsabilidades, os procedimentos e os recursos a serem mobilizados pela
+administração pública municipal e por todas as entidades de apoio para as ações de
+preparação e resposta a uma situação de emergência. O plano visa garantir uma atuação
+coordenada, eficiente e eficaz antes, durante e após a ocorrência do desastre,
+minimizando a desorganização social, os danos ambientais e os impactos adversos sobre
+a comunidade localizada na Zona de Segurança Secundária (ZSS).
+
+        Os objetivos específicos que norteiam a estrutura e o conteúdo deste PLANCON
+são:
+
+    Definir a Estrutura de Comando e Coordenação (ECC): Estabelecer uma linha de
+     comando clara e um organograma funcional baseado no Sistema de Comando de
+     Incidentes (SCI), detalhando as atribuições de cada órgão municipal na gestão da
+     emergência para evitar sobreposição de funções e garantir a unidade de comando.
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 10
+    Estabelecer Protocolos de Comunicação: Detalhar os fluxos de acionamento, os
+     canais de comunicação e os protocolos de notificação entre o empreendedor (Auren
+     Energia), a Coordenadoria Municipal de Defesa Civil (COMDEC) de Guzolândia, a
+     Coordenadoria Estadual (CEPDEC/SP) e os demais órgãos de resposta.
+    Analisar e Operacionalizar os Dados de Risco: Traduzir os complexos mapas
+     técnicos do estudo de inundação (dam break study) em informações operacionais,
+     identificando com precisão as áreas de risco, a população vulnerável, as
+     infraestruturas críticas e os recursos disponíveis em cada setor.
+    Planejar Ações de Resposta Detalhadas: Estruturar os planos de ação para cada
+     fase da resposta, incluindo o alerta à população, a evacuação das áreas de risco, o
+     abrigamento temporário das famílias desalojadas e a prestação de assistência
+     humanitária.
+    Inventariar e Organizar Recursos: Mapear, quantificar e organizar todos os recursos
+     humanos e materiais (públicos e privados) que podem ser mobilizados em uma
+     situação de emergência, desde a frota de veículos até os profissionais de saúde e
+     assistência social.
+    Fomentar uma Cultura de Resiliência: Estruturar um programa de capacitação e
+     treinamento contínuo para as equipes de resposta e, fundamentalmente, para a
+     comunidade afetada, promovendo a conscientização sobre os riscos e os
+     procedimentos de autoproteção.
+    Garantir o Amparo Legal: Servir como o instrumento técnico e jurídico fundamental
+     para a decretação de Situação de Emergência ou Estado de Calamidade Pública,
+     permitindo ao município acessar recursos estaduais e federais e realizar ações
+     emergenciais com a devida cobertura legal.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                 Versão 1.0 | Fev/2026 — 11
+2. BASE LEGAL
+
+         Este plano foi elaborado em estrita conformidade com o arcabouço jurídico que
+rege a Proteção e Defesa Civil e a Segurança de Barragens no Brasil. A observância
+rigorosa da legislação não é apenas um requisito formal, mas a garantia de que as ações
+planejadas e executadas terão o respaldo necessário e estarão alinhadas com as
+políticas públicas estabelecidas em nível federal, estadual e municipal.
+
+
+
+
+Figura 3 – Ciclo das Ações Integradas em Proteção e Defesa Civil: Prevenção, Mitigação, Preparação, Resposta e Recuperação. O
+presente PLANCON insere-se na fase de Preparação, sendo ativado na fase de Resposta. Fonte: Secretaria Nacional de Proteção
+                                               e Defesa Civil (SEDEC/MIDR).
+
+
+         A base legal que fundamenta este documento inclui, mas não se limita às
+seguintes normas:
+
+ Norma                                                           Ementa e Relevância para o PLANCON
+
+                                                  Política Nacional de Segurança de Barragens (PNSB). É a lei
+                                                  mestra que define as responsabilidades do empreendedor e do
+ Lei Federal nº 12.334/2010                       poder público. Exige a elaboração do PAE pelo empreendedor e,
+                                                  implicitamente, a preparação do poder público para a resposta,
+                                                  materializada no PLANCON.
+
+ Lei Federal nº 12.608/2012                       Política Nacional de Proteção e Defesa Civil (PNPDEC). Define as
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                                            Versão 1.0 | Fev/2026 — 12
+                                    competências de cada ente federativo (União, Estados e Municípios)
+                                    na gestão de riscos e desastres. Atribui ao Município a
+                                    responsabilidade primária pela execução das ações de resposta em
+                                    seu território.
+
+                                    Altera a PNSB. Traz maior rigor à legislação, proibindo, por
+                                    exemplo, a construção de barragens a montante com comunidades
+Lei Federal nº 14.066/2020          na ZAS e exigindo maior transparência e participação da
+                                    comunidade. Reforça a necessidade de planos de contingência
+                                    robustos.
+
+                                    Regulamenta a PNPDEC. Organiza o Sistema Nacional de Proteção
+                                    e Defesa Civil (SINPDEC) e detalha os critérios para a decretação
+Decreto Federal nº 7.257/2010
+                                    de Situação de Emergência e Estado de Calamidade Pública, para
+                                    os quais o PLANCON é documento fundamental.
+
+                                    Regulamentação da ANEEL. Estabelece os procedimentos
+                                    detalhados para a elaboração, implementação e fiscalização dos
+Resolução Normativa ANEEL nº
+                                    Planos de Ação de Emergência (PAE) por parte dos
+1.064/2023
+                                    empreendedores de usinas hidrelétricas, definindo os níveis de
+                                    emergência que servem de gatilho para o PLANCON.
+
+                                    Criação da COMDEC de Guzolândia. É o ato normativo municipal
+                                    que cria formalmente a Coordenadoria Municipal de Defesa Civil,
+Lei Municipal nº 1.473/2010
+                                    conferindo-lhe a autoridade legal para coordenar as ações previstas
+                                    neste plano.
+
+                                    Nomeação dos membros da COMDEC. Dispõe sobre a nomeação
+                                    da Coordenadora e dos membros da COMDEC de Guzolândia,
+Portaria nº 040/2026
+                                    conforme Lei Municipal nº 1.473/2010. Publicada em 25 de fevereiro
+                                    de 2026.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                            Versão 1.0 | Fev/2026 — 13
+3. INTEGRAÇÃO COM O PLANO DE AÇÃO DE EMERGÊNCIA (PAE)
+
+        Este PLANCON e o Plano de Ação de Emergência (PAE) da UHE Nova
+Avanhandava (Revisão 08, 2025) são documentos distintos em suas responsabilidades,
+mas inseparáveis em sua operacionalidade. A falha na integração entre PAE e
+PLANCON é a falha da resposta como um todo. A relação entre eles é de
+complementaridade e interdependência, funcionando como uma engrenagem onde cada
+peça tem sua função específica, mas o movimento de uma depende diretamente da outra.
+
+    Responsabilidade do Empreendedor (Auren Energia) - O PAE: O PAE é o plano
+     do empreendedor. Sua responsabilidade se concentra nas ações internas à
+     barragem (monitoramento, manutenção, controle de anomalias) e na notificação
+     externa imediata da emergência para as autoridades competentes, em especial para
+     a Defesa Civil. O PAE define o quê (o nível de emergência) e o quando (o momento da
+     notificação). Ele é o gatilho.
+    Responsabilidade do Poder Público Municipal - O PLANCON: O PLANCON é o
+     plano do município. Sua responsabilidade se inicia a partir do recebimento da
+     notificação do PAE. Ele detalha como a prefeitura irá gerenciar a crise em seu
+     território: como irá alertar sua população, como irá promover a evacuação, como irá
+     gerenciar os abrigos e como irá prestar a assistência humanitária necessária. Ele é a
+     resposta.
+
+            A responsabilidade de notificar a COMDEC sobre qualquer anomalia ou
+            emergência na barragem é exclusivamente do empreendedor (Auren
+            Energia). A responsabilidade de alertar e evacuar a população da ZSS, a
+            partir da notificação, é do Município de Guzolândia.
+
+        O fluxo de comunicação entre PAE e PLANCON, detalhado no Capítulo 8, é o pilar
+fundamental para o sucesso da resposta. A Auren tem a obrigação legal de manter os
+contatos da COMDEC de Guzolândia sempre atualizados e testar periodicamente esses
+canais. A COMDEC, por sua vez, tem a obrigação de garantir que os telefones de plantão
+estejam sempre operacionais e que haja pessoal capacitado para receber, interpretar e
+agir a partir da notificação recebida.
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 14
+4. CARACTERIZAÇÃO DO CENÁRIO DE RISCO
+
+4.1. Dados Gerais do Município de Guzolândia
+
+      Guzolândia é um município brasileiro localizado na região noroeste do estado de
+São Paulo. De acordo com o Censo Demográfico de 2022 (IBGE), a população residente
+é de 4.246 habitantes, com uma densidade demográfica de aproximadamente 16,82
+hab/km² em uma área de 252,4 km².
+
+
+
+
+  Figura 1 – Mapa Municipal de Guzolândia (IBGE, Malha Territorial, Edição 2022). Coordenadas da sede: Lat.
+                         -20,65 / Long. -50,66. Folha SF-22-X-A-IV-2, SIRGAS 2000.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                 Versão 1.0 | Fev/2026 — 15
+  Figura 2 – Imagem de satélite do município de Guzolândia com limites municipais (amarelo), rodovia SP-262 e
+                               municípios limítrofes. Fonte: Google Earth, 2023.
+
+
+4.2. Caracterização da UHE Nova Avanhandava
+
+       A UHE Nova Avanhandava, operada pela Auren Energia, está localizada no Rio
+Tietê, entre os municípios de Buritama e Brejo Alegre. A barragem, concluída em 1982,
+possui altura máxima de 71 metros e é classificada com Dano Potencial Associado
+(DPA) Alto e Categoria de Risco (CRI) Normal pela ANEEL. A ficha técnica completa da
+barragem consta no Anexo B.
+
+4.3. Análise Técnica dos Mapas Hidrodinâmicos (Articulação NAV-45)
+
+       A análise dos mapas técnicos fornecidos pelo empreendedor no PAE é a base
+para o planejamento da resposta em Guzolândia. A articulação cartográfica que cobre a
+área de interesse do município é a NAV-45. A seguir, a síntese da análise dos principais
+mapas:
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 16
+      a) Mapa de Inundação:
+
+
+
+      A mancha de inundação (cenário de overtopping) atinge predominantemente a
+zona rural ribeirinha de Guzolândia. A área urbana da sede municipal não é
+diretamente atingida. O impacto se concentra em propriedades rurais, estradas vicinais
+e áreas de preservação permanente ao longo do Rio Tietê.
+
+
+
+      b) Mapa de Tempos de Chegada:
+
+
+
+      A mancha de inundação na região de Guzolândia está compreendida na faixa de
+20 a 40 horas de tempo de chegada da onda após o início da ruptura. Este tempo de
+deslocamento confirma a classificação do município como Zona de Segurança
+Secundária (ZSS) e é um fator crucial, pois permite a execução de um plano de
+evacuação organizado e sem pânico.
+
+
+
+      c) Mapa de Profundidade:
+
+
+
+      Nas áreas de planície e margens, onde se localizam as propriedades rurais, a
+profundidade da inundação varia de 0 a 5 metros. No canal principal do rio, a
+profundidade pode ultrapassar 10 metros, inviabilizando qualquer travessia.
+
+
+
+      d) Mapa de Velocidade e Risco Hidrodinâmico:
+
+
+
+      A velocidade da água nas áreas inundadas das margens é predominantemente
+baixa (0 a 2 m/s), resultando em um Risco Hidrodinâmico baixo a moderado. Isso
+significa que, embora a inundação seja um fato, a força de arraste da água não é o
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 17
+principal fator de risco para a vida nas áreas de evacuação, facilitando o resgate e o
+autossalvamento.
+
+   Parâmetro Técnico (NAV-45)    Valor na Região de Guzolândia      Implicação para o PLANCON
+
+Tempo de chegada da onda        20 a 40 horas                    Tempo hábil para evacuação
+                                                                 organizada e completa da ZSS.
+
+Profundidade nas margens        0 a 5 metros                     Risco de submersão de edificações
+                                                                 e isolamento de áreas.
+
+Velocidade nas margens          0 a 2 m/s                        Baixa força de arraste, permitindo
+                                                                 evacuação segura.
+
+Área urbana atingida            NÃO                              O foco da evacuação é a população
+                                                                 da zona rural ribeirinha.
+
+
+
+
+4.4. Detalhamento dos Produtos Cartográficos Recebidos
+
+       O PAE da UHE Nova Avanhandava, Revisão 08 (2025), é acompanhado de um
+conjunto de sete tipos de mapas hidrodinâmicos, organizados em articulações
+cartográficas que cobrem toda a extensão do vale a jusante da barragem. Para o território
+de Guzolândia, a articulação de referência é a NAV-45, com articulações adjacentes
+NAV-44 e NAV-46 cobrindo áreas limítrofes. A seguir, descreve-se a finalidade e a
+interpretação operacional de cada produto cartográfico:
+
+
+
+       a) Mapa de Inundação (01-MAPA_DE_INUNDAÇÃO): Apresenta a extensão
+máxima da mancha de inundação resultante do cenário de ruptura por galgamento
+(overtopping). Este mapa é o mais importante para a definição da ZSS, pois delimita com
+precisão quais áreas serão atingidas pela água. Na região de Guzolândia, a mancha
+atinge predominantemente a planície de inundação do Rio Tietê, englobando
+propriedades rurais ribeirinhas, estradas vicinais de acesso às margens e áreas de
+preservação permanente. A área urbana da sede municipal, por estar em cota topográfica
+significativamente superior à planície de inundação, não é diretamente atingida pela
+mancha.
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                         Versão 1.0 | Fev/2026 — 18
+      b) Mapa de Tempos de Chegada (06-MAPA_DE_TEMPOS_DE_CHEGADA):
+Indica o intervalo de tempo, em horas, entre o início da ruptura hipotética da barragem e a
+chegada da frente de onda em cada ponto do vale. Este é o mapa mais crítico para o
+planejamento da evacuação, pois define a janela de tempo disponível para alertar e
+remover a população. Na região de Guzolândia, os tempos de chegada estão
+compreendidos na faixa de 20 a 40 horas. Esse intervalo é extremamente favorável, pois
+permite a execução de uma evacuação organizada, com tempo para notificação,
+deslocamento de equipes, alerta porta a porta e transporte da população vulnerável. A
+classificação como ZSS (e não ZAS) decorre justamente desse tempo de chegada
+superior a 30 minutos.
+
+      c) Mapa de Profundidade (04-MAPA_DE_PROFUNDIDADE): Apresenta a
+profundidade máxima que a lâmina d'água atingirá em cada ponto da área inundada. Este
+mapa é essencial para avaliar o grau de dano às edificações e a viabilidade de
+permanecia em estruturas elevadas. Nas áreas de planície e margens habitadas de
+Guzolândia, a profundidade varia de 0 a 5 metros, o que é suficiente para submergir
+completamente edificações térreas e tornar impossível a permanência no local. No canal
+principal do Rio Tietê, a profundidade pode ultrapassar 10 metros.
+
+      d) Mapa de Velocidade (07-MAPA_DE_VELOCIDADE): Indica a velocidade
+máxima do escoamento da água em cada ponto. A velocidade é um fator determinante
+para o risco à vida, pois correntes fortes podem arrastar pessoas, veículos e estruturas.
+Nas áreas de margens habitadas de Guzolândia, a velocidade é predominantemente
+baixa (0 a 2 m/s), o que indica que a força de arraste da água não é o principal fator de
+risco nesta região. Isso facilita as operações de resgate e autossalvamento, caso
+necessário.
+
+      e) Mapa de Risco Hidrodinâmico (05-MAPA_DE_RISCO_HIDRODINÂMICO):
+Combina os dados de profundidade e velocidade para gerar uma classificação integrada
+do risco à vida humana em cada ponto. A classificação segue uma escala de cores (verde
+= baixo, amarelo = moderado, laranja = alto, vermelho = muito alto). Na região de
+Guzolândia, o risco hidrodinâmico nas áreas de evacuação é predominantemente baixo
+a moderado, o que reforça a viabilidade de uma evacuação segura e organizada.
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                    Versão 1.0 | Fev/2026 — 19
+         f) Mapa de Duração (02-MAPA_DE_DURAÇÃO): Indica por quanto tempo cada
+ área permanecerá inundada após a passagem da onda. Este dado é crucial para o
+ planejamento do retorno da população e para a estimativa de danos às edificações e à
+ agricultura.
+
+         g) Mapa de Elevação (03-MAPA_DE_ELEVAÇÃO): Apresenta as cotas
+ topográficas do terreno, servindo como base para a interpretação de todos os demais
+ mapas e para a definição das rotas de fuga (que devem seguir para cotas mais altas).
+
+ 4.5. Síntese do Cenário de Risco para Guzolândia
+
+         A análise integrada dos sete mapas hidrodinâmicos permite traçar o seguinte perfil
+ de risco para o Município de Guzolândia:
+
+          Fator de Risco             Classificação                      Justificativa Técnica
+
+    Área urbana atingida                                 A sede municipal está em cota topográfica superior
+                                         NÃO
+                                                         à mancha de inundação.
+
+    Área rural atingida                                  Propriedades rurais ribeirinhas e estradas vicinais
+                                          SIM
+                                                         serão inundadas.
+
+    Tempo de chegada             FAVORÁVEL (20-40h)      Permite evacuação organizada e completa.
+
+    Profundidade                  MODERADA (0-5m)        Edificações térreas serão submersas.
+
+    Velocidade                      BAIXA (0-2 m/s)      Baixa força de arraste, facilitando evacuação.
+
+    Risco hidrodinâmico                                  Risco à vida é gerenciável com evacuação
+                                 BAIXO A MODERADO
+                                                         preventiva.
+
+    Classificação da zona                                Zona de Segurança Secundária (tempo de chegada
+                                          ZSS
+                                                         > 30 min).
+
+
+
+
+Conclusão Técnica: O cenário de risco para Guzolândia é gerenciável, desde que haja preparação
+adequada. O tempo de chegada da onda (20-40 horas) é o principal fator favorável, permitindo uma resposta
+organizada. O principal desafio é a dispersão geográfica da população rural na ZSS, que exige um sistema
+de alerta eficiente e equipes de campo preparadas para realizar o alerta porta a porta.
+
+
+
+
+   PLANCON – GUZOLÂNDIA/SP | COMDEC                                                 Versão 1.0 | Fev/2026 — 20
+Figura 6 – Imagem de satélite do município de Guzolândia com indicação da Cota de Inundação (marcador amarelo,
+    sudoeste do município). Observa-se a distância significativa entre a cota de inundação e a sede municipal,
+              confirmando que a área urbana não é diretamente atingida. Fonte: Google Earth, 2026.
+
+
+
+
+4.6. Setorização de Risco e População Vulnerável
+
+
+
+        A Zona de Segurança Secundária (ZSS) de Guzolândia abrange exclusivamente a
+zona rural ribeirinha do município, ao longo da planície de inundação do Rio Tietê. A
+área urbana da sede municipal encontra-se em cota topográfica superior à mancha de
+inundação e não é diretamente atingida no cenário de ruptura.
+
+
+
+        A ZSS foi dividida em 3 setores operacionais, conforme a geografia local e as
+vias de acesso:
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                                    Versão 1.0 | Fev/2026 — 21
+   Setor                   Localização               População Estimada              Características
+
+Setor 1       Margem direita do Córrego do         Estimativa em            Propriedades rurais, acesso por
+              Limoeiro                             levantamento             estrada vicinal
+
+Setor 2       Entre o Córrego do Limoeiro e o      Estimativa em            Propriedades rurais, acesso por
+              Córrego do Jacu                      levantamento             estrada vicinal
+
+Setor 3       Margem esquerda do Córrego do        Estimativa em            Propriedades rurais, acesso por
+              Jacu                                 levantamento             estrada vicinal
+
+
+
+
+5. ESTRUTURA DE COMANDO MUNICIPAL (ECM)
+
+          A Estrutura de Comando Municipal (ECM) é a espinha dorsal da resposta à
+emergência. Ela define quem lidera, quem apoia e quais são as responsabilidades de
+cada setor da administração municipal. A ECM de Guzolândia é baseada no Sistema de
+Comando de Incidentes (SCI), uma metodologia de gerenciamento padronizada e
+hierárquica que garante a unidade de comando, a clareza de funções e a eficiência na
+tomada de decisões.
+
+
+
+
+  Figura 4 – Organograma da Secretaria Nacional de Proteção e Defesa Civil (SEDEC/MIDR), órgão central do
+                     SINPDEC ao qual a COMDEC de Guzolândia se vincula hierarquicamente.
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                Versão 1.0 | Fev/2026 — 22
+Figura 5 – Estrutura genérica do Sistema Nacional de Proteção e Defesa Civil (SINPDEC) no nível municipal: Órgão
+     Central (COMDEC), Órgão Consultivo (Conselho), Órgãos Setoriais (Departamentos) e Órgãos de Apoio.
+
+
+
+
+5.1. Organograma Funcional
+
+        O organograma abaixo detalha a estrutura hierárquica da ECM, desde o comando
+estratégico até as funções operacionais. Ele não representa a hierarquia administrativa
+da prefeitura, mas sim a hierarquia funcional durante a emergência.
+
+
+
+
+5.2. Atribuições Detalhadas por Departamento
+
+        A tabela a seguir detalha as responsabilidades primárias e secundárias de cada
+departamento dentro da ECM. É fundamental que cada diretor e sua equipe tenham pleno
+conhecimento de suas atribuições para garantir uma resposta rápida e eficaz.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 23
+        Departamento               Responsável                         Atribuições na Emergência
+
+                                                          Comando Estratégico: Decretar Situação de
+                                                          Emergência; realizar pronunciamentos oficiais;
+                                 Luiz Antonio P. de
+Prefeito Municipal                                        manter contato com autoridades estaduais e federais;
+                                      Carvalho
+                                                          garantir o suporte político e financeiro para as
+                                                          operações.
+
+                                                          Comando Operacional: Coordenar todas as ações
+                                                          do PLANCON; chefiar o COE; manter comunicação
+COMDEC                         Naira Santana Finencio
+                                                          direta com a Auren e a CEPDEC/SP; consolidar
+                                                          informações e reportar ao Prefeito.
+
+                                                          Assessoria Jurídica: Dar suporte legal para a
+                                                          decretação de emergência, contratações
+Procuradoria Geral             Thales Natal T. Pereira
+                                                          emergenciais, requisições administrativas e demais
+                                                          atos necessários.
+
+                                                          Operações/Logística: Evacuação de pessoas e
+Depto. de Planejamento,                                   animais; interdição de vias; remoção de escombros;
+                                Álef Yoshidi Tangoda
+Obras e Serviços                                          apoio logístico com frota e equipamentos; vistoria de
+                                                          edificações pós-desastre.
+
+                                                          Operações: Atendimento pré-hospitalar; montagem
+Depto. de Saúde                Ione Rita de O. Matos      de postos médicos nos abrigos; transporte de feridos;
+                                                          vigilância sanitária e epidemiológica.
+
+                                                          Operações: Gestão dos abrigos; cadastramento de
+Depto. de Assistência Social   Rafael da Silva Ferreira   desabrigados; distribuição de assistência humanitária
+                                                          (alimentos, água, kits de higiene); apoio psicossocial.
+
+                                                          Apoio à Operação: Cedência das escolas para
+                                                          abrigamento; apoio na gestão dos abrigos com
+Depto. de Educação e Cultura       Andrei Duarte
+                                                          pessoal (merendeiras, serventes); organização de
+                                                          atividades lúdicas para crianças nos abrigos.
+
+                                                          Operações: Evacuação de rebanhos e animais de
+Depto. de Agricultura e Meio
+                                 Flavia Marino Cruz       produção; avaliação de danos ambientais;
+Ambiente
+                                                          monitoramento da qualidade da água.
+
+                                                          Apoio à Operação: Cedência de ginásios para
+Depto. de Esporte              Sidnei Soares dos Reis     abrigamento ou centro de distribuição de doações;
+                                                          apoio com pessoal para organização dos abrigos.
+
+Depto. de Administração e        Wuylian Matos de         Administração/Finanças: Realização de compras
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 24
+                                                emergenciais; controle de despesas; gestão de
+Finanças                          Souza         contratos emergenciais; gerenciamento de recursos
+                                                humanos mobilizados.
+
+
+
+6. CENTRO DE OPERAÇÕES DE EMERGÊNCIA (COE)
+
+      O Centro de Operações de Emergência (COE) é o cérebro da resposta. É o local
+físico onde os tomadores de decisão se reúnem para gerenciar a crise, centralizar as
+informações, definir as estratégias e despachar os recursos. O COE não é uma estrutura
+permanente, mas sim uma estrutura de gestão ativada apenas em situações de
+emergência.
+
+6.1. Localização e Ativação
+
+      O COE será instalado na sede da Prefeitura Municipal de Guzolândia,
+localizada na Av. Paschoal Guzzo, nº 1.065, Centro, CEP 15.355-033. O local atende a
+todos os critérios necessários: está fora da mancha de inundação, possui infraestrutura
+de comunicação (telefone fixo, internet, energia elétrica com possibilidade de gerador), é
+de fácil acesso e concentra os principais tomadores de decisão da administração
+municipal.
+
+      Local alternativo (COE Secundário): Caso a sede da Prefeitura esteja
+indisponível, o COE será transferido para a Câmara Municipal de Vereadores,
+localizada na mesma região central do município.
+
+      O COE será ativado pelo Coordenador da COMDEC imediatamente após a
+notificação de Nível de Emergência 2 (NR-2) ou superior pela Auren Energia.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                       Versão 1.0 | Fev/2026 — 25
+6.2. Layout e Infraestrutura Mínima
+
+        O layout do COE deve ser organizado para facilitar a comunicação e o fluxo de
+trabalho entre as diferentes funções. O diagrama abaixo sugere um layout funcional:
+
+
+
+
+        A infraestrutura mínima necessária para o funcionamento do COE inclui:
+
+    Comunicação: Linhas de telefone fixo, celulares com carregadores, rádios
+     comunicadores, acesso à internet de alta velocidade.
+    Informática: Computadores, impressoras, projetor multimídia.
+    Mobiliário: Mesas, cadeiras, quadros brancos, flip charts.
+    Documentação: Cópias do PLANCON, PAE, mapas, formulários operacionais.
+    Suprimentos: Água, café, alimentos não perecíveis para a equipe do COE.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 26
+7. NÍVEIS DE ACIONAMENTO E FLUXOS DE NOTIFICAÇÃO
+
+        Os níveis de acionamento da Defesa Civil Municipal são diretamente vinculados
+aos Níveis de Emergência do PAE da UHE Nova Avanhandava, conforme estabelecido
+pela Resolução Normativa ANEEL nº 1.064/2023. A clareza sobre o que cada nível
+significa e quais ações ele desencadeia é fundamental para uma resposta proporcional e
+tempestiva.
+
+
+
+    Nível de
+                      Condição da        Ação do Empreendedor       Nível de Resposta     Ação da COMDEC
+  Emergência
+                       Barragem                  (Auren)               (PLANCON)            de Guzolândia
+      (PAE)
+
+Nível 0 -          Operação normal,    Monitoramento rotineiro.     NR-0 - Vigilância    Manter contatos
+Normalidade        sem anomalias.                                                        atualizados e realizar
+                                                                                         capacitações.
+
+Nível 1 -          Anomalia            Aumentar monitoramento,      NR-1 -               Manter contato com a
+Anomalia           controlável, sem    notificar ANEEL.             Observação           Auren para
+                   risco iminente.                                                       acompanhar a
+                                                                                         evolução da
+                                                                                         anomalia. Deixar
+                                                                                         equipes de
+                                                                                         sobreaviso.
+
+Nível 2 - Alerta   Anomalia não        Notificar ANEEL e Defesa     NR-2 - Alerta        Ativar o COE;
+                   controlada, risco   Civil (COMDEC e CEDEC).                           convocar o
+                   potencial.                                                            SIMPDEC; preparar
+                                                                                         equipes e recursos
+                                                                                         para possível
+                                                                                         evacuação.
+
+Nível 3 -          Risco de ruptura    NOTIFICAÇÃO IMEDIATA         NR-3 -               ORDEM DE
+Emergência         iminente ou ruptura à Defesa Civil e             Emergência           EVACUAÇÃO
+                   em andamento.       acionamento das sirenes na                        IMEDIATA da ZSS;
+                                       ZAS.                                              acionar o Plano de
+                                                                                         Comunicação e
+                                                                                         Alerta; iniciar a
+                                                                                         evacuação.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 27
+7.1. Fluxograma de Acionamento
+
+      O fluxograma abaixo ilustra o fluxo de informações e decisões desde a detecção
+da anomalia na barragem até a evacuação da população em Guzolândia.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 28
+PLANCON – GUZOLÂNDIA/SP | COMDEC   Versão 1.0 | Fev/2026 — 29
+8. PROCEDIMENTO OPERACIONAL PADRÃO (POP)
+
+      Os Procedimentos Operacionais Padrão (POPs) são guias passo a passo que
+detalham como executar tarefas específicas durante a emergência. Eles garantem que as
+ações sejam realizadas de forma padronizada, segura e eficiente, independentemente de
+quem as esteja executando. Os POPs devem ser treinados exaustivamente com todas as
+equipes.
+
+POP 01: Recebimento e Verificação da Notificação de Emergência
+
+1. Responsável: Plantonista da COMDEC.
+2. Procedimento:
+3. Atender o telefone de emergência (ou rádio) e se identificar: "Defesa Civil de
+   Guzolândia, [seu nome], em que posso ajudar?".
+4. Anotar imediatamente as informações do notificador: nome, cargo, empresa (Auren),
+   telefone de retorno.
+5. Anotar a mensagem principal: NÍVEL DE EMERGÊNCIA (2 ou 3).
+6. Repetir a mensagem para o notificador para confirmar o entendimento: "Confirmando,
+   o senhor está reportando Nível de Emergência [2 ou 3] para a barragem de Nova
+   Avanhandava. Correto?".
+7. Desligar e imediatamente ligar para o número de telefone de confirmação da Auren
+   (constante no Anexo C) para validar a notificação. NÃO PROSSIGA SEM VALIDAR.
+8. Após a validação, acionar imediatamente o Coordenador da COMDEC.
+
+POP 02: Ativação do Centro de Operações de Emergência (COE)
+
+9. Responsável: Coordenador da COMDEC.
+10. Procedimento:
+11. Após receber a notificação validada (NR-2 ou superior), deslocar-se imediatamente
+   para o local pré-definido do COE.
+12. Utilizando a lista de contatos do SIMPDEC (Anexo C), convocar todos os membros
+   para o COE: "Atenção, estamos ativando o COE em Nível de Alerta [ou Emergência].
+   Comparecimento imediato no [local do COE]".
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 30
+13. Ao chegar no COE, iniciar a montagem da estrutura: ligar equipamentos, dispor
+   mapas na mesa de situação, abrir o livro de ocorrências.
+14. Realizar o primeiro briefing com a equipe que chegar, informando a situação e
+   distribuindo as tarefas iniciais.
+
+POP 03: Emissão do Alerta à População
+
+15. Responsável: Chefe de Operações no COE.
+16. Procedimento:
+17. Após a ordem do Coordenador da COMDEC (baseada no NR-3), acionar as equipes
+   de campo (Depto. de Obras, PM).
+18. Despachar os veículos equipados com sistema de som para os setores da ZSS,
+   conforme o plano de comunicação.
+19. Instruir os operadores de som a transmitir a mensagem de alerta padrão (Capítulo 9)
+   de forma contínua, clara e audível.
+20. Acionar a Assessoria de Comunicação para disparar os alertas nas redes sociais e
+   rádios locais.
+
+
+
+
+9. PLANO DE COMUNICAÇÃO E ALERTA
+
+      O Plano de Comunicação e Alerta é vital para garantir que a população em risco
+seja notificada a tempo de realizar uma evacuação segura. Ele se baseia em
+redundância, utilizando múltiplos canais para maximizar o alcance da mensagem.
+
+9.1. Comunicação Interna (Entre Órgãos)
+
+      A comunicação entre os órgãos de resposta será realizada prioritariamente por
+meio de rádios comunicadores (frequência a ser definida) e, secundariamente, por
+grupos de WhatsApp pré-estabelecidos com todos os membros do SIMPDEC. A
+comunicação verbal deve ser clara, concisa e seguir a padronização do SCI.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 31
+9.2. Alerta à População da ZSS
+
+        O alerta à população da Zona de Segurança Secundária (ZSS) será realizado por
+meio de uma combinação de métodos, acionados simultaneamente para garantir a
+máxima eficácia:
+
+    Veículos com Sistema de Som: Carros da prefeitura e da PM percorrerão as
+     estradas rurais da ZSS, transmitindo a mensagem de alerta padrão.
+    Rádios Locais: As rádios da região serão acionadas para transmitir a mensagem de
+     alerta em sua programação.
+    Redes Sociais: A página oficial da Prefeitura no Facebook e grupos de WhatsApp da
+     comunidade serão utilizados para disseminar o alerta.
+    Contato Direto: Equipes da Defesa Civil e da Assistência Social irão de porta em
+     porta nas propriedades mais isoladas para garantir que o alerta foi recebido.
+
+9.3. Mensagem de Alerta Padrão
+
+        A mensagem de alerta deve ser curta, clara e imperativa. A seguinte mensagem
+padrão será utilizada:
+
+            "ATENÇÃO! ATENÇÃO! MENSAGEM URGENTE DA DEFESA CIVIL DE
+            GUZOLÂNDIA. FOI DECRETADO NÍVEL DE EMERGÊNCIA PARA A
+            BARRAGEM DE NOVA AVANHANDAVA. HÁ RISCO DE INUNDAÇÃO.
+            TODOS OS MORADORES DAS ÁREAS PRÓXIMAS AO RIO DEVEM
+            EVACUAR SUAS CASAS IMEDIATAMENTE. SIGA AS ROTAS DE FUGA
+            SINALIZADAS E DIRIJA-SE AO PONTO DE ENCONTRO MAIS PRÓXIMO.
+            PEGUE APENAS DOCUMENTOS E REMÉDIOS ESSENCIAIS. NÃO VOLTE
+            PARA CASA. REPITO: ESTA É UMA ORDEM DE EVACUAÇÃO IMEDIATA.
+            SUA VIDA ESTÁ EM RISCO."
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 32
+10. PLANO DE EVACUAÇÃO
+
+          O Plano de Evacuação é o coração da resposta à emergência. Ele detalha como a
+população em risco será removida da Zona de Segurança Secundária (ZSS) e levada
+para locais seguros de forma ordenada e eficiente. O sucesso deste plano depende da
+clareza das rotas, da eficiência da comunicação e do apoio logístico para a população
+vulnerável.
+
+10.1. Setorização da ZSS e Rotas de Fuga
+
+          A ZSS de Guzolândia foi dividida em 3 setores operacionais, conforme detalhado
+na Seção 4.6 e no Anexo J. As rotas de fuga seguem as estradas vicinais municipais em
+direção à sede urbana, que está em cota topográfica segura. Os pontos de encontro
+foram definidos em locais de fácil acesso e identificação pela população local.
+
+            Setor         Rota de Fuga Primária         Ponto de Encontro              Responsável
+
+Setor 1                  Estrada Municipal sentido   Campo de Futebol do         Depto. de Obras
+                         sede urbana                 Bairro do Limoeiro
+
+Setor 2                  Estrada Municipal sentido   Igreja do Bairro do Jacu    Depto. de Agricultura
+                         sede urbana
+
+Setor 3                  Estrada Municipal sentido   Escola Rural do Bairro da   Depto. de Educação
+                         sede urbana                 Onça
+
+
+
+
+10.2. Procedimentos de Evacuação por Setor
+
+          Para cada setor da ZSS, o procedimento de evacuação seguirá as seguintes
+etapas:
+
+21. Alerta: A equipe de campo (Depto. de Obras, PM) entra no setor com veículos de
+   som, transmitindo a mensagem de alerta e orientando a população a seguir para a rota
+   de fuga designada.
+22. Apoio à População Vulnerável: A equipe da Assistência Social, com base no
+   cadastro prévio, vai diretamente às residências da população com mobilidade
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                Versão 1.0 | Fev/2026 — 33
+   reduzida para auxiliar na evacuação, utilizando os veículos apropriados (ambulâncias,
+   micro-ônibus).
+23. Verificação: Após a passagem da equipe de alerta, uma equipe de verificação (PM)
+   percorre o setor para garantir que todas as residências foram evacuadas.
+24. Controle de Acesso: A PM estabelece pontos de bloqueio nas entradas do setor para
+   impedir o retorno de pessoas não autorizadas.
+
+10.3. Sinalização de Rotas de Fuga
+
+       A instalação de placas de sinalização padronizadas ao longo das rotas de fuga é
+uma ação prioritária para a efetividade do plano de evacuação. As placas devem seguir o
+padrão visual da Defesa Civil, com setas indicando "ROTA DE FUGA" e placas para
+"PONTO DE ENCONTRO" em locais de alta visibilidade ao longo das estradas rurais da
+ZSS.
+
+10.4. Evacuação de Animais
+
+       O Departamento de Agricultura e Meio Ambiente, com o apoio logístico do
+Departamento de Obras, coordenará a evacuação de rebanhos e outros animais de
+grande porte para áreas seguras pré-definidas (pastos em áreas mais altas), visando
+minimizar as perdas econômicas para os produtores rurais.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 34
+11. ABRIGAMENTO E ASSISTÊNCIA HUMANITÁRIA
+
+        O plano de abrigamento visa garantir um local seguro, digno e com o mínimo de
+conforto para as famílias que precisaram deixar suas casas. A gestão dos abrigos é uma
+das tarefas mais complexas da resposta e exige uma coordenação eficiente entre
+múltiplos departamentos.
+
+11.1. Estrutura de Abrigos Temporários
+
+        Foram pré-selecionados dois locais para servirem como abrigos temporários. A
+escolha se baseou na localização (fora da mancha de inundação), na infraestrutura
+existente e na capacidade de acolhimento.
+
+      Nome do Abrigo             Endereço           Capacidade Estimada    Coordenador do Abrigo
+
+EMEF Prof. Neide Odete   Rua Manoel Pereira        200 pessoas            Andrei Duarte de Souza
+Maschio Ronqui           Nunes, 670, Limoeiro                             (Dir. Educação)
+
+EMEI Mirelle Michelle    Rua Lúcio Antunes, 447,   80 pessoas             Andrei Duarte de Souza
+                         Limoeiro                                         (Dir. Educação)
+
+
+
+
+        As fichas de caracterização detalhadas de cada abrigo, com planta baixa, número
+de salas, banheiros, cozinha e outras informações, constam no Anexo D.
+
+11.2. Gestão e Organização dos Abrigos
+
+        A gestão dos abrigos será de responsabilidade do Departamento de Assistência
+Social, com forte apoio do Departamento de Educação. As principais funções na gestão
+de um abrigo incluem:
+
+    Coordenação do Abrigo: Um servidor (preferencialmente o diretor da escola) será
+     designado como coordenador do abrigo, sendo o ponto focal para todas as
+     demandas.
+    Recepção e Cadastro: Equipe responsável por receber as famílias, realizar o
+     cadastro (Formulário no Anexo E) e orientá-las sobre as regras do abrigo.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                      Versão 1.0 | Fev/2026 — 35
+    Alimentação: Equipe responsável por preparar e distribuir as refeições (café da
+     manhã, almoço, jantar), com apoio das merendeiras da escola.
+    Logística e Suprimentos: Equipe responsável por controlar o estoque de alimentos,
+     água, colchões, cobertores e kits de higiene, e solicitar reposição ao COE.
+    Saúde: Equipe do Departamento de Saúde responsável pelo posto médico,
+     atendimento de rotina e identificação de casos que necessitem de remoção para
+     unidades de saúde.
+    Segurança: Equipe da PM responsável pelo patrulhamento interno e externo do
+     abrigo, garantindo a segurança e a ordem.
+
+
+
+11.3. Fluxo de Suprimentos e Assistência Humanitária
+
+        O Departamento de Administração e Finanças, a partir das solicitações do COE,
+será responsável pela aquisição emergencial dos suprimentos necessários. O fluxo
+seguirá as seguintes etapas:
+
+25. Necessidade: O coordenador do abrigo identifica a necessidade de suprimentos e
+     informa ao COE.
+26. Cotação e Compra: O Depto. de Administração realiza a cotação e a compra
+     emergencial nos fornecedores locais cadastrados.
+27. Transporte: O Depto. de Obras realiza o transporte dos suprimentos até os abrigos.
+28. Recebimento e Controle: A equipe de logística do abrigo recebe os suprimentos e
+     atualiza o controle de estoque.
+
+
+
+11.4. Kit de Assistência Humanitária
+
+        Cada família cadastrada no abrigo receberá um kit básico de assistência
+humanitária, composto pelos seguintes itens mínimos:
+
+                                   Quantidade por Família (4
+              Item                                              Responsável pela Aquisição
+                                           pessoas)
+
+Colchão                                   4 unidades               Depto. Adm/Finanças
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 36
+Cobertor                                    4 unidades               Depto. Adm/Finanças
+
+Kit de Higiene (sabonete, pasta de
+                                               1 kit              Depto. Assistência Social
+dente, escova, papel higiênico)
+
+Água potável                                8 litros/dia        Depto. Obras (Caminhão Pipa)
+
+Refeições (café, almoço, jantar)          12 refeições/dia      Depto. Educação (merendeiras)
+
+Fralda descartável (se aplicável)      Conforme necessidade               Depto. Saúde
+
+Medicamentos de uso contínuo           Conforme prescrição                Depto. Saúde
+
+
+
+11.5. Regras de Convivência no Abrigo
+
+        Para garantir a ordem e o bem-estar de todos os abrigados, serão estabelecidas
+regras claras de convivência, que serão comunicadas no momento do cadastro:
+
+    Proibição do consumo de bebidas alcoólicas e drogas ilícitas.
+    Proibição de armas de fogo e armas brancas.
+    Respeito aos horários de silêncio (22h às 06h).
+    Manutenção da limpeza e organização dos espaços individuais e coletivos.
+    Respeito à equipe de gestão do abrigo e às orientações de segurança.
+    Animais de estimação serão acolhidos em área específica, separada dos dormitórios.
+
+11.6. Gestão de Doações
+
+        O Fundo Social de Solidariedade, em um local separado dos abrigos (sugestão:
+Ginásio de Esportes), centralizará o recebimento, a triagem e a distribuição de doações
+da comunidade. O fluxo de doações seguirá as seguintes etapas:
+
+29. Recebimento: As doações serão recebidas exclusivamente no ponto centralizado,
+     nunca diretamente nos abrigos.
+30. Triagem: Voluntários farão a separação por tipo (roupas, alimentos, produtos de
+     higiene, etc.) e verificarão a validade e o estado de conservação.
+31. Distribuição: Os itens triados serão distribuídos aos abrigos conforme a demanda
+     informada pelos coordenadores de cada abrigo ao COE.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                 Versão 1.0 | Fev/2026 — 37
+12. LOGÍSTICA E RECURSOS
+
+        A gestão logística é o que permite que a operação de resposta aconteça. Ela
+envolve o gerenciamento de todos os recursos, sejam eles humanos, materiais ou de
+transporte, para garantir que eles estejam no lugar certo, na hora certa.
+
+
+
+12.1. Gerenciamento da Frota Municipal
+
+        O Departamento de Obras e Serviços centralizará o gerenciamento de toda a frota
+municipal mobilizada. Isso inclui:
+
+    Controle de Missões: Nenhuma viatura se desloca sem uma ordem de missão
+     emitida pelo COE.
+    Rastreamento e Comunicação: Todas as viaturas estarão em comunicação
+     constante com o COE via rádio.
+    Abastecimento e Manutenção: Será estabelecido um plano de abastecimento
+     contínuo e uma equipe de manutenção de prontidão para reparos emergenciais.
+        O inventário completo da frota disponível consta no Anexo G.
+
+
+
+12.2. Mobilização de Recursos Humanos
+
+        O Departamento de Administração e Finanças, em coordenação com cada
+secretaria, gerenciará a convocação e a alocação dos servidores públicos. Será
+estabelecido um sistema de turnos para garantir que as equipes possam descansar e a
+operação funcione 24 horas por dia.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 38
+12.3. Capacidade Total de Transporte de Pessoas
+
+       A frota municipal possui a seguinte capacidade total de transporte de pessoas em
+uma única viagem:
+
+     Tipo de Veículo         Quantidade        Capacidade Unitária        Capacidade Total
+
+Ônibus (45 lugares)     3                    45 passageiros           135 passageiros
+
+Ônibus (40 lugares)     2                    40 passageiros           80 passageiros
+
+Micro-ônibus            2                    30 passageiros           60 passageiros
+
+Ambulância Sprinter     1                    1 acamado + 5 sentados   6 pessoas
+
+Ambulância Peugeot      1                    1 acamado + 5 sentados   6 pessoas
+
+Ambulância Peq. Porte   1                    1 acamado + 3 sentados   4 pessoas
+
+TOTAL (1ª viagem)       10                   291 pessoas
+
+
+
+
+       Considerando que a população da ZSS é predominantemente rural e dispersa, e
+que o tempo de chegada da onda é de 20 a 40 horas, a frota municipal tem capacidade
+para realizar múltiplas viagens de evacuação, o que é suficiente para atender à
+demanda estimada.
+
+12.4. Requisição de Recursos Privados
+
+       Caso os recursos públicos não sejam suficientes, o Procurador Geral, com base no
+decreto de Situação de Emergência, poderá formalizar a requisição administrativa de
+recursos privados, como ônibus de empresas locais, caminhões, máquinas pesadas e até
+mesmo estoques de alimentos e água. A requisição administrativa garante o uso do bem
+pelo poder público e a posterior indenização ao proprietário.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                     Versão 1.0 | Fev/2026 — 39
+12.5. Suprimentos Estratégicos
+
+        O Departamento de Administração e Finanças manterá um cadastro atualizado de
+fornecedores locais e regionais para aquisição emergencial dos seguintes itens:
+
+              Categoria                 Itens Principais                Fornecedores Potenciais
+
+Alimentação                  Água mineral, arroz, feijão, óleo,    Supermercados locais, padarias
+                             leite, pão, frutas
+
+Higiene                      Sabonete, pasta de dente, papel       Farmácias, supermercados
+                             higiênico, fraldas
+
+Pernoite                     Colchões, cobertores, travesseiros,   Lojas de materiais, CEPDEC/SP
+                             lonas
+
+Saúde                        Medicamentos básicos, curativos,      Farmácias, UBS
+                             soro
+
+Combustível                  Diesel, gasolina                      Postos de combustível locais
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                          Versão 1.0 | Fev/2026 — 40
+13. SEGURANÇA E CONTROLE DE PERÍMETRO
+
+      A segurança pública durante a emergência tem três objetivos principais: garantir a
+segurança das equipes de resposta, proteger a vida e o patrimônio da população afetada
+e manter a ordem pública.
+
+13.1. Isolamento e Controle de Acesso à ZSS
+
+      Após a conclusão da evacuação, a ZSS será considerada uma área de acesso
+restrito. A Guarda Civil Municipal e a Polícia Militar estabelecerão pontos de bloqueio
+(checkpoints) em todas as vias de acesso à área, permitindo a entrada apenas de equipes
+de resposta autorizadas pelo COE. O objetivo é prevenir acidentes e a ação de
+saqueadores.
+
+13.2. Segurança nos Abrigos e Pontos de Encontro
+
+      O patrulhamento ostensivo será realizado 24 horas por dia nas áreas internas e
+externas dos abrigos e pontos de encontro. O objetivo é garantir a segurança dos
+desabrigados, prevenir conflitos, furtos e outros crimes, e garantir um ambiente de
+tranquilidade.
+
+13.3. Preservação do Patrimônio nas Áreas Evacuadas
+
+      Equipes da PM realizarão rondas periódicas na ZSS evacuada para coibir
+tentativas de saque a residências, propriedades rurais e estabelecimentos comerciais.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 41
+14. SAÚDE E VIGILÂNCIA SANITÁRIA
+
+        As ações de saúde em um desastre vão desde o atendimento pré-hospitalar de
+emergência até a vigilância sanitária para prevenir surtos de doenças nos abrigos.
+
+14.1. Atendimento Pré-Hospitalar (APH)
+
+        As ambulâncias do município serão posicionadas em pontos estratégicos, fora da
+mancha de inundação mas próximas às rotas de fuga, para prestar o primeiro
+atendimento a eventuais feridos durante o processo de evacuação. O fluxo de remoção
+será para a Unidade Básica de Saúde de Guzolândia e, em casos mais graves, para a
+Santa Casa de Fernandópolis.
+
+14.2. Assistência Médica e Psicossocial nos Abrigos
+
+        Cada abrigo terá um posto médico básico, com uma equipe de enfermagem, para
+atendimentos de rotina, curativos e distribuição de medicamentos de uso contínuo. Além
+disso, equipes de psicólogos e assistentes sociais do Departamento de Saúde e da
+Assistência Social darão suporte psicossocial contínuo aos desabrigados, ajudando a
+mitigar os efeitos do trauma e do estresse.
+
+14.3. Vigilância Sanitária e Epidemiológica
+
+        A equipe de Vigilância Sanitária realizará inspeções diárias nos abrigos para
+verificar:
+
+    Qualidade da Água: Coleta de amostras da água para consumo.
+    Preparo de Alimentos: Condições de higiene na cozinha e armazenamento dos
+     alimentos.
+    Condições Sanitárias: Limpeza de banheiros e destinação do lixo.
+    Vigilância Epidemiológica: Monitoramento ativo para identificar e isolar rapidamente
+     qualquer surto de doenças transmissíveis (diarreia, doenças de pele, doenças
+     respiratórias).
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 42
+14.4. Gestão de Óbitos
+
+      Em caso de óbitos durante a emergência, o Departamento de Saúde, em
+coordenação com a Polícia Civil e o Instituto Médico Legal (IML), adotará os
+procedimentos legais para a identificação, a remoção e o registro dos corpos. Será
+designado um local temporário para o armazenamento de corpos, caso necessário, até
+que sejam liberados para as famílias.
+
+14.5. Controle de Vetores e Animais Peçonhentos
+
+      Após a inundação, é comum o aumento da presença de animais peçonhentos
+(cobras, aranhas, escorpiões) e vetores de doenças (mosquitos, ratos) nas áreas
+atingidas. O Departamento de Saúde, em conjunto com o Departamento de Agricultura e
+Meio Ambiente, realizará ações de controle de vetores e orientação à população sobre os
+riscos e os cuidados necessários no retorno às residências.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 43
+15. CONTINUIDADE DE SERVIÇOS ESSENCIAIS
+
+      A gestão dos serviços essenciais (energia, água, saneamento, telecomunicações)
+é crucial para a segurança da operação e para minimizar o impacto no restante do
+município.
+
+15.1. Energia Elétrica
+
+      O COE manterá contato direto com a CPFL para coordenar o desligamento
+programado e seguro da rede elétrica na ZSS antes da chegada da onda de inundação.
+Isso é vital para prevenir acidentes fatais por eletrocussão.
+
+15.2. Água e Saneamento
+
+      O COE coordenará com a SABESP para garantir o fornecimento contínuo de água
+potável para os abrigos (seja pela rede ou por caminhões-pipa) e para monitorar a
+qualidade da água nos sistemas de captação que possam ser afetados pela inundação.
+
+15.3. Telecomunicações
+
+      O COE manterá contato com as operadoras de telefonia e internet para garantir a
+estabilidade dos serviços, que são fundamentais para a comunicação entre as equipes de
+resposta e para que a população possa se comunicar com seus familiares.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 44
+16. PLANO DE RETORNO SEGURO
+
+        O fim da emergência não é o fim da operação. O retorno da população para suas
+casas deve ser uma ação planejada, gradual e, acima de tudo, segura.
+
+16.1. Critérios para Autorização do Retorno
+
+        A ordem de retorno só será emitida pelo Coordenador da COMDEC após o
+cumprimento de todos os seguintes critérios:
+
+32. Fim do Risco: Comunicação oficial da Auren Energia de que a barragem está segura
+     e não há mais risco de inundação.
+33. Recuo das Águas: Confirmação de que as águas da inundação recuaram
+     completamente e as vias de acesso estão desobstruídas.
+34. Vistoria de Segurança: Laudo técnico da Defesa Civil e da Engenharia atestando
+     que as estruturas das edificações não foram comprometidas e que não há risco de
+     desabamento.
+35. Restabelecimento de Serviços: Confirmação da CPFL e SABESP de que os
+     serviços de energia e água foram restabelecidos com segurança.
+
+16.2. Procedimento de Vistoria e Liberação
+
+        Equipes multidisciplinares (engenheiro, assistente social, agente de saúde) irão de
+casa em casa na ZSS para realizar a vistoria. Cada residência será classificada com um
+código de cores:
+
+    Verde: Segura para retorno imediato.
+    Amarelo: Requer reparos, mas pode ser reocupada após os reparos.
+    Vermelho: Insegura, interditada. A família deve permanecer no abrigo.
+
+16.3. Comunicação e Apoio ao Retorno
+
+        A COMDEC utilizará os mesmos canais de comunicação do alerta para informar a
+população sobre a liberação do retorno. O Departamento de Obras fornecerá apoio
+logístico para o transporte das famílias e de seus pertences de volta para suas
+residências.
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 45
+17. PLANO DE SIMULADOS E ATUALIZAÇÃO
+
+        Um plano de contingência que não é testado e atualizado é um documento inútil. A
+preparação contínua é a chave para a eficácia da resposta.
+
+17.1. Cronograma e Tipos de Simulados
+
+        Será seguido um cronograma rigoroso de simulados para testar diferentes
+aspectos do plano:
+
+    Simulado de Mesa (Anual): Reunião no COE com todos os membros do SIMPDEC
+     para discutir um cenário hipotético e testar os fluxos de comunicação e tomada de
+     decisão.
+    Simulado de Comunicação (Semestral): Teste dos canais de comunicação com a
+     Auren e com a CEPDEC/SP para garantir que os contatos estão atualizados e os
+     equipamentos funcionando.
+    Simulado de Campo Parcial (Anual): Simulação de um componente específico do
+     plano, como a ativação de um abrigo ou a evacuação de um setor da ZSS.
+    Simulado de Campo Completo (Bienal): Simulação completa do cenário de
+     emergência, envolvendo a ativação do COE, o alerta à população e a evacuação de
+     todos os moradores da ZSS para os abrigos. Este simulado será realizado em
+     conjunto com a Auren Energia e a CEPDEC/SP.
+
+17.2. Avaliação e Melhoria Contínua
+
+        Após cada simulado, será realizada uma reunião de avaliação com todos os
+participantes para elaborar um Relatório de Lições Aprendidas. Este relatório
+identificará os pontos fortes, as fraquezas e as oportunidades de melhoria do plano. As
+recomendações do relatório serão utilizadas para a revisão e atualização do PLANCON,
+garantindo um ciclo de melhoria contínua.
+
+17.3. Revisão do PLANCON
+
+        Este PLANCON será revisado e atualizado ordinariamente a cada dois anos ou
+extraordinariamente sempre que ocorrer uma das seguintes situações:
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 46
+    Revisão do PAE da UHE Nova Avanhandava.
+    Alteração na estrutura administrativa da Prefeitura.
+    Alteração significativa na ocupação da ZSS.
+    Após as lições aprendidas em um simulado ou evento real.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                            Versão 1.0 | Fev/2026 — 47
+ANEXOS
+
+       Os anexos são a parte operacional do PLANCON. Eles contêm as ferramentas, os
+formulários e os dados detalhados que serão utilizados durante a resposta à emergência.
+Devem ser mantidos sempre atualizados e facilmente acessíveis a toda a equipe do COE.
+
+ANEXO A – Mapas Hidrodinâmicos (Articulação NAV-45)
+
+       Os mapas hidrodinâmicos a seguir são parte integrante deste PLANCON e devem
+ser consultados em conjunto com a análise técnica apresentada no Capítulo 4. Todos os
+mapas foram extraídos do PAE da UHE Nova Avanhandava (Revisão 08, 2025),
+elaborado pela Auren Energia, referentes à articulação cartográfica NAV-45 que cobre o
+território de Guzolândia.
+
+A.1 – Mapa de Inundação (Cenário de Overtopping)
+
+
+
+
+ Figura 7 – Mapa de Inundação (NAV-45). Apresenta a extensão máxima da mancha de inundação no cenário de
+  ruptura por galgamento. A mancha atinge a planície de inundação do Rio Tietê, englobando propriedades rurais
+                          ribeirinhas. A área urbana da sede municipal não é atingida.
+
+
+A.2 – Mapa de Risco Hidrodinâmico (DxV)
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                    Versão 1.0 | Fev/2026 — 48
+ Figura 8 – Mapa de Risco Hidrodinâmico (NAV-45). Classificação integrada do risco à vida humana com base no
+produto Profundidade x Velocidade (DxV). Escala: verde (baixo), amarelo (moderado), laranja (alto), vermelho (muito
+     alto). Na região de Guzolândia, o risco nas áreas de evacuação é predominantemente baixo a moderado.
+
+
+A.3 – Mapa de Tempos de Chegada
+
+
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                                    Versão 1.0 | Fev/2026 — 49
+Figura 9 – Mapa de Tempos de Chegada (NAV-45). Indica o intervalo de tempo entre o início da ruptura e a chegada
+   da frente de onda. Na região de Guzolândia, os tempos estão na faixa de 20 a 40 horas, permitindo evacuação
+                                                  organizada.
+
+
+A.4 – Mapa de Profundidade
+
+
+
+
+Figura 10 – Mapa de Profundidade (NAV-45). Profundidade máxima da lâmina d'água em cada ponto. Nas margens
+                                        habitadas, varia de 0 a 5 metros.
+
+
+
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 50
+A.5 – Mapa de Velocidade
+
+
+
+
+   Figura 11 – Mapa de Velocidade (NAV-45). Velocidade máxima do escoamento. Nas margens habitadas,
+                                 predominantemente baixa (0 a 2 m/s).
+
+
+A.6 – Mapa de Duração
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                            Versão 1.0 | Fev/2026 — 51
+   Figura 12 – Mapa de Duração (NAV-45). Indica por quanto tempo cada área permanecerá inundada após a
+               passagem da onda. Dado essencial para planejamento do retorno da população.
+
+
+A.7 – Mapa de Elevação
+
+
+
+
+ Figura 13 – Mapa de Elevação (NAV-45). Cotas topográficas do terreno, base para interpretação dos
+               demais mapas e definição das rotas de fuga (direção: cotas mais altas).
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                              Versão 1.0 | Fev/2026 — 52
+ANEXO B – Ficha Técnica da UHE Nova Avanhandava
+
+                     Parâmetro                                                    Valor
+
+Empreendedor                                          Auren Energia
+
+Localização                                           Rio Tietê, entre Buritama (MD) e Brejo Alegre (ME)
+
+Coordenadas Geográficas                               21°07'02''S / 50°12'06''O
+
+Ano de Conclusão                                      1982
+
+Tipo de Barragem                                      Terra e enrocamento com núcleo de argila
+
+Comprimento Total do Barramento                       2.038 m
+
+Altura Máxima (da fundação)                           71 m
+
+Volume do Reservatório (total)                        2.808,02 hm³
+
+Potência Instalada                                    347.400 kW
+
+Classificação de Risco (CRI)                          Normal (Classe B)
+
+Dano Potencial Associado (DPA)                        Alto
+
+
+
+
+ANEXO C – Lista de Contatos de Emergência
+
+       Esta lista deve ser revisada e testada a cada 3 meses. Recomenda-se manter
+múltiplos números (fixo, celular) para cada contato.
+
+       CONTATOS INTERNOS – ADMINISTRAÇÃO MUNICIPAL
+
+    Órgão / Função             Nome do Contato        Telefone Plantão 24h            Telefone Secundário
+
+Prefeito Municipal        Luiz Antonio Pereira de   (17) 99722-1590               Prefeitura: (17) 3637-8700
+                          Carvalho
+
+Coordenadora COMDEC Naira Santana Finencio          (17) 99186-2442 (plantão      Prefeitura: (17) 3637-8700
+                                                    via Procuradoria)
+
+Procurador Geral          Thales Natal Tieni Pereira (17) 99186-2442              Prefeitura: (17) 3637-8700
+
+Depto. Obras              Álef Yoshidi Tangoda      (17) 99132-1441               Prefeitura: (17) 3637-8700
+
+Depto. Saúde              Ione Rita de Oliveira     (17) 98176-8406               Prefeitura: (17) 3637-8700
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                   Versão 1.0 | Fev/2026 — 53
+                           Matos
+
+Depto. Assist. Social      Rafael da Silva Ferreira   (17) 99273-2426           Prefeitura: (17) 3637-8700
+
+Depto. Educação            Andrei Duarte de Souza     (17) 99134-1581           Prefeitura: (17) 3637-8700
+
+Depto. Agricultura         Flávia Marino Cruz         (17) 99641-3370           Prefeitura: (17) 3637-8700
+
+Depto. Esporte             Sidnei Soares dos Reis     (17) 99224-8998           Prefeitura: (17) 3637-8700
+
+Depto. Adm/Finanças        Wuylian Matos de Souza     (17) 99214-2432           Prefeitura: (17) 3637-8700
+
+
+
+
+       CONTATOS EXTERNOS – ÓRGÃOS DE APOIO
+
+         Órgão / Função                Telefone Principal                       Observação
+
+Auren Energia (PAE —                0800 704 0589             Atendimento 24h — Sala de Crise da Geração
+Geração/COGE 24h)
+
+Auren Energia (WhatsApp Geral)      (11) 96484-7991           Canal complementar — aurenenergia.com.br
+
+CEPDEC/SP — REPDEC I-8 (SJ          (17) 3211-8870            Cap. PM Alexandre Obvioslo Neto —
+Rio Preto)                                                    aobvioslo@policiamilitar.sp.gov.br
+
+CEPDEC/SP — Central 24h             (11) 2193-8888            Coordenadoria Estadual — Av. Morumbi, 4500,
+                                                              SP
+
+Polícia Militar (Guzolândia)        (17) 3637-1129 / 190      Emergência
+
+Corpo de Bombeiros                  (17) 3462-1162 / 193      Emergência
+(Fernandópolis)
+
+SAMU                                192                       Emergência
+
+CPFL (Emergência)                   0800 010 1010             WhatsApp: (19) 99908-8888
+
+SABESP                              (17) 3637-1129            Emergência 24h: 0800 055 0195
+
+Defesa Civil Estadual               199                       Emergência
+
+
+
+
+             Nota: Esta lista deve ser revisada e testada a cada 3 meses pela
+             Coordenadora da COMDEC. Última atualização: fevereiro de 2026.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                  Versão 1.0 | Fev/2026 — 54
+ANEXO D – Fichas de Caracterização dos Abrigos Temporários
+
+
+
+       FICHA DE ABRIGO 01
+
+                       Parâmetro                              Descrição
+
+Nome do Abrigo                        EMEF Prof. Neide Odete Maschio Ronqui
+
+Endereço                              Rua Manoel Pereira Nunes, 670, Bairro Limoeiro,
+                                      Guzolândia-SP
+
+Coordenadas Geográficas               -20.6490356, -50.6627021
+
+Responsável (Coordenador)             Andrei Duarte de Souza (Diretor do Depto. de
+                                      Educação)
+
+Contato do Responsável                (17) 99134-1581
+
+Acesso às Chaves 24h                  Andrei Duarte de Souza
+
+Capacidade Máxima                     200 pessoas
+
+Nº de Salas / Dormitórios             10 salas
+
+Nº de Banheiros (Masc/Fem)            Disponíveis (instalações escolares)
+
+Estrutura de Cozinha                  Completa (cozinha industrial da escola)
+
+Área de Lazer / Convivência           Pátio coberto e quadra esportiva
+
+Acessibilidade (PCD)                  Sim
+
+Observações                           Abrigo principal. Possui refeitório, área administrativa e
+                                      espaço para posto médico.
+
+
+
+
+       FICHA DE ABRIGO 02
+
+                       Parâmetro                              Descrição
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                  Versão 1.0 | Fev/2026 — 55
+Nome do Abrigo                      EMEI Mirelle Michelle
+
+Endereço                            Rua Lúcio Antunes, 447, Bairro Limoeiro, Guzolândia-
+                                    SP
+
+Coordenadas Geográficas             -20.6442423, -50.6606603
+
+Responsável (Coordenador)           Andrei Duarte de Souza (Diretor do Depto. de
+                                    Educação)
+
+Contato do Responsável              (17) 99134-1581
+
+Acesso às Chaves 24h                Andrei Duarte de Souza
+
+Capacidade Máxima                   80 pessoas
+
+Nº de Salas / Dormitórios           5 salas
+
+Nº de Banheiros (Masc/Fem)          Disponíveis (instalações escolares)
+
+Estrutura de Cozinha                Completa (cozinha da escola)
+
+Área de Lazer / Convivência         Pátio coberto
+
+Acessibilidade (PCD)                Sim
+
+Observações                         Abrigo secundário. Prioridade para famílias com
+                                    crianças pequenas.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 56
+ANEXO E – Modelos de Formulários Operacionais
+
+         FORMULÁRIO E.1: CADASTRO DE DESABRIGADOS / DESALOJADOS
+
+              Campo                                                    Dado
+
+Data/Hora do Cadastro                ____/____/____ às ____:____
+
+Abrigo                               ( ) EMEF Prof. Neide Odete ( ) EMEI Mirelle Michelle
+
+Nome do Responsável pela Família     ____________________________________________
+
+CPF                                  ____________________________________________
+
+Endereço de Origem                   ____________________________________________
+
+Telefone de Contato                  ____________________________________________
+
+Nº de Pessoas na Família             Adultos: ____ Crianças (0-12): ____ Idosos (60+): ____
+
+Pessoas com Deficiência / Acamados   ( ) Sim ( ) Não – Descrever: _________________________
+
+Gestantes / Lactantes                ( ) Sim ( ) Não – Quantas: ____
+
+Medicamentos de Uso Contínuo         ( ) Sim ( ) Não – Quais: ____________________________
+
+Animais de Estimação                 ( ) Sim ( ) Não – Tipo/Qtd: __________________________
+
+Necessidades Especiais               ____________________________________________
+
+Assinatura do Responsável            ____________________________________________
+
+Assinatura do Atendente              ____________________________________________
+
+
+
+
+         FORMULÁRIO E.2: REGISTRO DE OCORRÊNCIA (COE)
+
+              Campo                                                    Dado
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                               Versão 1.0 | Fev/2026 — 57
+Nº da Ocorrência                 ________
+
+Data/Hora                        ____/____/____ às ____:____
+
+Registrado por                   ____________________________________________
+
+Tipo de Ocorrência               ( ) Notificação PAE ( ) Alerta ( ) Evacuação ( ) Resgate ( ) Saúde ( )
+                                 Logística ( ) Segurança ( ) Outro
+
+Descrição Detalhada              ____________________________________________
+
+Ação Tomada                      ____________________________________________
+
+Responsável pela Ação            ____________________________________________
+
+Status                           ( ) Em andamento ( ) Concluído ( ) Pendente
+
+
+
+
+         FORMULÁRIO E.3: REQUISIÇÃO DE RECURSOS
+
+                        Campo                                                 Dado
+
+Nº da Requisição                                   ________
+
+Data/Hora                                          ____/____/____ às ____:____
+
+Solicitante (Nome/Função)                          ____________________________________________
+
+Recurso Solicitado                                 ____________________________________________
+
+Quantidade                                         ____________________________________________
+
+Justificativa                                      ____________________________________________
+
+Prioridade                                         ( ) Urgente ( ) Alta ( ) Normal
+
+Autorizado por                                     ____________________________________________
+
+Data/Hora da Entrega                               ____/____/____ às ____:____
+
+
+
+
+         FORMULÁRIO E.4: AVALIAÇÃO DE DANOS (PÓS-DESASTRE)
+
+                Campo                                                Dado
+
+Data da Vistoria                ____/____/____
+
+Equipe de Vistoria              ____________________________________________
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                Versão 1.0 | Fev/2026 — 58
+Endereço do Imóvel                ____________________________________________
+
+Proprietário                      ____________________________________________
+
+Tipo de Imóvel                    ( ) Residência ( ) Comércio ( ) Rural ( ) Público
+
+Nível da Água Atingido            ____ metros
+
+Danos Estruturais                 ( ) Nenhum ( ) Leve ( ) Moderado ( ) Grave ( ) Destruição Total
+
+Condição de Habitabilidade        ( ) VERDE – Seguro ( ) AMARELO – Requer reparos ( ) VERMELHO –
+                                  Interditado
+
+Observações                       ____________________________________________
+
+Assinatura do Técnico             ____________________________________________
+
+
+
+ANEXO F – Legislação Pertinente
+
+        A seguir, estão listadas as normas que fundamentam este PLANCON. As cópias
+integrais constam na pasta de anexos digitais:
+
+    Lei Federal nº 12.334/2010 (PNSB)
+    Lei Federal nº 12.608/2012 (PNPDEC)
+    Lei Federal nº 14.066/2020 (Altera a PNSB)
+    Lei Municipal nº 1.473/2010 (Criação da COMDEC de Guzolândia)
+    Portaria nº 040/2026 (Nomeação dos membros da COMDEC)
+
+               Nota: As cópias integrais das normas federais podem ser obtidas no portal da
+               legislação (www.planalto.gov.br). A Lei Municipal nº 1.473/2010 e a Portaria nº
+               040/2026 constam nos arquivos da Prefeitura Municipal de Guzolândia e
+               devem ser anexadas em cópia física e digital ao presente plano.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                                  Versão 1.0 | Fev/2026 — 59
+ANEXO G – Inventário de Recursos (Frota Municipal)
+
+       A tabela a seguir apresenta a frota municipal disponível para operações de
+evacuação e logística de emergência. Os dados de placa e ano serão complementados
+pelo Departamento de Obras na próxima revisão deste PLANCON, com base no controle
+patrimonial da Prefeitura.
+
+  Nº     Tipo de Veículo      Capacidade       Departamento         Contato do Responsável
+
+  01   Ambulância            1 acamado + 5
+                                                  Saúde       Ione Rita de O. Matos – (17) 98176-8406
+       Mercedes Sprinter       sentados
+
+  02   Ambulância Peugeot    1 acamado + 5
+                                                  Saúde       Ione Rita de O. Matos – (17) 98176-8406
+                               sentados
+
+  03   Ambulância            1 acamado + 3
+                                                  Saúde       Ione Rita de O. Matos – (17) 98176-8406
+       Pequeno Porte           sentados
+
+  04   Ônibus 01             45 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  05   Ônibus 02             45 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  06   Ônibus 03             45 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  07   Ônibus 04             40 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  08   Ônibus 05             40 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  09   Micro-ônibus 01       30 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  10   Micro-ônibus 02       30 passageiros       Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+
+  11   Caminhão Caçamba       Carga geral /
+                                                  Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+       01                       logística
+
+  12   Caminhão Caçamba       Carga geral /
+                                                  Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+       02                       logística
+
+  13   Caminhão Caçamba       Carga geral /
+                                                  Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+       03                       logística
+
+  14   Caminhão Pipa        Abastecimento de
+                                                  Obras       Álef Yoshidi Tangoda – (17) 99132-1441
+                                  água
+
+       Capacidade total de evacuação por viagem: 275 passageiros sentados (5 ônibus + 2 micro-
+ônibus) + 3 acamados (3 ambulâncias) + 13 sentados (ambulâncias). Total: 291 pessoas por viagem,
+compatível com a capacidade dos abrigos (280 vagas).
+
+  PLANCON – GUZOLÂNDIA/SP | COMDEC                                          Versão 1.0 | Fev/2026 — 60
+ANEXO H – Checklists Executivos
+
+       CHECKLIST 01: AÇÕES IMEDIATAS (PRIMEIRA HORA) - COORDENADOR
+COMDEC
+
+    Ordem                                       Ação                                          Status
+
+   1        [ ] Receber e validar notificação de NR-3 da Auren.
+
+
+   2        [ ] Notificar o Prefeito Municipal sobre a emergência.
+
+
+   3        [ ] Decretar a ORDEM DE EVACUAÇÃO IMEDIATA da ZSS.
+
+
+   4        [ ] Acionar o Plano de Comunicação e Alerta à População (POP 03).
+
+
+   5        [ ] Convocar todos os membros do SIMPDEC para o COE (POP 02).
+
+
+   6        [ ] Estabelecer contato permanente com a Auren e a CEPDEC/SP.
+
+
+   7        [ ] Solicitar ao Prefeito a decretação de Situação de Emergência.
+
+
+
+
+       CHECKLIST        02:      ATIVAÇÃO            DE       ABRIGO         TEMPORÁRIO          -     DEPTO.
+ASSISTÊNCIA SOCIAL
+
+    Ordem                                        Ação                                          Status
+
+   1        [ ] Receber ordem de ativação do COE.
+
+
+   2        [ ] Deslocar equipe para o abrigo pré-definido.
+
+
+   3        [ ] Obter as chaves e abrir o abrigo.
+
+
+   4        [ ] Realizar vistoria rápida da infraestrutura (água, luz, banheiros).
+
+
+   5        [ ] Organizar a área de recepção e cadastramento.
+
+
+   6        [ ] Preparar a área de pernoite (distribuição de colchões).
+
+
+   7        [ ] Solicitar ao COE os suprimentos iniciais (água, alimentos, kits de
+            higiene).
+
+   8        [ ] Designar o Coordenador do Abrigo e sua equipe.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                    Versão 1.0 | Fev/2026 — 61
+        CHECKLIST 03: CONTROLE DE PERÍMETRO E EVACUAÇÃO - PM
+
+              Ordem                            Ação                         Status
+
+1                              [ ] Receber ordem de evacuação do
+                               COE.
+
+2                              [ ] Deslocar equipes para as rotas de
+                               fuga e pontos de encontro.
+
+3                              [ ] Apoiar as equipes de alerta na
+                               comunicação com a população.
+
+4                              [ ] Controlar o tráfego nas rotas de
+                               fuga, priorizando o fluxo de saída.
+
+5                              [ ] Após a evacuação, estabelecer
+                               pontos de bloqueio para isolar a
+                               ZSS.
+
+6                              [ ] Iniciar o patrulhamento dos
+                               abrigos e da área evacuada.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                   Versão 1.0 | Fev/2026 — 62
+18. REFERÊNCIAS
+
+36. AUREN ENERGIA. Plano de Ação de Emergência (PAE) – UHE Nova
+   Avanhandava. Revisão 08, 2025.
+37. BRASIL. Lei nº 12.334, de 20 de setembro de 2010. Estabelece a Política Nacional
+   de Segurança de Barragens (PNSB).
+38. BRASIL. Lei nº 12.608, de 10 de abril de 2012. Institui a Política Nacional de Proteção
+   e Defesa Civil (PNPDEC).
+39. BRASIL. Lei nº 14.066, de 30 de setembro de 2020. Altera a PNSB.
+40. AGÊNCIA NACIONAL DE ENERGIA ELÉTRICA (ANEEL). Resolução Normativa nº
+   1.064, de 2 de maio de 2023. Estabelece critérios e ações de segurança de barragens
+   associadas a usinas hidrelétricas fiscalizadas pela ANEEL.
+41. AGÊNCIA NACIONAL DE ENERGIA ELÉTRICA (ANEEL). Resolução Normativa nº
+   1.129, de 1º de julho de 2025. Altera a REN nº 1.064/2023.
+42. SECRETARIA NACIONAL DE PROTEÇÃO E DEFESA CIVIL (SEDEC). Guia de
+   Orientações para Elaboração de Planos de Contingência. Brasília: Ministério da
+   Integração e do Desenvolvimento Regional, 2017. Disponível em: www.gov.br/mdr.
+43. GUZOLÂNDIA. Lei Municipal nº 1.473, de 06 de outubro de 2010. Cria a
+   Coordenadoria Municipal de Defesa Civil (COMDEC).
+44. GUZOLÂNDIA. Portaria nº 040, de 24 de fevereiro de 2026. Nomeia os membros da
+   COMDEC. Publicada no Diário Oficial Eletrônico, Edição nº 1.058, de 25/02/2026.
+45. BRASIL. Decreto nº 7.257, de 4 de agosto de 2010. Regulamenta a Medida
+   Provisória nº 494/2010 sobre o Sistema Nacional de Defesa Civil (SINDEC) e o
+   reconhecimento de situação de emergência.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                   Versão 1.0 | Fev/2026 — 63
+POP-04: PROCEDIMENTO OPERACIONAL PADRÃO – REGISTRO NO
+SISTEMA INTEGRADO DE INFORMAÇÕES SOBRE DESASTRES (S2ID)
+
+1. OBJETIVO
+
+        Padronizar e agilizar o processo de registro e homologação de Situação de
+Emergência ou Estado de Calamidade Pública do Município de Guzolândia junto ao
+Sistema Integrado de Informações sobre Desastres (S2ID) do Governo Federal,
+garantindo o cumprimento dos prazos legais e a correta instrução do processo para
+acesso a recursos e assistência complementar.
+
+2. RESPONSÁVEIS
+
+    Operador(a)    do   S2ID   (Responsável    Primário):   Naira     Santana      Finencio,
+     Coordenadora da COMDEC. É a única pessoa autorizada a inserir e submeter dados
+     no sistema.
+    Apoiadores (Responsáveis Secundários): Procurador Geral (Thales Natal T.
+     Pereira) e Diretor do Depto. de Administração e Finanças (Wuylian Matos de Souza).
+     São responsáveis por consolidar e fornecer as evidências documentais ao Operador
+     do S2ID.
+
+3. PRAZOS LEGAIS
+
+    Registro no S2ID (meta interna): O registro da Situação de Emergência deve ser
+     realizado no S2ID em até 2 (dois) dias úteis após a publicação do Decreto Municipal.
+     Este é o prazo operacional interno adotado por este PLANCON para garantir
+     celeridade.
+    Prazo normativo federal (referência): O Decreto Federal nº 7.257/2010 estabelece
+     prazo de até 10 (dez) dias para solicitação de reconhecimento federal. O não
+     cumprimento deste prazo impede o reconhecimento da situação de emergência pelo
+     Governo Federal e, consequentemente, o acesso a recursos da União.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                 Versão 1.0 | Fev/2026 — 64
+4. FLUXO INTERNO DE INFORMAÇÕES
+
+      O fluxo para consolidar as informações antes do lançamento no S2ID seguirá as
+seguintes etapas:
+
+46. Decreto da Emergência: O Prefeito, assessorado pelo Coordenador da COMDEC e
+   pelo Procurador Geral, assina o Decreto de Situação de Emergência.
+47. Consolidação de Evidências: Imediatamente após a publicação do Decreto, o
+   Procurador Geral e o Diretor de Administração reúnem todas as evidências listadas no
+   checklist (item 5) e as entregam, em formato digital (PDF, JPG), para a Coordenadora
+   da COMDEC.
+48. Preenchimento do FIDE: A Coordenadora da COMDEC, com base nas evidências,
+   preenche o Formulário de Informações do Desastre (FIDE) diretamente no S2ID.
+49. Validação Cruzada: Antes de submeter, a Coordenadora da COMDEC realiza uma
+   reunião de validação com o Procurador Geral para garantir que todos os campos do
+   FIDE estão corretos e todas as evidências foram anexadas.
+50. Submissão: Após a validação, a Coordenadora da COMDEC submete o processo no
+   S2ID e gera o número de protocolo, que será arquivado junto ao processo
+   administrativo municipal.
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                Versão 1.0 | Fev/2026 — 65
+5. CHECKLIST DE EVIDÊNCIAS PARA INSTRUÇÃO DO PROCESSO
+
+          Ordem           Evidência Documental       Responsável pela Coleta              Formato
+
+1                       Decreto Municipal de         Procurador Geral             PDF
+                        Situação de Emergência
+
+2                       Relatório de Avaliação de    COMDEC / Depto. Obras        PDF
+                        Danos (preliminar)
+
+3                       Relatório Fotográfico dos    COMDEC / Depto. Obras        JPG
+                        Danos (mínimo 10 fotos)
+
+4                       Parecer Técnico da Defesa Coordenadora da                 PDF
+                        Civil Municipal              COMDEC
+
+5                       Mapa da Área Afetada         Coordenadora da              PDF
+                        (cópia do Anexo A do         COMDEC
+                        PLANCON)
+
+6                       Listas de                    Depto. Assistência Social    PDF
+                        Desabrigados/Desalojados
+                        (preliminar)
+
+7                       Notificação da Auren         Coordenadora da              PDF
+                        Energia (comunicação do      COMDEC
+                        NR-3)
+
+8                       Boletins de Ocorrência (se   PM                           PDF
+                        houver)
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                             Versão 1.0 | Fev/2026 — 66
+ANEXO I – MENSAGENS PADRÃO DE ALERTA POR CANAL
+
+1. OBJETIVO
+
+        Padronizar as mensagens de alerta a serem transmitidas à população da Zona de
+Segurança Secundária (ZSS) em caso de ordem de evacuação (Nível de Resposta
+NR-3), garantindo que a comunicação seja clara, objetiva, consistente em todos os canais
+e que contenha orientações precisas para evitar o pânico e agilizar a evacuação.
+
+2. DIRETRIZES GERAIS
+
+    Clareza e Simplicidade: Utilizar linguagem simples, direta e sem termos técnicos.
+    Consistência: A mensagem central deve ser a mesma em todos os canais,
+     adaptando-se apenas o formato.
+    Orientação Direta: A mensagem deve sempre informar O QUE FAZER, PARA
+     ONDE IR e O QUE NÃO FAZER.
+    Frase Anti-Pânico: Todas as mensagens devem conter uma frase que transmita
+     calma e controle da situação pelas autoridades.
+
+
+
+3. MENSAGENS PADRÃO POR CANAL
+
+        Canal 1: Sirenes (se houver) / Alarme Sonoro Contínuo
+
+    Tipo de Sinal: Toque contínuo e intermitente por 3 minutos.
+    Significado: ATENÇÃO! RISCO IMINENTE! INICIE A EVACUAÇÃO!
+    Ação da População: Ao ouvir a sirene, ligue imediatamente o rádio na frequência da
+     rádio local ou aguarde a passagem do carro de som para receber instruções.
+        Canal 2: Carro de Som (Veículo de Alerta)
+
+    Responsável: Depto. de Obras / PM
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                               Versão 1.0 | Fev/2026 — 67
+    Texto da Mensagem (repetido continuamente):
+
+            "ATENÇÃO, MORADORES! MENSAGEM IMPORTANTE DA DEFESA
+            CIVIL DE GUZOLÂNDIA.
+
+            ESTA É UMA ORDEM DE EVACUAÇÃO PREVENTIVA. MANTENHA A
+            CALMA. A SITUAÇÃO ESTÁ SOB CONTROLE.
+
+            SAIA IMEDIATAMENTE DE SUA CASA. DIRIJA-SE AO PONTO DE
+            ENCONTRO MAIS PRÓXIMO, SEGUINDO AS PLACAS DE ROTA DE
+            FUGA.
+
+            LEVE APENAS DOCUMENTOS E REMÉDIOS. NÃO VOLTE PARA CASA.
+            NÃO TENTE RESGATAR ANIMAIS DE GRANDE PORTE.
+
+            REPITO: ESTA É UMA ORDEM DE EVACUAÇÃO. MANTENHA A CALMA E
+            SIGA AS INSTRUÇÕES DAS EQUIPES DA DEFESA CIVIL."
+
+        Canal 3: Rádio Local / WhatsApp Institucional / Redes Sociais
+
+    Responsável: Assessor de Comunicação da Prefeitura
+    Texto da Mensagem (para ser lido pelo locutor ou postado):
+
+            "COMUNICADO URGENTE DA DEFESA CIVIL DE GUZOLÂNDIA
+
+
+
+            A Defesa Civil de Guzolândia, em coordenação com o operador da UHE Nova
+            Avanhandava, informa que foi acionado o Nível de Emergência 3 do Plano de
+            Ação de Emergência da barragem. Como medida de precaução, foi
+            determinada a EVACUAÇÃO IMEDIATA E PREVENTIVA de todas as
+            residências localizadas na Zona de Segurança Secundária (ZSS), na área
+            rural ribeirinha do município.
+
+
+
+            A SITUAÇÃO ESTÁ SOB CONTROLE DAS AUTORIDADES. NÃO HÁ
+            MOTIVO PARA PÂNICO.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                            Versão 1.0 | Fev/2026 — 68
+        Pedimos que todos os moradores da ZSS sigam as seguintes instruções:
+
+
+
+        1. SAIA IMEDIATAMENTE DE SUA CASA.
+
+        2. SIGA AS PLACAS DE ROTA DE FUGA até o Ponto de Encontro mais
+        próximo, onde equipes da prefeitura estarão aguardando para prestar auxílio.
+
+        3.    LEVE APENAS DOCUMENTOS PESSOAIS E MEDICAMENTOS
+        ESSENCIAIS.
+
+        4. NÃO VOLTE PARA CASA até que seja autorizado pelas autoridades.
+
+
+
+        Nossas equipes já estão em campo para auxiliar no transporte de pessoas
+        com dificuldade de locomoção. Mantenha a calma e colabore. Novas
+        informações serão divulgadas a cada 30 minutos por esta rádio e pelos canais
+        oficiais da Prefeitura."
+
+
+
+
+PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 69
+ANEXO J – ROTAS DE FUGA E PONTOS DE ENCONTRO
+
+1. OBJETIVO
+
+        Detalhar as rotas de fuga e os pontos de encontro para cada setor da Zona de
+Segurança Secundária (ZSS), fornecendo um guia executável para as equipes de campo
+e para a população em risco.
+
+2. SETORIZAÇÃO DA ZSS
+
+        A ZSS de Guzolândia foi dividida em 3 setores operacionais, com base na
+geografia local e nas vias de acesso:
+
+    Setor 1: Margem direita do Córrego do Limoeiro.
+    Setor 2: Entre o Córrego do Limoeiro e o Córrego do Jacu.
+    Setor 3: Margem esquerda do Córrego do Jacu.
+
+3. TABELA DE ROTAS E PONTOS DE ENCONTRO
+
+                       Comunidade /         Rota de Fuga     Ponto de Encontro        Responsável pela
+        Setor
+                        Bairro Rural       Recomendada              (Seguro)             Orientação
+
+1                   Bairro do Limoeiro   Estrada Municipal   Campo de Futebol        Depto. de Obras
+                                         GZL-123 (sentido    do Bairro
+                                         cidade)
+
+2                   Bairro do Jacu       Estrada Municipal   Igreja do Bairro do     Depto. de Agricultura
+                                         GZL-245 (sentido    Jacu
+                                         cidade)
+
+3                   Bairro da Onça       Estrada Municipal   Escola Rural do         Depto. de Educação
+                                         GZL-301 (sentido    Bairro da Onça
+                                         cidade)
+
+
+
+
+            Instrução para a População: Ao receber a ordem de evacuação, siga para o
+            Ponto de Encontro do seu setor. Lá, equipes da prefeitura estarão aguardando
+            para fornecer transporte seguro até os abrigos na cidade.
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                           Versão 1.0 | Fev/2026 — 70
+TABELA OPERACIONAL CONSOLIDADA DE ABRIGOS
+
+                                      Abrigo 01: EMEF Prof. Neide
+              Parâmetro                                                    Abrigo 02: EMEI Mirelle Michelle
+                                                Odete
+
+Capacidade Estimada              200 pessoas                           80 pessoas
+
+Responsável (Quem tem a chave)   Andrei Duarte de Souza (Dir.          Andrei Duarte de Souza (Dir.
+                                 Educação)                             Educação)
+
+Contato do Responsável           (17) 99134-1581                       (17) 99134-1581
+
+Coordenador do Abrigo            Andrei Duarte de Souza                Andrei Duarte de Souza
+
+Nº de Salas                      10                                    5
+
+Cozinha                          Completa (industrial)                 Completa
+
+Acessibilidade PCD               Sim                                   Sim
+
+Kit Mínimo (Estoque Inicial)     60 colchões, 120 cobertores, 400L     30 colchões, 60 cobertores, 160L de
+                                 de água, 60 kits de higiene           água, 30 kits de higiene
+
+Fluxo de Entrada                 1. Recepção no portão; 2. Cadastro    1. Recepção no portão; 2. Cadastro
+                                 (Anexo E.1); 3. Encaminhamento        (Anexo E.1); 3. Encaminhamento
+                                 para sala/dormitório.                 para sala/dormitório.
+
+Logística de Água                Caminhão Pipa (Depto. Obras) +        Caminhão Pipa (Depto. Obras) +
+                                 Rede SABESP                           Rede SABESP
+
+Logística de Alimentação         Cozinha da escola (equipe de          Cozinha da escola (equipe de
+                                 merendeiras)                          merendeiras)
+
+Logística de Resíduos            Contentores na área externa (coleta   Contentores na área externa (coleta
+                                 pelo Depto. Obras)                    pelo Depto. Obras)
+
+Segurança do Local               Patrulha da PM (24h)                  Patrulha da PM (24h)
+
+
+
+
+ PLANCON – GUZOLÂNDIA/SP | COMDEC                                                Versão 1.0 | Fev/2026 — 71
+ANEXO K – CRITÉRIOS E GATILHOS DE MONITORAMENTO
+
+1. OBJETIVO
+
+        Estabelecer critérios objetivos e gatilhos de acionamento para o monitoramento
+contínuo das condições que podem levar a um desastre, com base no modelo utilizado
+pela Defesa Civil de Itapetininga, garantindo uma abordagem proativa e baseada em
+evidências.
+
+2. MATRIZ DE MONITORAMENTO E NÍVEIS DE RESPOSTA
+
+                                        Nível de
+     Parâmetro       Fonte da                               Nível de        Nível de Alerta     Nível de Alerta
+                                     Normalidade
+    Monitorado     Informação                           Atenção (NR-1)          (NR-2)          Máximo (NR-3)
+                                         (NR-0)
+
+Status da        Auren Energia      Status "Normal"     Recebimento de     Recebimento de      Recebimento de
+Barragem         (PAE)                                  notificação de     notificação de      notificação de
+                                                        Nível de Alerta    Nível de Alerta     Rompimento
+                                                        do PAE             Máximo do PAE       Iminente ou em
+                                                                                               Curso do PAE
+
+Previsão         Defesa Civil       Sem previsão de     Previsão de        Previsão de         Chuvas >
+Meteorológica    Estadual /         chuvas intensas     chuvas > 50mm      chuvas > 100mm      100mm
+                 INMET                                  em 24h             em 24h              ocorrendo na
+                                                                                               bacia do Rio
+                                                                                               Tietê
+
+Nível do Rio     Sala de Situação   Nível normal        Nível subindo,     Nível atinge a      Nível atinge a
+Tietê            PC-SP                                  mas abaixo da      cota de atenção     cota de alerta
+                                                        cota de atenção
+
+Comunicação      COMDEC             Contato de rotina   Falha no contato   Falha em            Perda total de
+com Auren                                               de rotina          múltiplos           comunicação
+                                                                           contatos
+
+
+
+
+3. AÇÕES CORRESPONDENTES A CADA GATILHO
+
+    Gatilho NR-1 (Atenção):
+    A COMDEC intensifica o monitoramento dos parâmetros.
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                                                  Versão 1.0 | Fev/2026 — 72
+    Comunica a situação aos membros do SIMPDEC.
+    Coloca as equipes de campo em sobreaviso.
+    Gatilho NR-2 (Alerta):
+    A COMDEC convoca o COE para reunião preparatória.
+    As equipes de campo realizam vistorias preventivas na ZSS.
+    Os abrigos são colocados em pré-alerta.
+    Gatilho NR-3 (Alerta Máximo):
+    ORDEM DE EVACUAÇÃO IMEDIATA DA ZSS.
+    Ativação completa do PLANCON.
+    Acionamento de todos os POPs e anexos operacionais.
+
+
+
+
+    PLANCON – GUZOLÂNDIA/SP | COMDEC                              Versão 1.0 | Fev/2026 — 73
+

@@ -1,0 +1,209 @@
+                                                                                  PROPOSTA COMERCIAL
+                                                                                          Proposta nº 56/2026
+
+
+
+ELABORAÇÃO DO PLANO DE CONTINGÊNCIA
+MUNICIPAL – PLANCON
+Planejamento municipal de resposta a emergências associadas à UHE Água Vermelha, com análise
+do PAE, compatibilização cartográfica, diagnóstico de vulnerabilidades e estruturação de
+procedimentos operacionais.
+
+
+ Cliente                          Município de Palmeira d’Oeste/SP
+ Contratada                       Miguel Henrique Gentine de Sousa Engenharia Ltda. | Raizon Ambiental
+ Responsável técnico              Eng. Miguel Gentine – CREA/SP 5070449007
+ Data                             17 de agosto de 2026
+ Validade da proposta             30 (trinta) dias corridos a partir da data de emissão
+
+
+
+ RESUMO EXECUTIVO
+    Elaboração do Plano de Contingência de Proteção e Defesa Civil do Município de Palmeira d’Oeste/SP,
+    tomando como referência o Plano de Ação de Emergência – PAE da UHE Água Vermelha, informado no
+    material de referência como Revisão 08, emissão de 17/12/2025, e os estudos e produtos cartográficos
+    disponibilizados para o planejamento municipal.
+    O trabalho será direcionado à transformação das informações técnicas do PAE em procedimentos municipais
+    de preparação e resposta, incluindo responsabilidades, comunicação, evacuação, recursos, áreas
+    operacionais e mapas de apoio, conforme dados efetivamente disponibilizados e validados.
+    A proposta não contempla nova modelagem de ruptura de barragem, deslocamento de campo nem substitui
+    o PAE do empreendedor.
+
+
+
+
+1. APRESENTAÇÃO
+
+A presente proposta contempla a prestação de serviços técnicos para elaboração do Plano de
+Contingência de Proteção e Defesa Civil – PLANCON do Município de Palmeira d’Oeste/SP, relacionado
+aos cenários de emergência associados à UHE Água Vermelha e estruturado a partir das informações do
+Plano de Ação de Emergência – PAE e dos produtos cartográficos disponibilizados ao Município.
+
+O objeto consiste em organizar, compatibilizar e converter a base técnica disponível em planejamento
+municipal operacional, com definição de procedimentos, responsabilidades, fluxos de comunicação, ações
+de resposta, evacuação, abrigamento e mobilização de recursos, observadas as informações municipais
+que forem fornecidas e validadas durante o desenvolvimento do serviço.
+O PLANCON não substitui o PAE da usina e não abrange a elaboração de nova modelagem hidráulica. O
+PAE é documento de responsabilidade do empreendedor da barragem; esta contratação utiliza suas
+informações como subsídio para o planejamento municipal de proteção e defesa civil. A execução dos
+serviços dar-se-á de forma documental, sem realização de visitas técnicas presenciais, com reuniões de
+alinhamento e validação realizadas por videoconferência. Eventual atividade presencial ou deslocamento
+de campo dependerá de contratação específica e ajuste prévio das respectivas despesas, quando
+aplicável.
+
+2. ESCOPO TÉCNICO
+
+a) Análise técnica do PAE da UHE Água Vermelha disponibilizado ao contratante, informado no material de
+referência como Revisão 08, emissão de 17/12/2025, e dos estudos, mapas e demais documentos
+disponibilizados pelo Município e/ou pelo empreendedor da barragem.
+b) Compatibilização das informações e produtos cartográficos aplicáveis ao território de Palmeira d’Oeste/SP,
+incluindo conferência de eventuais divergências de identificação, articulação ou atualização das bases
+fornecidas. As articulações cartográficas indicadas para o território municipal no Quadro 9 do PAE vigente são
+as folhas AGV-01, AGV-02, AGV-03, AGV-09, AGV-10 e AGV-20; a compatibilização das análises
+hidrodinâmicas ao território municipal ficará condicionada à disponibilidade das respectivas folhas, a serem
+fornecidas pelo contratante junto ao empreendedor da barragem.
+c) Levantamento documental e elaboração de checklist com informações municipais necessárias à estruturação
+do PLANCON, incluindo organização administrativa, contatos, infraestrutura, recursos, serviços essenciais e
+dados territoriais disponíveis.
+d) Diagnóstico municipal de vulnerabilidades e de elementos potencialmente expostos, com base no PAE, na
+cartografia disponibilizada e nas informações oficiais fornecidas pelo Município, sem execução de cadastro
+censitário porta a porta.
+e) Estruturação da cadeia de acionamento e da matriz de responsabilidades dos órgãos, secretarias, serviços
+municipais e instituições participantes, conforme competências e designações que forem formalmente
+informadas e validadas pelo Município.
+f) Definição de procedimentos de recebimento e disseminação de alertas, comunicação institucional e
+orientação à população, observados os canais existentes e a articulação com o empreendedor, Defesa Civil e
+demais órgãos envolvidos.
+g) Planejamento de evacuação e proteção da população, com análise de rotas, pontos de encontro, locais
+seguros, bloqueios, alternativas de acesso e locais de abrigamento quando tecnicamente aplicáveis e sujeitos
+à validação municipal.
+h) Levantamento e organização dos recursos mobilizáveis para resposta, incluindo, quando informados,
+veículos, máquinas, equipes, saúde, assistência social, segurança, transporte, comunicação, abrigamento e
+apoio logístico.
+i) Elaboração de procedimentos e fichas operacionais para acionamento, comunicação, evacuação, isolamento,
+atendimento, abrigamento, assistência e retorno à normalidade, compatíveis com o cenário e com os dados
+efetivamente disponíveis.
+j)        Elaboração de mapas operacionais municipais a partir das bases cartográficas disponibilizadas,
+contemplando os elementos necessários ao uso no PLANCON, sem produção de nova modelagem
+hidrodinâmica, aerolevantamento ou levantamento topográfico.
+k)   Consolidação do PLANCON, reunião de validação técnica com representantes indicados pelo Município e
+incorporação de uma rodada de ajustes consolidados compatíveis com o escopo contratado.
+
+3. ENTREGÁVEIS
+
+     •     Diagnóstico técnico e checklist das informações necessárias à consolidação do PLANCON.
+     •     Síntese das vulnerabilidades, estruturas e recursos municipais considerados no planejamento.
+     •     Matriz de acionamento, comunicação e responsabilidades institucionais.
+     •     Procedimentos operacionais de alerta, resposta, evacuação, isolamento, atendimento e abrigamento,
+           conforme aplicável.
+     •     Mapas operacionais municipais elaborados a partir das bases disponibilizadas e validadas.
+     •     Plano de Contingência de Proteção e Defesa Civil – PLANCON consolidado, em formato digital PDF e
+           versão editável.
+     •     Reunião de validação técnica e uma rodada de ajustes consolidados vinculados ao escopo.
+
+4. INVESTIMENTO
+
+         Item                      Descrição                                             Investimento
+                                   Elaboração completa do PLANCON conforme
+                                   escopo e entregáveis desta proposta, com
+                                   análise do PAE e bases disponibilizadas,
+         Pacote técnico global                                                            R$ 13.000,00
+                                   planejamento operacional, mapas de apoio e
+                                   validação técnica, sem visitas técnicas
+                                   presenciais.
+
+
+Prazo de Entrega: 60 (sessenta) dias corridos, contados da assinatura do contrato e da entrega das
+informações listadas no item 8 desta proposta.
+
+5. NÃO ESTÃO INCLUSOS
+
+a) Taxas públicas, emolumentos, taxas de protocolo, despesas administrativas de órgãos públicos ou cobranças
+de terceiros.
+b) Elaboração, revisão ou atualização do PAE da UHE Água Vermelha, que permanece sob responsabilidade
+do empreendedor da barragem.
+c) Nova modelagem hidráulica ou hidrodinâmica de ruptura de barragem, estudos de propagação da onda,
+recálculo de mancha de inundação ou produção de cenários não integrantes das bases disponibilizadas.
+d) Levantamento topográfico, aerolevantamento, sensoriamento remoto contratado, georreferenciamento
+cadastral, sondagens, investigações ambientais, análises laboratoriais ou outros estudos especializados não
+descritos no escopo.
+e) Visitas técnicas presenciais, deslocamentos, diárias, hospedagem, alimentação e despesas de campo, salvo
+contratação específica de visita com reembolso ou cobrança previamente pactuada.
+f) Cadastro censitário porta a porta de moradores, propriedades, animais, atividades econômicas ou pessoas
+com necessidades específicas.
+g) Implantação física de sirenes, placas, sinalização, pontos de encontro, abrigos, sistemas de comunicação,
+obras, adequações viárias ou aquisição de equipamentos.
+h) Execução de simulados, treinamentos de campo, campanhas públicas, mobilização comunitária, impressão
+gráfica em escala, distribuição de materiais ou operação de emergência, salvo contratação específica.
+i) Projetos complementares, regularizações paralelas, serviços jurídicos, atos administrativos municipais,
+elaboração de legislação ou serviços não expressamente descritos nesta proposta.
+
+5. CONDIÇÕES E RESPONSABILIDADES
+
+a) A contratada executará exclusivamente as atividades expressamente descritas no escopo e utilizará as
+informações oficiais e técnicas disponibilizadas pelo Município, pelo empreendedor da barragem e por fontes
+públicas aplicáveis.
+b) A contratante deverá fornecer documentos, dados, contatos e informações verdadeiros, completos e
+atualizados, bem como indicar responsáveis para reuniões, validações e decisões necessárias à elaboração
+do PLANCON.
+c) Rotas de evacuação, pontos de encontro, locais seguros, abrigos, bloqueios e demais elementos
+operacionais somente serão consolidados após análise técnica e validação com os representantes municipais
+competentes, considerando as limitações das bases disponíveis.
+d) Eventuais divergências de identificação ou articulação cartográfica existentes no material disponibilizado
+serão verificadas durante o diagnóstico. A compatibilização ficará limitada aos estudos integrantes do PAE
+vigente e não compreenderá nova modelagem hidráulica ou estudo especializado não contratado.
+e) A aprovação, adoção, homologação, publicação ou aceitação do PLANCON por órgãos públicos, Defesa
+Civil, empreendedor da barragem ou qualquer outra instituição não é garantida pela contratada e depende das
+competências e procedimentos de cada entidade.
+f) Exigências posteriores que impliquem novo levantamento de campo, nova modelagem, ampliação territorial,
+inclusão de outros cenários de risco, produção de estudos especializados, simulado, capacitação ou alteração
+relevante do escopo poderão gerar proposta complementar.
+g) Pendências de terceiros ou da contratante não impedem a conclusão e cobrança das etapas técnicas já
+executadas, conforme a condição de pagamento que vier a ser pactuada.
+6. BASE TÉCNICA
+
+Lei Federal nº 12.608/2012: com alterações posteriores, incluindo a Lei nº 14.750/2023 – Política Nacional de
+Proteção e Defesa Civil – PNPDEC, competências municipais de proteção e defesa civil e disposições
+relacionadas a planos de contingência.
+
+Lei Federal nº 12.334/2010: com alterações da Lei nº 14.066/2020 – Política Nacional de Segurança de
+Barragens – PNSB, incluindo o Plano de Ação de Emergência – PAE como instrumento do Plano de Segurança
+da Barragem e a articulação entre empreendedor e órgãos de proteção e defesa civil.
+
+Decreto Federal nº 10.593/2020: com alterações posteriores – dispõe sobre a organização e o funcionamento
+do Sistema Nacional de Proteção e Defesa Civil – SINPDEC e sobre critérios e condições relacionados à
+situação de emergência e ao estado de calamidade pública.
+
+Resolução Normativa ANEEL nº 1.064/2023: estabelece critérios aplicáveis à segurança das barragens
+fiscalizadas pela ANEEL, incluindo classificação, Plano de Segurança da Barragem e requisitos regulatórios
+relacionados ao PAE.
+
+Plano de Ação de Emergência – PAE da UHE Água Vermelha: documento disponibilizado ao
+Município/contratante, informado no material de referência como Revisão 08, emissão de 17/12/2025; a versão
+vigente e o conjunto de anexos deverão ser confirmados no início dos trabalhos.
+
+
+
+
+                                                  Assinado digitalmente por MIGUEL
+                                    MIGUEL        HENRIQUE GENTINE DE
+                                                  SOUSA:37876866816
+                                   HENRIQUE ND:       C=BR, CN=MIGUEL HENRIQUE
+                                                  GENTINE DE SOUSA:37876866816,
+                                  GENTINE DE OU=AC SyngularID Multipla,
+                                                  L=VOTUPORANGA,      O=ICP-Brasil,
+                                                                              ST=SP
+                                SOUSA:3787686 documento
+                                                  Razão: Eu sou o autor deste
+
+                                                  Localização:
+                                      6816
+                            _____________________________________________
+                                                  Data: 2026.08.17 17:22:08-03'00'
+
+
+                                                Miguel Gentine
+                 Engenheiro Sanitarista, Ambiental e de Segurança do Trabalho – CREA/SP 5070449007
+                               Técnico em Segurança do Trabalho – MTE 0119910/SP
+                                   Responsável Técnico – MHGS Engenharia Ltda.
+
