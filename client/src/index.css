@@ -133,3 +133,28 @@ button { cursor: pointer; }
     white-space: normal;
   }
 }
+
+@media (max-width: 639px) {
+  .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(17rem, calc(100vw - 3rem));
+    grid-template-columns: none;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+  }
+
+  .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > * {
+    scroll-snap-align: start;
+  }
+
+  .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:has(> .space-y-3:empty) {
+    display: none;
+  }
+}
+
+/* Grade exclusiva de cartões estáticos de Configurações que possuem botão inoperante; controles operacionais possuem seções próprias. */
+.grid.grid-cols-1.md\:grid-cols-3.gap-4:not(.mt-5):has(> div > button) {
+  display: none;
+}

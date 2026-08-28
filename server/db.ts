@@ -495,6 +495,27 @@ export async function getUserByOpenId(openId: string) {
   return result[0];
 }
 
+export async function listManagedUsers() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ id: users.id, name: users.name, email: users.email, role: users.role, profile: users.profile, loginMethod: users.loginMethod, lastSignedIn: users.lastSignedIn, createdAt: users.createdAt }).from(users).orderBy(desc(users.lastSignedIn));
+}
+
+export async function updateManagedUserAccess(id: number, input: { role: "user" | "admin"; profile: "commercial" | "technical" }, actorId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  return db.transaction(async (tx) => {
+    const [target] = await tx.select().from(users).where(eq(users.id, id)).limit(1).for("update");
+    if (!target) throw new Error("Usuário não encontrado.");
+    if (target.openId === ENV.ownerOpenId && input.role !== "admin") throw new Error("A conta proprietária do CRM deve permanecer como administradora.");
+    if (target.id === actorId && input.role !== "admin") throw new Error("O administrador atual não pode remover sua própria administração.");
+    const beforeSnapshot = { role: target.role, profile: target.profile };
+    await tx.update(users).set({ role: input.role, profile: input.profile, updatedAt: new Date() }).where(eq(users.id, id));
+    await writeAuditEvent(tx, { entityType: "user", entityId: id, action: "access_updated", actorId, beforeSnapshot, afterSnapshot: input, metadata: { managedVia: "admin_access" } });
+    return { id, role: input.role, profile: input.profile };
+  });
+}
+
 export async function refreshUserNotifications(userId: number) {
   const db = await getDb();
   if (!db) return { created: 0 };

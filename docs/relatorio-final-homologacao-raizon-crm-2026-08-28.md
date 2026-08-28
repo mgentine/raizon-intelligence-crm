@@ -6,26 +6,27 @@
 
 ## 1. Veredito executivo
 
-O CRM está apto a iniciar um **piloto interno controlado**, com poucos usuários autorizados e poucos cadastros reais, mantendo acompanhamento técnico do uso. A decisão não autoriza produção irrestrita: o fluxo histórico de Guzolândia foi validado até o estado documentalmente suportado — **em execução** — e os controles críticos de banco, estados, permissões, upload e rastreabilidade foram verificados. Ainda faltam evidências para validar restore controlado de backup, concorrência física em sessões TiDB independentes e outros fluxos reais dependentes de dados ainda não fornecidos.
+O CRM está apto a iniciar um **piloto interno controlado**, com poucos usuários autorizados e poucos cadastros reais, mantendo acompanhamento técnico do uso. A decisão não autoriza produção irrestrita: o fluxo histórico de Guzolândia foi validado até o estado documentalmente suportado — **em execução** — e os controles críticos de banco, estados, permissões, upload, rastreabilidade e concorrência física foram verificados. Ainda falta a evidência de recuperação por backup/restauração e permanecem bloqueados fluxos que dependem de dado real ainda não fornecido.
 
 > **Não houve aceite final, atesto, pagamento, encerramento ou conclusão artificial de Guzolândia.** O sistema preserva proposta documental emitida e decisão comercial pendente; o projeto está ativado por contrato documentado, não por aceite do cliente.
 
 | Dimensão | Decisão | Base da decisão |
 |---|---|---|
 | Piloto interno controlado | **Aprovado** | Um caso real, transações críticas, migrations, testes e telas principais validados. |
-| Uso interno contínuo | **Condicionado** | Exige backup/restore comprovado e monitoramento dos primeiros registros operacionais. |
-| Produção irrestrita | **Não aprovada nesta rodada** | Não há teste de restore controlado nem concorrência física TiDB; apenas um caso real homologado. |
+| Uso interno contínuo | **Condicionado** | Exige backup atual confirmado e monitoramento dos primeiros registros operacionais. |
+| Produção irrestrita | **Não aprovada nesta rodada** | Restore oficial não deve ser usado como teste exploratório; também há apenas um caso real homologado e importação real pendente. |
 
 ## 2. Estado técnico final
 
-O sistema continua em React 19, TypeScript 5.9, Vite 7, Node/Express, tRPC 11, Drizzle e TiDB/MySQL. Manus OAuth permanece como autenticação vigente; autenticação própria, recuperação de senha e MFA permanecem congeladas. As mudanças desta rodada foram limitadas a defeitos ou lacunas comprovadas: audit log persistido, proteção de logs tRPC, semântica de execução histórica, classificação visual derivada da empresa e alerta indevido de validade em proposta sem prazo comercial positivo.
+O sistema continua em React 19, TypeScript 5.9, Vite 7, Node/Express, tRPC 11, Drizzle e TiDB/MySQL. Manus OAuth permanece como autenticação vigente; autenticação própria, recuperação de senha e MFA permanecem congeladas. As mudanças foram limitadas a defeitos ou lacunas comprovadas: audit log persistido, proteção de logs tRPC, semântica de execução histórica, classificação visual derivada da empresa, alerta indevido de validade, gestão administrativa de perfis OAuth e ergonomia do funil móvel.
 
 | Verificação | Resultado comprovado |
 |---|---|
 | TypeScript | `pnpm exec tsc --noEmit` sem erro. |
-| Testes automatizados | 24 arquivos, 114 testes aprovados, 0 falhas; a saída não registrou testes ignorados. |
+| Testes automatizados | 25 arquivos, 117 testes aprovados, 0 falhas; a saída não registrou testes ignorados. |
 | Migrations no banco operacional | `pnpm drizzle-kit migrate` concluído sem tentar reaplicar DDL. |
 | Banco vazio temporário | 26 migrations aplicadas; 26 tabelas criadas; `audit_events` com 11 colunas. Banco temporário removido pelo verificador. |
+| Concorrência física TiDB | Duas conexões isoladas serializaram `proposal_sequences` (`1 → 3`, espera de 307 ms); UNIQUE rejeitou duplicação concorrente de proposta e de projeto por proposta. |
 | Build de produção | Concluído. Há aviso não bloqueante de chunk JavaScript acima de 500 kB. |
 | Integridade do diff | `git diff --check` sem erro. |
 
@@ -83,11 +84,11 @@ O coletor de diagnóstico do navegador foi corrigido após a inspeção comprova
 
 ## 7. Segurança, storage e erros
 
-Manus OAuth continua sendo a fronteira de autenticação. As procedures protegidas usam autorização de perfil no servidor; a interface não é a única barreira. O upload de evidência valida título, tamanho máximo de 5 MB e falhas de storage, e só tenta persistir os metadados depois do armazenamento retornar sucesso. Há, contudo, um limite conhecido: uma falha posterior ao upload e anterior ao commit pode deixar objeto S3 sem referência; Guzolândia não está nessa condição, pois seus dois objetos foram associados na transação concluída.
+Manus OAuth continua sendo a fronteira de autenticação. As procedures protegidas usam autorização de perfil no servidor; a interface não é a única barreira. A seção administrativa **Acessos de equipe** lista somente contas que já autenticaram via OAuth e permite ao administrador atribuir perfil comercial/técnico e papel administrativo, com auditoria. A conta proprietária e o administrador atual não podem perder administração nessa tela. O upload de evidência valida título, tamanho máximo de 5 MB e falhas de storage, e só tenta persistir os metadados depois do armazenamento retornar sucesso. Há, contudo, um limite conhecido: uma falha posterior ao upload e anterior ao commit pode deixar objeto S3 sem referência; Guzolândia não está nessa condição, pois seus dois objetos foram associados na transação concluída.
 
 | Controle | Resultado | Limite residual |
 |---|---|---|
-| OAuth/RBAC | Validado por procedures e testes automatizados | Não houve teste manual com múltiplas contas reais nesta rodada. |
+| OAuth/RBAC | Validado por procedures, gestão administrativa de perfis e testes automatizados | Não houve teste manual com múltiplas contas reais nesta rodada. |
 | IDOR e validação de IDs | Rotas verificadas por contratos e cenários de erro | Não foi realizado pentest independente. |
 | Upload/S3 | Tamanho inválido, falha de storage e projeto inexistente testados | Não há compensação automática para objeto S3 órfão após falha posterior ao upload. |
 | Logs | Payload tRPC atual redigido e teste de regressão criado | A proteção cobre o coletor de desenvolvimento auditado, não substitui política corporativa de retenção de logs. |
@@ -95,15 +96,15 @@ Manus OAuth continua sendo a fronteira de autenticação. As procedures protegid
 
 ## 8. Migrations, backup e recuperação
 
-As migrations 0000–0025 foram aplicadas com sucesso a banco TiDB temporário vazio e o schema resultante foi validado. O ledger operacional contém 26 entradas; a migration `0025` foi reconciliada após aplicação manual, seguindo o procedimento já adotado no projeto para evitar repetição de DDL no banco ativo. Não foi executado upgrade independente a partir de snapshot representativo anterior nem teste físico de concorrência TiDB com múltiplas sessões.
+As migrations 0000–0025 foram aplicadas com sucesso a banco TiDB temporário vazio e o schema resultante foi validado. O ledger operacional contém 26 entradas; a migration `0025` foi reconciliada após aplicação manual, seguindo o procedimento já adotado no projeto para evitar repetição de DDL no banco ativo. Foi executada concorrência física com duas sessões TiDB no banco temporário; não foi executado upgrade independente a partir de snapshot representativo anterior.
 
 O mecanismo gerenciado de backup de website inclui código, arquivos enviados, banco, configuração e segredos no snapshot de dados da tarefa, mas é um ponto no tempo e não uma sincronização contínua. A restauração requer os pacotes corretos e só pode ser concluída uma vez. Nesta rodada não foi solicitado nem executado restore de ambiente contendo dados reais, pois isso poderia sobrescrever estado operacional. Portanto, a presença do caso de Guzolândia em backup foi **inferida pela arquitetura da plataforma**, não validada por restore controlado; esta é a principal restrição para produção irrestrita. [1] [2]
 
 ## 9. Responsividade e experiência operacional
 
-Foram revisadas as telas de Empresas, Oportunidades, Propostas e Execução em 1440×900, 768×1024 e 390×844. Empresas apresenta Guzolândia como **Cliente base** por relação derivada. Propostas apresenta `H-006/2026` como emitida, sem alerta falso de vencimento. Execução apresenta o projeto como **Em execução** e informa que projetos históricos podem decorrer de contratação documentada.
+Foram revisadas as telas de Empresas, Oportunidades, Propostas e Execução em 1440×900, 768×1024 e 390×844. Empresas apresenta Guzolândia como **Cliente base** por relação derivada. Propostas apresenta `H-006/2026` como emitida, sem alerta falso de vencimento. Execução apresenta o projeto como **Em execução** e informa que projetos históricos podem decorrer de contratação documentada. Configurações passou a exibir gestão funcional de acessos, sem cartões de ação inoperante.
 
-Não foram observados botões críticos fora do viewport, modais impossíveis de usar ou conteúdo cortado nas telas revisadas. O funil de oportunidades em celular/tablet ainda empilha colunas vazias e torna a navegação longa quando poucas etapas possuem cartão; é uma limitação de ergonomia, mas não bloqueou consulta nem ação. Fica classificado como melhoria futura, sem redesign nesta rodada.
+Não foram observados botões críticos fora do viewport, modais impossíveis de usar ou conteúdo cortado nas telas revisadas. No celular, o funil passou a usar faixa horizontal com snap e oculta somente colunas sem oportunidade; a primeira coluna visível possui cartão real e mantém a ação de edição acessível. As etapas continuam completas nas telas maiores.
 
 ## 10. Correções realizadas nesta rodada
 
@@ -114,6 +115,8 @@ Não foram observados botões críticos fora do viewport, modais impossíveis de
 | Empresa histórica aparecia como prospect pelo campo legado | Interface passou a exibir relação comercial derivada | Captura visual em desktop, tablet e celular. |
 | H-006/2026 recebia alerta de validade inexistente | Propostas com `validityDays <= 0` não geram alerta de expiração | `proposal-alert.rules.test.ts`. |
 | Log de desenvolvimento continha resposta tRPC integral | Coletor omite corpo, cabeçalhos e parâmetros de chamadas tRPC | Teste e validação runtime do log novo. |
+| Não havia administração de perfis para contas OAuth já existentes | Nova seção Acessos de equipe, rota exclusiva de admin e evento de auditoria | `access-management.router.test.ts`. |
+| Funil móvel iniciava por colunas vazias e exigia rolagem improdutiva | Faixa horizontal com snap e ocultação móvel somente de etapas vazias | Captura em 390 px com cartão e ação acessíveis. |
 
 ## 11. Fluxos não homologados e pendências externas
 
@@ -126,10 +129,8 @@ Também permanece pendente a verificação documental ou jurídica de assinatura
 | Classificação | Risco ou restrição | Evidência concreta para remover |
 |---|---|---|
 | **Bloqueia produção irrestrita** | Restore de backup não executado em ambiente controlado | Backup atual completo e restore controlado que confirme código, banco, evidências e audit log. |
-| **Bloqueia produção irrestrita** | Concorrência física TiDB não ensaiada com duas sessões reais | Teste controlado de lock/retry/UNIQUE com múltiplas conexões, sem dados de cliente. |
 | **Não bloqueia piloto** | S3 pode manter objeto sem referência se o banco falhar após upload | Rotina de reconciliação/limpeza ou mecanismo compensatório testado. |
 | **Não bloqueia piloto** | Audit log só passa a registrar mutações futuras; criação original de Guzolândia antecedeu a tabela | Histórico de novos eventos em operação e, se necessário, evento de reconciliação explicitamente datado — já criado para a revisão, sem retroação. |
-| **Melhoria futura** | Funil de oportunidades é longo em celular/tablet | Uso real indicando prejuízo operacional e ajuste de navegação aprovado. |
 | **Melhoria futura** | Aviso de chunk Vite acima de 500 kB | Medição de performance real que justifique code splitting. |
 
 ## 13. Funcionalidades congeladas
@@ -142,7 +143,7 @@ Permanecem fora desta liberação: autenticação própria, recuperação de sen
 
 > **SIM, SOMENTE EM PILOTO CONTROLADO.**
 
-O piloto deve iniciar com acesso interno limitado, manutenção do Manus OAuth, cadastro manual/rastreável e monitoramento dos primeiros fluxos. Não autorizar importação definitiva, automação externa, mudança de estado de Guzolândia ou expansão para produção irrestrita sem evidência adicional. O próximo passo recomendado é executar **backup atual + restore controlado em ambiente seguro**, seguido de teste de concorrência TiDB; depois disso, avaliar a transição para “produção com restrições”.
+O piloto deve iniciar com acesso interno limitado, manutenção do Manus OAuth, cadastro manual/rastreável e monitoramento dos primeiros fluxos. Não autorizar importação definitiva, automação externa, mudança de estado de Guzolândia ou expansão para produção irrestrita sem evidência adicional. Antes de publicar, o responsável deve executar o procedimento `docs/procedimento-liberacao-controlada-2026-08-28.md`, confirmar o backup atual conforme o aviso oficial aplicável à conta e atribuir os perfis de cada colaborador depois do primeiro login OAuth. A publicação pode então ocorrer como piloto; não é necessário nem recomendável usar a restauração oficial como teste exploratório.
 
 ## Referências
 

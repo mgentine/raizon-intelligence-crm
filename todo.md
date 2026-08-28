@@ -1,5 +1,16 @@
 # Project TODO
 
+# Liberação funcional para usuários finais — rodada pós-homologação
+
+- [x] Corrigir a navegação móvel do funil de oportunidades para manter etapas, cartões e ações acessíveis sem empilhamento improdutivo
+- [x] Auditar e completar a administração de usuários e perfis sobre Manus OAuth sem criar autenticação própria
+- [x] Remover ou substituir atalhos genéricos de Configurações que não executam ação operacional, preservando apenas controles funcionais
+- [x] Corrigir regressão visual que ocultou campos do cadastro mestre ao remover atalhos genéricos de Configurações
+- [x] Restringir a listagem de oportunidades aos perfis operacionais autorizados no servidor e cobrir a regressão de RBAC
+- [x] Executar teste físico de concorrência TiDB em banco temporário, sem usar empresas, propostas ou projetos reais
+- [x] Preparar procedimento controlado de backup/restore e registrar a ação manual necessária do responsável sem sobrescrever o ambiente operacional
+- [x] Consolidar checklist de publicação, restrições de piloto e requisitos de dados reais ainda pendentes
+
 - [ ] Autenticação com login, senha, recuperação de acesso e controle por perfis
 - [x] Layout autenticado com navegação para dashboard, leads, empresas, atos regulatórios, oportunidades, atividades e configurações
 - [x] Modelo canônico de empresas por CNPJ
@@ -569,7 +580,7 @@
 - [x] Testar que contrato documentado ativa projeto histórico sem registrar aceite comercial final
 - [x] Alinhar a visualização de empresas à relação comercial derivada, sem reintroduzir promoção manual pelo campo legado
 - [x] Corrigir a linguagem da Central de Execução para distinguir projeto por aceite do cliente de registro histórico ativado por contrato documentado
-- [ ] Corrigir a visualização móvel do funil de oportunidades para evitar colunas vazias empilhadas e cartões excessivamente comprimidos
+- [x] Corrigir a visualização móvel do funil de oportunidades para evitar colunas vazias empilhadas e cartões excessivamente comprimidos
 - [x] Corrigir alerta de validade da proposta histórica H-006/2026 para não representar vencimento não documentado
 - [x] Reduzir logs de desenvolvimento para não registrar payloads/respostas tRPC com dados pessoais ou contratuais
 - [x] Registrar a revisão final atual de Guzolândia no audit log sem retroagir ou falsificar o momento da criação histórica

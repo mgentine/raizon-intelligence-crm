@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc";
 import { Building2, Save, ShieldCheck } from "lucide-react";
+import { UserAccessManagement } from "./UserAccessManagement";
 
 type MasterForm = {
   legalName: string;
@@ -79,7 +80,7 @@ export function RaizonMasterData() {
 
   const update = (field: keyof MasterForm) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((current) => ({ ...current, [field]: event.target.value }));
 
-  return <section className="bg-white border border-[#dfe5e0] p-6 mb-6">
+  return <><UserAccessManagement /><section className="bg-white border border-[#dfe5e0] p-6 mb-6">
     <div className="flex items-start justify-between gap-4 mb-6">
       <div className="flex items-start gap-3"><div className="p-3 bg-[#fbe5e3] text-[#e13b32]"><Building2 className="h-5 w-5" /></div><div><h2 className="text-xl font-black">Cadastro mestre da Raizon</h2><p className="text-sm text-[#65736c] mt-1">Dados que alimentam propostas e documentos oficiais.</p></div></div>
       <ShieldCheck className="h-5 w-5 text-[#e13b32]" aria-label="Acesso administrativo" />
@@ -104,5 +105,5 @@ export function RaizonMasterData() {
     </div>
     <div className="mt-4"><textarea className="min-h-[112px] w-full border border-[#dfe5e0] bg-white px-3 py-3 text-sm outline-none focus:border-[#e13b32]" placeholder="Assinatura padrão que será usada nos documentos" value={form.signatureText} onChange={update("signatureText")} /></div>
     <div className="mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"><p className="text-xs text-[#87918c]">Apenas administradores podem alterar estes dados.</p><div className="flex items-center gap-3"><span className="text-sm text-[#65736c]" role="status">{feedback}</span><Button className="bg-[#e13b32] text-white" disabled={save.isPending || !form.legalName.trim()} onClick={() => save.mutate(form)}><Save className="h-4 w-4 mr-2" />{save.isPending ? "Salvando…" : "Salvar dados mestres"}</Button></div></div>
-  </section>;
+  </section></>;
 }
