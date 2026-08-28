@@ -15,6 +15,7 @@ const archiveContactMock = vi.hoisted(() => vi.fn(async (id: number) => ({ succe
 const decideImportConflictMock = vi.hoisted(() => vi.fn(async (id: number, userId: number, decision: string, rationale?: string) => ({ success: true, id, userId, decision, rationale })));
 const updateOpportunityDetailsMock = vi.hoisted(() => vi.fn(async (id: number, changes: unknown) => ({ success: true, id, changes })));
 const updateOpportunityStageWithLossReasonMock = vi.hoisted(() => vi.fn(async (id: number, stage: string, lossReason?: string) => ({ success: true, id, stage, lossReason })));
+const listAuditEventsMock = vi.hoisted(() => vi.fn(async () => [{ id: 1, entityType: "execution_project", entityId: 1, action: "status_changed" }]));
 const sendTitanEmailMock = vi.hoisted(() => vi.fn(async () => ({ messageId: "admin-test-message" })));
 const convertLeadToClientMock = vi.hoisted(() => vi.fn(async (id: number) => ({ leadId: id, companyId: 55, relationshipStatus: "client", commercialStatus: "won" })));
 
@@ -22,7 +23,7 @@ vi.mock("./email", () => ({ sendTitanEmail: sendTitanEmailMock }));
 
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, convertLeadToClient: convertLeadToClientMock, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock, updateOpportunityStageWithLossReason: updateOpportunityStageWithLossReasonMock };
+  return { ...actual, convertLeadToClient: convertLeadToClientMock, createRecurringItem: createRecurringItemMock, completeRecurringItem: completeRecurringItemMock, listUpcomingRecurring: listUpcomingRecurringMock, updateRegulatoryAct: updateRegulatoryActMock, archiveRegulatoryAct: archiveRegulatoryActMock, listRegulatoryActs: listRegulatoryActsMock, listEvidenceFiles: listEvidenceFilesMock, archiveEvidenceFile: archiveEvidenceFileMock, updateUnit: updateUnitMock, archiveUnit: archiveUnitMock, updateContact: updateContactMock, archiveContact: archiveContactMock, decideImportConflict: decideImportConflictMock, updateOpportunityDetails: updateOpportunityDetailsMock, updateOpportunityStageWithLossReason: updateOpportunityStageWithLossReasonMock, listAuditEvents: listAuditEventsMock };
 });
 
 import { appRouter } from "./routers";
@@ -43,6 +44,14 @@ describe("normalização nas mutations", () => {
     expect(sendTitanEmailMock).toHaveBeenCalledWith(expect.objectContaining({ subject: "Teste controlado" }));
     const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
     await expect(commercialCaller.notifications.sendTestEmail({ subject: "Sem permissão" })).rejects.toThrow();
+  });
+  it("restringe a consulta de audit log ao administrador", async () => {
+    listAuditEventsMock.mockClear();
+    const adminCaller = appRouter.createCaller({ user: { id: 1, role: "admin", profile: "commercial" } } as any);
+    await expect(adminCaller.audit.list({ entityType: "execution_project", entityId: 1 })).resolves.toEqual([{ id: 1, entityType: "execution_project", entityId: 1, action: "status_changed" }]);
+    expect(listAuditEventsMock).toHaveBeenCalledWith({ entityType: "execution_project", entityId: 1 });
+    const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
+    await expect(commercialCaller.audit.list({ entityType: "execution_project", entityId: 1 })).rejects.toThrow();
   });
   it("persiste dueAt normalizado na recurring.create", async () => {
     const caller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
@@ -77,7 +86,7 @@ describe("normalização nas mutations", () => {
     const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
     await expect(technicalCaller.evidence.list({ regulatoryActId: 31 })).resolves.toEqual([{ id: 41, regulatoryActId: 31, filename: "licenca.pdf", archivedAt: null }]);
     await expect(technicalCaller.evidence.archive({ id: 41 })).resolves.toEqual({ success: true, id: 41 });
-    expect(listEvidenceFilesMock).toHaveBeenCalledWith({ regulatoryActId: 31 }); expect(archiveEvidenceFileMock).toHaveBeenCalledWith(41);
+    expect(listEvidenceFilesMock).toHaveBeenCalledWith({ regulatoryActId: 31 }); expect(archiveEvidenceFileMock).toHaveBeenCalledWith(41, 77);
     const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
     await expect(commercialCaller.evidence.archive({ id: 41 })).rejects.toThrow();
   });
@@ -116,7 +125,7 @@ describe("normalização nas mutations", () => {
     const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
     const nextActionAt = new Date("2026-12-31T12:00:00.000Z");
     await expect(commercialCaller.opportunities.updateDetails({ id: 91, ownerId: 88, estimatedValue: "12500.00", nextAction: "Enviar proposta técnica", nextActionAt, notes: "Escopo preliminar" })).resolves.toEqual(expect.objectContaining({ success: true, id: 91 }));
-    expect(updateOpportunityDetailsMock).toHaveBeenCalledWith(91, expect.objectContaining({ ownerId: 88, estimatedValue: "12500.00", nextAction: "Enviar proposta técnica", nextActionAt, notes: "Escopo preliminar" }));
+    expect(updateOpportunityDetailsMock).toHaveBeenCalledWith(91, expect.objectContaining({ ownerId: 88, estimatedValue: "12500.00", nextAction: "Enviar proposta técnica", nextActionAt, notes: "Escopo preliminar" }), 88);
     const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
     await expect(technicalCaller.opportunities.updateDetails({ id: 91, notes: "Sem permissão" })).rejects.toThrow();
   });
@@ -125,7 +134,7 @@ describe("normalização nas mutations", () => {
     updateOpportunityStageWithLossReasonMock.mockClear();
     const commercialCaller = appRouter.createCaller({ user: { id: 88, role: "user", profile: "commercial" } } as any);
     await expect(commercialCaller.opportunities.updateStage({ id: 91, stage: "lost", lossReason: "Orçamento incompatível" })).resolves.toEqual({ success: true, id: 91, stage: "lost", lossReason: "Orçamento incompatível" });
-    expect(updateOpportunityStageWithLossReasonMock).toHaveBeenCalledWith(91, "lost", "Orçamento incompatível");
+    expect(updateOpportunityStageWithLossReasonMock).toHaveBeenCalledWith(91, "lost", "Orçamento incompatível", 88);
     const technicalCaller = appRouter.createCaller({ user: { id: 77, role: "user", profile: "technical" } } as any);
     await expect(technicalCaller.opportunities.updateStage({ id: 91, stage: "proposal" })).rejects.toThrow();
   });

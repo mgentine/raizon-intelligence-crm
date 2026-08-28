@@ -567,11 +567,27 @@
 - [x] Adicionar chave única aditiva para o identificador de template do serviço histórico e validar duplicidades prévias
 - [x] Separar base de ativação por contrato documentado do aceite comercial final e corrigir o estado histórico de Guzolândia sem perder rastreabilidade
 - [x] Testar que contrato documentado ativa projeto histórico sem registrar aceite comercial final
-- [ ] Alinhar a visualização de empresas à relação comercial derivada, sem reintroduzir promoção manual pelo campo legado
+- [x] Alinhar a visualização de empresas à relação comercial derivada, sem reintroduzir promoção manual pelo campo legado
+- [x] Corrigir a linguagem da Central de Execução para distinguir projeto por aceite do cliente de registro histórico ativado por contrato documentado
+- [ ] Corrigir a visualização móvel do funil de oportunidades para evitar colunas vazias empilhadas e cartões excessivamente comprimidos
+- [x] Corrigir alerta de validade da proposta histórica H-006/2026 para não representar vencimento não documentado
+- [x] Reduzir logs de desenvolvimento para não registrar payloads/respostas tRPC com dados pessoais ou contratuais
+- [x] Registrar a revisão final atual de Guzolândia no audit log sem retroagir ou falsificar o momento da criação histórica
 
 ### Verificação de domínio concluída
 
 - [x] Confirmar que a relação comercial derivada classifica Guzolândia como cliente em execução no backend, sem promover manualmente o campo legado
+
+# Homologação final controlada e decisão de release
+
+- [x] Delimitar evidências autorizadas, fluxos congelados e critérios objetivos de aprovação
+- [x] Validar domínio, integridade, estados, idempotência e não duplicidade sem modificar o caso real
+- [x] Validar RBAC, erros controlados, logs, migrations e limites de backup/restauração
+- [x] Homologar consulta, navegação e responsividade do caso Guzolândia nas telas operacionais
+- [x] Consolidar relatório final de homologação, riscos residuais e decisão de release
+- [x] Implementar audit log persistido mínimo para as mutações críticas de empresa, oportunidade, projeto, status, tarefa, blocker e evidência
+- [x] Cobrir audit log, transições inválidas, duplicidade, upload e archive com testes automatizados sem alterar o caso real
+- [x] Executar todas as migrations em banco TiDB temporário vazio, validar o schema resultante e remover o banco de teste
 
 # Reverificação de aderência às instruções P0 reenviadas
 

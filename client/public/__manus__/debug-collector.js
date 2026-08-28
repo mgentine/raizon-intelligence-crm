@@ -452,6 +452,14 @@
 
   var originalFetch = window.fetch.bind(window);
 
+  function isSensitiveRpcRequest(url) {
+    return String(url || "").indexOf("/api/trpc/") !== -1;
+  }
+
+  function diagnosticUrl(url) {
+    return isSensitiveRpcRequest(url) ? String(url).split("?")[0] : url;
+  }
+
   window.fetch = function (input, init) {
     init = init || {};
     var startTime = Date.now();
@@ -476,14 +484,15 @@
       requestHeaders = { _parseError: true };
     }
 
+    var sensitiveRpc = isSensitiveRpcRequest(url);
     var entry = {
       timestamp: startTime,
       type: "fetch",
       method: method.toUpperCase(),
-      url: url,
+      url: diagnosticUrl(url),
       request: {
-        headers: requestHeaders,
-        body: init.body ? sanitizeValue(tryParseJson(init.body)) : null,
+        headers: sensitiveRpc ? {} : requestHeaders,
+        body: sensitiveRpc ? "[tRPC payload not recorded]" : (init.body ? sanitizeValue(tryParseJson(init.body)) : null),
       },
       response: null,
       duration: null,
@@ -513,6 +522,13 @@
             status: response.status,
             statusText: response.statusText,
           });
+        }
+
+        if (sensitiveRpc) {
+          entry.response.body = "[tRPC payload not recorded]";
+          store.networkRequests.push(entry);
+          pruneBuffer(store.networkRequests, CONFIG.bufferSize.network);
+          return response;
         }
 
         // Skip body capture for streaming responses (SSE, etc.) to avoid memory leaks
@@ -615,7 +631,8 @@
       xhr._manusData.url.indexOf("/__manus__/") !== 0
     ) {
       xhr._manusData.startTime = Date.now();
-      xhr._manusData.requestBody = body ? sanitizeValue(tryParseJson(body)) : null;
+      xhr._manusData.isSensitiveRpc = isSensitiveRpcRequest(xhr._manusData.url);
+      xhr._manusData.requestBody = xhr._manusData.isSensitiveRpc ? "[tRPC payload not recorded]" : (body ? sanitizeValue(tryParseJson(body)) : null);
 
       xhr.addEventListener("load", function () {
         var contentType = (xhr.getResponseHeader("content-type") || "").toLowerCase();
@@ -634,7 +651,9 @@
                        contentType.indexOf("application/pdf") !== -1 ||
                        contentType.indexOf("application/zip") !== -1;
 
-        if (isStreaming) {
+        if (xhr._manusData.isSensitiveRpc) {
+          responseBody = "[tRPC payload not recorded]";
+        } else if (isStreaming) {
           responseBody = "[Streaming response - not captured]";
         } else if (isBinary) {
           responseBody = "[Binary content: " + contentType + "]";
@@ -657,7 +676,7 @@
           timestamp: xhr._manusData.startTime,
           type: "xhr",
           method: xhr._manusData.method,
-          url: xhr._manusData.url,
+          url: diagnosticUrl(xhr._manusData.url),
           request: { body: xhr._manusData.requestBody },
           response: {
             status: xhr.status,
@@ -687,7 +706,7 @@
           timestamp: xhr._manusData.startTime,
           type: "xhr",
           method: xhr._manusData.method,
-          url: xhr._manusData.url,
+          url: diagnosticUrl(xhr._manusData.url),
           request: { body: xhr._manusData.requestBody },
           response: null,
           duration: Date.now() - xhr._manusData.startTime,

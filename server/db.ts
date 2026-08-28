@@ -27,6 +27,7 @@ import {
   projectChecklist,
   projectEvidence,
   projectBlockers,
+  auditEvents,
   intelligenceSuggestions,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -41,6 +42,46 @@ import { buildCompanyImportPreviewCandidate, compareCompanyImportCandidate, type
 let _db: ReturnType<typeof drizzle> | null = null;
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
+
+type AuditEventInput = {
+  entityType: string;
+  entityId: number;
+  action: string;
+  actorId?: number | null;
+  origin?: string;
+  requestId?: string | null;
+  beforeSnapshot?: unknown;
+  afterSnapshot?: unknown;
+  metadata?: unknown;
+};
+
+function serializeAuditSnapshot(value: unknown) {
+  if (value === undefined || value === null) return null;
+  return JSON.stringify(value, (_key, item) => typeof item === "bigint" ? item.toString() : item);
+}
+
+async function writeAuditEvent(tx: any, input: AuditEventInput) {
+  await tx.insert(auditEvents).values({
+    entityType: input.entityType,
+    entityId: input.entityId,
+    action: input.action,
+    actorId: input.actorId ?? null,
+    origin: input.origin ?? "application",
+    requestId: input.requestId ?? null,
+    beforeSnapshot: serializeAuditSnapshot(input.beforeSnapshot),
+    afterSnapshot: serializeAuditSnapshot(input.afterSnapshot),
+    metadata: serializeAuditSnapshot(input.metadata),
+  });
+}
+
+export async function listAuditEvents(filters?: { entityType?: string; entityId?: number; limit?: number }) {
+  const db = await getDb();
+  if (!db) return [];
+  const conditions = [];
+  if (filters?.entityType) conditions.push(eq(auditEvents.entityType, filters.entityType));
+  if (filters?.entityId) conditions.push(eq(auditEvents.entityId, filters.entityId));
+  return db.select().from(auditEvents).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(auditEvents.createdAt)).limit(Math.min(Math.max(filters?.limit ?? 50, 1), 200));
+}
 
 export function isRetryableTransactionError(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
@@ -194,6 +235,7 @@ export async function updateProposalStatus(id: number, status: ProposalStatus, r
     }
     if (!["accepted", "rejected", "cancelled"].includes(status)) throw new Error("Decisão comercial inválida.");
     await tx.update(proposals).set({ status, decisionStatus: status as typeof proposals.$inferInsert.decisionStatus, decidedAt: now, cancelledAt: status === "cancelled" ? now : current.cancelledAt, reviewedBy, updatedAt: now }).where(eq(proposals.id, id));
+    await writeAuditEvent(tx, { entityType: "proposal", entityId: current.id, action: `decision_${status}`, actorId: reviewedBy, beforeSnapshot: { status: current.status, documentStatus: effectiveDocumentStatus, decisionStatus: effectiveDecisionStatus }, afterSnapshot: { status, documentStatus: effectiveDocumentStatus, decisionStatus: status, decidedAt: now } });
 
     if (status !== "accepted") return { success: true, executionProjectId: null, alreadyApplied: false } as const;
 
@@ -206,6 +248,7 @@ export async function updateProposalStatus(id: number, status: ProposalStatus, r
     if (!Number.isInteger(projectId) || projectId <= 0) throw new Error("Não foi possível obter o identificador do projeto de execução criado.");
     const documents = String(current.requiredDocumentsSnapshot || "").split(/\r?\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
     if (documents.length) await tx.insert(projectChecklist).values(documents.map((title) => ({ projectId, title, required: 1, ownerId: reviewedBy })));
+    await writeAuditEvent(tx, { entityType: "execution_project", entityId: projectId, action: "created_from_customer_acceptance", actorId: reviewedBy, afterSnapshot: { proposalId: current.id, opportunityId: current.opportunityId, companyId: current.companyId, status: "planning", phase: "planning", activationBasis: "customer_acceptance", checklistItems: documents.length } });
     return { success: true, executionProjectId: projectId, alreadyApplied: false } as const;
   }));
 }
@@ -280,6 +323,7 @@ export async function createExecutionProjectFromProposal(input: { proposalId: nu
       const projectId = Number(inserted[0]?.id);
       const documents = String(proposal.requiredDocumentsSnapshot || "").split(/\r?\n|[,;]+/).map((item) => item.trim()).filter(Boolean);
       if (documents.length) await tx.insert(projectChecklist).values(documents.map((title) => ({ projectId, title, required: 1, ownerId: input.ownerId })));
+      await writeAuditEvent(tx, { entityType: "execution_project", entityId: projectId, action: "created_from_customer_acceptance", actorId: input.ownerId, afterSnapshot: { proposalId: proposal.id, opportunityId: proposal.opportunityId, companyId: proposal.companyId, status: "planning", phase: "planning", activationBasis: "customer_acceptance", checklistItems: documents.length } });
       return projectId;
     }));
   } catch (error) {
@@ -290,7 +334,7 @@ export async function createExecutionProjectFromProposal(input: { proposalId: nu
   }
 }
 
-export async function updateExecutionProjectStatus(id: number, status: string, acceptanceNotes?: string) {
+export async function updateExecutionProjectStatus(id: number, status: string, acceptanceNotes?: string, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return withTransactionRetry(() => db.transaction(async (tx) => {
@@ -307,33 +351,38 @@ export async function updateExecutionProjectStatus(id: number, status: string, a
     }
     const now = new Date();
     await tx.update(executionProjects).set({ status: status as any, phase: status as typeof executionProjects.$inferInsert.phase, acceptanceNotes: acceptanceNotes ?? current.acceptanceNotes, deliveredAt: status === "delivered" ? now : current.deliveredAt, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt, updatedAt: now }).where(eq(executionProjects.id, id));
+    await writeAuditEvent(tx, { entityType: "execution_project", entityId: id, action: "status_changed", actorId, beforeSnapshot: { status: current.status, phase: current.phase }, afterSnapshot: { status, phase: status, acceptedAt: status === "accepted" ? now : current.acceptedAt, closedAt: status === "closed" ? now : current.closedAt } });
     return { success: true } as const;
   }));
 }
 
-export async function createProjectTask(input: { projectId: number; title: string; category?: string; ownerId?: number; dueAt?: Date; notes?: string }) {
+export async function createProjectTask(input: { projectId: number; title: string; category?: string; ownerId?: number; dueAt?: Date; notes?: string; actorId?: number }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return withTransactionRetry(() => db.transaction(async (tx) => {
     const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1).for("update");
     if (!project) throw new Error("Projeto de execução não encontrado.");
     if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível criar tarefas em projeto encerrado ou cancelado.");
-    const inserted = await tx.insert(projectTasks).values({ ...input, category: input.category || "technical" }).$returningId();
-    return Number(inserted[0]?.id);
+    const { actorId, ...taskInput } = input;
+    const inserted = await tx.insert(projectTasks).values({ ...taskInput, category: input.category || "technical" }).$returningId();
+    const taskId = Number(inserted[0]?.id);
+    await writeAuditEvent(tx, { entityType: "project_task", entityId: taskId, action: "created", actorId, afterSnapshot: { projectId: input.projectId, title: input.title, category: input.category || "technical", status: "open", dueAt: input.dueAt ?? null } });
+    return taskId;
   }));
 }
 
-export async function updateProjectTaskStatus(id: number, status: string) {
+export async function updateProjectTaskStatus(id: number, status: string, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return withTransactionRetry(() => db.transaction(async (tx) => {
-    const [task] = await tx.select({ id: projectTasks.id, projectId: projectTasks.projectId }).from(projectTasks).where(eq(projectTasks.id, id)).limit(1).for("update");
+    const [task] = await tx.select({ id: projectTasks.id, projectId: projectTasks.projectId, status: projectTasks.status, completedAt: projectTasks.completedAt }).from(projectTasks).where(eq(projectTasks.id, id)).limit(1).for("update");
     if (!task) throw new Error("Tarefa de execução não encontrada.");
     const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, task.projectId)).limit(1).for("update");
     if (!project) throw new Error("Projeto de execução não encontrado.");
     if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível alterar tarefas em projeto encerrado ou cancelado.");
     const completedAt = status === "done" ? new Date() : undefined;
     await tx.update(projectTasks).set({ status: status as any, completedAt, updatedAt: new Date() }).where(eq(projectTasks.id, id));
+    await writeAuditEvent(tx, { entityType: "project_task", entityId: id, action: "status_changed", actorId, beforeSnapshot: { projectId: task.projectId, status: task.status, completedAt: task.completedAt }, afterSnapshot: { projectId: task.projectId, status, completedAt: completedAt ?? null } });
     return { success: true } as const;
   }));
 }
@@ -355,7 +404,9 @@ export async function createProjectEvidence(input: { projectId: number; taskId?:
       if (!task) throw new Error("A tarefa informada não pertence ao projeto de execução.");
     }
     const inserted = await tx.insert(projectEvidence).values(input).$returningId();
-    return Number(inserted[0]?.id);
+    const evidenceId = Number(inserted[0]?.id);
+    await writeAuditEvent(tx, { entityType: "project_evidence", entityId: evidenceId, action: "linked", actorId: input.uploadedBy, afterSnapshot: { projectId: input.projectId, taskId: input.taskId ?? null, title: input.title, fileName: input.fileName, fileKey: input.fileKey, mimeType: input.mimeType } });
+    return evidenceId;
   });
 }
 
@@ -379,15 +430,18 @@ export async function listProjectBlockers(projectId: number) {
   return db.select().from(projectBlockers).where(eq(projectBlockers.projectId, projectId)).orderBy(desc(projectBlockers.openedAt));
 }
 
-export async function createProjectBlocker(input: { projectId: number; title: string; reason: string; ownerId?: number }) {
+export async function createProjectBlocker(input: { projectId: number; title: string; reason: string; ownerId?: number; actorId?: number }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return withTransactionRetry(() => db.transaction(async (tx) => {
     const [project] = await tx.select({ id: executionProjects.id, phase: executionProjects.phase }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1).for("update");
     if (!project) throw new Error("Projeto de execução não encontrado.");
     if (["closed", "cancelled"].includes(project.phase)) throw new Error("Não é possível abrir blocker em projeto encerrado ou cancelado.");
-    const inserted = await tx.insert(projectBlockers).values({ ...input, title: input.title.trim(), reason: input.reason.trim() }).$returningId();
-    return Number(inserted[0]?.id);
+    const { actorId, ...blockerInput } = input;
+    const inserted = await tx.insert(projectBlockers).values({ ...blockerInput, title: input.title.trim(), reason: input.reason.trim() }).$returningId();
+    const blockerId = Number(inserted[0]?.id);
+    await writeAuditEvent(tx, { entityType: "project_blocker", entityId: blockerId, action: "opened", actorId, afterSnapshot: { projectId: input.projectId, title: input.title.trim(), status: "open", ownerId: input.ownerId ?? null } });
+    return blockerId;
   }));
 }
 
@@ -753,11 +807,16 @@ export async function listRecentActivities(filters?: { companyId?: number; oppor
   return db.select({ activity: activities, company: companies, opportunity: opportunities }).from(activities).leftJoin(companies, eq(activities.companyId, companies.id)).leftJoin(opportunities, eq(activities.opportunityId, opportunities.id)).where(conditions.length ? and(...conditions) : undefined).orderBy(desc(activities.happenedAt)).limit(50);
 }
 
-export async function createCompany(input: typeof companies.$inferInsert) {
+export async function createCompany(input: typeof companies.$inferInsert & { auditActorId?: number; auditOrigin?: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const result = await db.insert(companies).values(input);
-  return result[0].insertId;
+  return db.transaction(async (tx) => {
+    const { auditActorId, auditOrigin, ...companyInput } = input;
+    const result = await tx.insert(companies).values(companyInput);
+    const companyId = Number(result[0].insertId);
+    await writeAuditEvent(tx, { entityType: "company", entityId: companyId, action: "created", actorId: auditActorId, origin: auditOrigin ?? companyInput.source, afterSnapshot: { cnpj: companyInput.cnpj, legalName: companyInput.legalName, city: companyInput.city ?? null, state: companyInput.state ?? null, operationalStatus: companyInput.operationalStatus ?? "active", source: companyInput.source } });
+    return companyId;
+  });
 }
 
 export async function getCompanyByCnpj(cnpj: string) {
@@ -881,11 +940,16 @@ export async function bulkUpsertRegulatoryActs(rows: Array<{ cnpj: string; sourc
   return { received: rows.length, inserted, updated, unchanged, rejected };
 }
 
-export async function createOpportunity(input: typeof opportunities.$inferInsert) {
+export async function createOpportunity(input: typeof opportunities.$inferInsert & { auditActorId?: number; auditOrigin?: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  const result = await db.insert(opportunities).values(input);
-  return result[0].insertId;
+  return db.transaction(async (tx) => {
+    const { auditActorId, auditOrigin, ...opportunityInput } = input;
+    const result = await tx.insert(opportunities).values(opportunityInput);
+    const opportunityId = Number(result[0].insertId);
+    await writeAuditEvent(tx, { entityType: "opportunity", entityId: opportunityId, action: "created", actorId: auditActorId ?? opportunityInput.ownerId, origin: auditOrigin ?? opportunityInput.source ?? "application", afterSnapshot: { companyId: opportunityInput.companyId, title: opportunityInput.title, serviceType: opportunityInput.serviceType, stage: opportunityInput.stage ?? "new", estimatedValue: opportunityInput.estimatedValue ?? null } });
+    return opportunityId;
+  });
 }
 
 export async function createActivity(input: typeof activities.$inferInsert) {
@@ -908,18 +972,28 @@ export async function updateOpportunityStage(id: number, stage: typeof opportuni
   await db.update(opportunities).set({ stage }).where(eq(opportunities.id, id));
 }
 
-export async function updateOpportunityDetails(id: number, changes: Partial<typeof opportunities.$inferInsert>) {
+export async function updateOpportunityDetails(id: number, changes: Partial<typeof opportunities.$inferInsert>, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(opportunities).set(changes).where(eq(opportunities.id, id));
-  return { success: true, id } as const;
+  return db.transaction(async (tx) => {
+    const [current] = await tx.select().from(opportunities).where(eq(opportunities.id, id)).limit(1).for("update");
+    if (!current) throw new Error("Oportunidade não encontrada.");
+    await tx.update(opportunities).set(changes).where(eq(opportunities.id, id));
+    await writeAuditEvent(tx, { entityType: "opportunity", entityId: id, action: "details_updated", actorId, beforeSnapshot: { title: current.title, serviceType: current.serviceType, estimatedValue: current.estimatedValue, nextAction: current.nextAction, nextActionAt: current.nextActionAt, stage: current.stage }, afterSnapshot: { title: changes.title ?? current.title, serviceType: changes.serviceType ?? current.serviceType, estimatedValue: changes.estimatedValue ?? current.estimatedValue, nextAction: changes.nextAction ?? current.nextAction, nextActionAt: changes.nextActionAt ?? current.nextActionAt, stage: changes.stage ?? current.stage } });
+    return { success: true, id } as const;
+  });
 }
 
-export async function updateOpportunityStageWithLossReason(id: number, stage: typeof opportunities.$inferInsert.stage, lossReason?: string) {
+export async function updateOpportunityStageWithLossReason(id: number, stage: typeof opportunities.$inferInsert.stage, lossReason?: string, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(opportunities).set({ stage, lossReason: stage === "lost" ? lossReason : undefined }).where(eq(opportunities.id, id));
-  return { success: true, id, stage } as const;
+  return db.transaction(async (tx) => {
+    const [current] = await tx.select().from(opportunities).where(eq(opportunities.id, id)).limit(1).for("update");
+    if (!current) throw new Error("Oportunidade não encontrada.");
+    await tx.update(opportunities).set({ stage, lossReason: stage === "lost" ? lossReason : undefined }).where(eq(opportunities.id, id));
+    await writeAuditEvent(tx, { entityType: "opportunity", entityId: id, action: "stage_changed", actorId, beforeSnapshot: { stage: current.stage, lossReason: current.lossReason }, afterSnapshot: { stage, lossReason: stage === "lost" ? lossReason ?? null : null } });
+    return { success: true, id, stage } as const;
+  });
 }
 
 export async function getCetesbLeadStatus() {
@@ -1024,11 +1098,18 @@ export async function listEvidenceFiles(filters: { regulatoryActId?: number; com
   return filterEvidenceRows(rows);
 }
 
-export async function archiveEvidenceFile(id: number) {
+export async function archiveEvidenceFile(id: number, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
-  await db.update(evidenceFiles).set({ archivedAt: new Date() }).where(eq(evidenceFiles.id, id));
-  return { success: true } as const;
+  return db.transaction(async (tx) => {
+    const [current] = await tx.select().from(evidenceFiles).where(eq(evidenceFiles.id, id)).limit(1).for("update");
+    if (!current) throw new Error("Evidência não encontrada.");
+    if (current.archivedAt) return { success: true, alreadyApplied: true } as const;
+    const archivedAt = new Date();
+    await tx.update(evidenceFiles).set({ archivedAt }).where(eq(evidenceFiles.id, id));
+    await writeAuditEvent(tx, { entityType: "evidence_file", entityId: id, action: "archived", actorId, beforeSnapshot: { archivedAt: null, storageKey: current.storageKey }, afterSnapshot: { archivedAt } });
+    return { success: true, alreadyApplied: false } as const;
+  });
 }
 export async function listPendingImportConflicts(importRunId?: number) {
   const db = await getDb();

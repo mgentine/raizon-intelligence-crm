@@ -423,6 +423,31 @@ export const projectEvidence = mysqlTable("project_evidence", {
 export type ProjectEvidence = typeof projectEvidence.$inferSelect;
 export type InsertProjectEvidence = typeof projectEvidence.$inferInsert;
 
+/**
+ * Registro imutável de mutações críticas. Os snapshots são metadados técnicos;
+ * o evento não substitui evidências documentais nem reescreve o histórico de negócio.
+ */
+export const auditEvents = mysqlTable("audit_events", {
+  id: bigint("id", { mode: "number" }).autoincrement().primaryKey(),
+  entityType: varchar("entityType", { length: 80 }).notNull(),
+  entityId: int("entityId").notNull(),
+  action: varchar("action", { length: 100 }).notNull(),
+  actorId: int("actorId"),
+  origin: varchar("origin", { length: 80 }).default("application").notNull(),
+  requestId: varchar("requestId", { length: 100 }),
+  beforeSnapshot: text("beforeSnapshot"),
+  afterSnapshot: text("afterSnapshot"),
+  metadata: text("metadata"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  entityIdx: index("audit_events_entity_idx").on(table.entityType, table.entityId, table.createdAt),
+  actorIdx: index("audit_events_actor_idx").on(table.actorId, table.createdAt),
+  requestIdx: index("audit_events_request_idx").on(table.requestId),
+}));
+
+export type AuditEvent = typeof auditEvents.$inferSelect;
+export type InsertAuditEvent = typeof auditEvents.$inferInsert;
+
 export const intelligenceSuggestionStatuses = ["pending", "approved", "rejected"] as const;
 export type IntelligenceSuggestionStatus = (typeof intelligenceSuggestionStatuses)[number];
 

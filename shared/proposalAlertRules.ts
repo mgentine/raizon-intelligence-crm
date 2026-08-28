@@ -17,7 +17,7 @@ export function getProposalValidityAlert(input: ProposalValidityInput, asOf = ne
   const reference = new Date(input.issuedAt ?? input.createdAt);
   const expiresAt = new Date(reference.getTime() + input.validityDays * 86_400_000);
   const daysRemaining = Math.ceil((expiresAt.getTime() - asOf.getTime()) / 86_400_000);
-  if (terminalStatuses.has(input.status) || Number.isNaN(expiresAt.getTime())) return { level: "none", daysRemaining, expiresAt };
+  if (terminalStatuses.has(input.status) || input.validityDays <= 0 || Number.isNaN(expiresAt.getTime())) return { level: "none", daysRemaining, expiresAt };
   if (daysRemaining < 0) return { level: "expired", daysRemaining, expiresAt };
   if (daysRemaining <= alertWindowDays) return { level: "near_expiry", daysRemaining, expiresAt };
   return { level: "none", daysRemaining, expiresAt };

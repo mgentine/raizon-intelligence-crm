@@ -14,4 +14,8 @@ describe("Proposal validity alerts", () => {
     expect(getProposalValidityAlert({ status: "sent", validityDays: 20, createdAt: "2026-08-01T12:00:00.000Z" }, asOf).level).toBe("expired");
     expect(getProposalValidityAlert({ status: "accepted", validityDays: 20, createdAt: "2026-08-01T12:00:00.000Z" }, asOf).level).toBe("none");
   });
+
+  it("não trata proposta sem prazo comercial positivo como vencida", () => {
+    expect(getProposalValidityAlert({ status: "issued", validityDays: 0, createdAt: "2026-08-01T12:00:00.000Z" }, asOf).level).toBe("none");
+  });
 });
