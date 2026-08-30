@@ -28,4 +28,13 @@ describe("access management", () => {
     const caller = appRouter.createCaller({ user: { id: 8, role: "user", profile: "user" } } as any);
     await expect(caller.opportunities.list()).rejects.toThrow("Perfil sem permissão");
   });
+
+  it("bloqueia perfil sem atribuição operacional em consultas de dados do CRM", async () => {
+    const caller = appRouter.createCaller({ user: { id: 8, role: "user", profile: "user" } } as any);
+    await expect(caller.dashboard.stats()).rejects.toThrow("Perfil sem permissão");
+    await expect(caller.dashboard.myQueue()).rejects.toThrow("Perfil sem permissão");
+    await expect(caller.leads.list()).rejects.toThrow("Perfil sem permissão");
+    await expect(caller.companies.list()).rejects.toThrow("Perfil sem permissão");
+    await expect(caller.cnpj.lookup({ cnpj: "45746112000124" })).rejects.toThrow("Perfil sem permissão");
+  });
 });

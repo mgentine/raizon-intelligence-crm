@@ -108,23 +108,23 @@ export const appRouter = router({
     recordValidation: protectedProcedure.input(z.object({ regulatoryActId: z.number().int().positive(), sourceVersion: z.string().trim().max(120).optional(), publishedStatus: z.string().trim().max(120).optional(), expiresAt: z.date().optional(), evidenceUrl: z.string().url().max(700), rawEssential: z.string().trim().min(2).max(20_000), confidence: z.number().min(0).max(1), validationStatus: z.enum(["unverified", "confirmed", "needs_review"]) })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "technical"]); return recordRegulatoryValidation({ ...normalizePersistedDates(input, ["expiresAt"]), validatedBy: ctx.user.id }); }),
   }),
   dashboard: router({
-    stats: protectedProcedure.query(() => getDashboardStats()),
+    stats: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getDashboardStats(); }),
     activities: protectedProcedure.input(z.object({ companyId: z.number().int().positive().optional(), opportunityId: z.number().int().positive().optional() }).optional()).query(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listRecentActivities(input); }),
-    recurring: protectedProcedure.query(() => listUpcomingRecurring()),
-    cetesbLeadStatus: protectedProcedure.query(() => getCetesbLeadStatus()),
-    commercialFunnel: protectedProcedure.query(() => getCommercialFunnelSummary()),
-    operationalCoverage: protectedProcedure.query(() => getOperationalCoverage()),
-    myQueue: protectedProcedure.query(({ ctx }) => listOperationalQueue(ctx.user.id)),
+    recurring: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listUpcomingRecurring(); }),
+    cetesbLeadStatus: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getCetesbLeadStatus(); }),
+    commercialFunnel: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getCommercialFunnelSummary(); }),
+    operationalCoverage: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return getOperationalCoverage(); }),
+    myQueue: protectedProcedure.query(({ ctx }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listOperationalQueue(ctx.user.id); }),
   }),
   leads: router({
-    list: protectedProcedure.input(z.object({ commercialStatus: leadStageSchema.optional(), ownerId: z.number().int().positive().optional() }).optional()).query(({ input }) => listLeads(input)),
+    list: protectedProcedure.input(z.object({ commercialStatus: leadStageSchema.optional(), ownerId: z.number().int().positive().optional() }).optional()).query(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listLeads(input); }),
     create: protectedProcedure.input(z.object({ companyId: z.number().int().positive(), unitId: z.number().int().positive().optional(), regulatoryActId: z.number().int().positive().optional(), source: z.string().min(2), sourceRecordKey: z.string().max(180).optional(), candidateReason: z.string().optional(), regulatoryStatusSnapshot: z.string().optional(), technicalPriority: z.enum(["A", "B", "C", "D"]).default("C"), commercialPriority: z.enum(["A", "B", "C", "D"]).default("B"), nextAction: z.string().min(3), nextActionAt: z.date() })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return createLead({ ...input, ownerId: ctx.user.id, regulatoryCollectedAt: input.regulatoryStatusSnapshot ? new Date() : undefined }); }),
     updateStatus: protectedProcedure.input(z.object({ id: z.number().int().positive(), commercialStatus: leadStageSchema, nextAction: z.string().min(3).optional(), nextActionAt: z.date().optional(), discardedReason: z.string().max(180).optional() })).mutation(async ({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial"]); const evidence = await getLeadTransitionEvidence(input.id); try { validateCommercialTransition(input.commercialStatus, input.nextAction, { ...evidence, lossReason: input.discardedReason }); } catch (error) { throw new TRPCError({ code: "BAD_REQUEST", message: error instanceof Error ? error.message : String(error) }); } return updateLeadCommercialStatus(input.id, input.commercialStatus, input.nextAction, input.nextActionAt, input.discardedReason); }),
     convertToOpportunity: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial"]); return convertLeadToOpportunity(input.id); }),
     convertToClient: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial"]); return convertLeadToClient(input.id); }),
   }),
   companies: router({
-    list: protectedProcedure.input(z.object({ search: z.string().optional(), relationshipStatus: z.enum(["prospect", "client", "inactive"]).optional() }).optional()).query(({ input }) => listCompanies(input?.search, input?.relationshipStatus)),
+    list: protectedProcedure.input(z.object({ search: z.string().optional(), relationshipStatus: z.enum(["prospect", "client", "inactive"]).optional() }).optional()).query(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return listCompanies(input?.search, input?.relationshipStatus); }),
     create: protectedProcedure.input(z.object({ cnpj: cnpjSchema, legalName: z.string().min(2), tradeName: z.string().optional(), registrationStatus: z.string().max(80).optional(), companySize: z.string().max(80).optional(), mainCnae: z.string().max(20).optional(), address: z.string().max(255).optional(), addressNumber: z.string().max(30).optional(), addressComplement: z.string().max(120).optional(), neighborhood: z.string().max(120).optional(), postalCode: z.string().max(12).optional(), city: z.string().optional(), state: z.string().length(2).optional(), phone: z.string().max(30).optional(), email: z.string().email().max(255).optional().or(z.literal("")), website: z.string().max(255).optional(), segment: z.string().optional(), notes: z.string().optional(), operationalStatus: z.enum(["active", "inactive"]).default("active") })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return createCompany({ ...input, relationshipStatus: "prospect", city: normalizeMunicipalityValue(input.city) || undefined, state: input.state?.toUpperCase(), email: input.email || undefined, source: "manual", auditActorId: ctx.user.id }); }),
     previewImport: protectedProcedure.input(z.object({ filename: z.string().optional(), source: z.string().min(2).max(80).default("manual"), rows: z.array(z.object({ cnpj: z.string(), legalName: z.string(), tradeName: z.string().optional(), city: z.string().optional(), state: z.string().optional(), segment: z.string().optional(), source: z.string().optional() })).min(1).max(1000) })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "technical"]); return createCompanyImportPreview({ ...input, createdBy: ctx.user.id }); }),
   }),
@@ -141,7 +141,7 @@ export const appRouter = router({
     archive: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return archiveContact(input.id); }),
   }),
   cnpj: router({
-    lookup: protectedProcedure.input(z.object({ cnpj: z.string() })).query(({ input }) => lookupCnpj(input.cnpj)),
+    lookup: protectedProcedure.input(z.object({ cnpj: z.string() })).query(({ ctx, input }) => { requireProfile(ctx, ["admin", "commercial", "technical"]); return lookupCnpj(input.cnpj); }),
     registerClient: protectedProcedure.input(z.object({ cnpj: z.string() })).mutation(async ({ ctx, input }) => {
       requireProfile(ctx, ["admin", "commercial", "technical"]);
       const cnpj = normalizeCnpj(input.cnpj);

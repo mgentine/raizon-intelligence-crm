@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -32,9 +34,44 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.disable("x-powered-by");
+  app.set("trust proxy", 1);
+  app.use(helmet({
+    contentSecurityPolicy: process.env.NODE_ENV === "production" ? {
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
+        frameAncestors: ["'none'"],
+        imgSrc: ["'self'", "data:", "blob:", "https:"],
+        objectSrc: ["'none'"],
+        scriptSrc: ["'self'", "https://forge.butterfly-effect.dev"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        connectSrc: ["'self'", "https://forge.butterfly-effect.dev"],
+      },
+    } : false,
+    crossOriginEmbedderPolicy: false,
+    referrerPolicy: { policy: "no-referrer" },
+  }));
+  const apiRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 300,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: { error: "Muitas requisições. Aguarde alguns minutos e tente novamente." },
+  });
+  const oauthRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 20,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: { error: "Muitas tentativas de autenticação. Aguarde alguns minutos e tente novamente." },
+  });
+  // Evidências aceitam até 5 MB; 8 MB suporta a codificação base64 sem deixar 50 MB disponíveis ao parser.
+  app.use(express.json({ limit: "8mb" }));
+  app.use(express.urlencoded({ limit: "8mb", extended: true }));
+  app.use("/api/oauth", oauthRateLimit);
+  app.use("/api/trpc", apiRateLimit);
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   app.post("/api/scheduled/refresh-regulatory-priorities", refreshRegulatoryPriorities);

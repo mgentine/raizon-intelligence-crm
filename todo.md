@@ -11,6 +11,20 @@
 - [x] Preparar procedimento controlado de backup/restore e registrar a ação manual necessária do responsável sem sobrescrever o ambiente operacional
 - [x] Consolidar checklist de publicação, restrições de piloto e requisitos de dados reais ainda pendentes
 
+# Auditoria de segurança pré-piloto — controles solicitados
+
+- [x] Verificar exposição de chaves, secrets, cookies, autenticação e tratamento de senhas no código e no repositório
+- [x] Verificar autorização server-side, RLS/isolamento aplicável, mass assignment, queries parametrizadas e validação de entradas
+- [x] Restringir as consultas operacionais de dashboard, leads, empresas e CNPJ aos perfis autorizados no servidor e cobrir a regressão de RBAC
+- [x] Adicionar headers HTTP de segurança, limite de requisições nas rotas sensíveis e proteção básica contra automação abusiva sem bloquear OAuth ou uploads legítimos
+- [x] Verificar upload, respostas de API, rate limit, bot protection, headers de segurança e HTTPS
+- [x] Executar varredura de dependências e corrigir vulnerabilidades comprovadas compatíveis com a base atual
+- [x] Remover a dependência XLSX vulnerável do fluxo de prévia de importação e substituir por parser mantido, preservando staging sem escrita canônica
+- [x] Corrigir vulnerabilidade crítica transitiva de fast-xml-parser e validar a árvore de dependências resultante
+- [x] Atualizar dependências de alta severidade com compatibilidade comprovada e avaliar Express/path-to-regexp antes da publicação
+- [x] Corrigir incompatibilidades de tipos do Recharts 3 nos gráficos existentes e validar o build
+- [x] Documentar controles ativos, controles não aplicáveis e lacunas de segurança antes da publicação do piloto
+
 - [ ] Autenticação com login, senha, recuperação de acesso e controle por perfis
 - [x] Layout autenticado com navegação para dashboard, leads, empresas, atos regulatórios, oportunidades, atividades e configurações
 - [x] Modelo canônico de empresas por CNPJ
@@ -655,3 +669,4 @@
 # Rodada estrutural 2 — ajuste de atomicidade da conversão
 
 - [x] Unificar qualificação e conversão Lead → Opportunity em uma única transação para impedir estado parcial
+- [x] Migrar patches e overrides do package.json para pnpm-workspace.yaml e eliminar warnings de configuração obsoleta
