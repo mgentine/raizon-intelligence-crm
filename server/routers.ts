@@ -6,7 +6,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { bulkUpsertCompanies, createImportFailureNotification, createActivity, createCompany, createContact, createRegulatoryAct, createEvidenceFile, createImportRun, decideImportConflict, completeRecurringItem, createLead, createOpportunity, createRecurringItem, archiveEvidenceFile, updateRegulatoryAct, archiveRegulatoryAct, createUnit, updateUnit, updateContact, archiveUnit, archiveContact, finishImportRun, getCommercialFunnelSummary, getDashboardStats, getLeadTransitionEvidence, getOperationalCoverage, getCetesbLeadStatus, convertLeadToClient, updateOpportunityDetails, listCompanies, listContacts, listEvidenceFiles, listImportRuns, listPendingImportConflicts, listLeads, listNotifications, listOpportunities, listOperationalQueue, listRecentActivities, listRegulatoryActs, listUpcomingRecurring, listUnits, markNotificationRead, updateLeadCommercialStatus, updateOpportunityStage, updateOpportunityStageWithLossReason, getRaizonProfile, upsertRaizonProfile, listServiceCatalog, createServiceCatalogItem, updateServiceCatalogItem, archiveServiceCatalogItem, listProposals, createProposalFromRefs, updateProposalDetails, updateProposalStatus, createProposalVersion, issueProposal, listExecutionProjects, getExecutionProjectDetails, createExecutionProjectFromProposal, updateExecutionProjectStatus, createProjectTask, updateProjectTaskStatus, updateProjectChecklistStatus, listProjectEvidence, createProjectEvidence, getIntelligenceRadar, getCommercialMetrics, runProposalFollowUps, recordRegulatoryValidation, listIntelligenceSuggestions, createIntelligenceSuggestion, reviewIntelligenceSuggestion, getCompanyByCnpj } from "./db";
-import { createCompanyImportPreview, convertLeadToOpportunity, createProjectBlocker, listProjectBlockers, resolveProjectBlocker, listAuditEvents, listManagedUsers, updateManagedUserAccess } from "./db";
+import { createCompanyImportPreview, convertLeadToOpportunity, createProjectBlocker, listProjectBlockers, resolveProjectBlocker, listAuditEvents, listManagedUsers, updateManagedUserAccess, getUserByLoginId, recordLocalAuthEvent } from "./db";
 import { lookupCnpj } from "./integrations/cnpj";
 import { storagePut } from "./storage";
 import { normalizeDateValue, normalizeEmailValue, normalizeMunicipalityValue, normalizePersistedDates, normalizePhoneValue } from "../shared/normalization";
@@ -15,6 +15,9 @@ import { canUploadProjectEvidence, MAX_PROJECT_EVIDENCE_BYTES } from "../shared/
 import { canProfileUpdateProposalStatus, proposalProfessionals } from "../shared/proposalRules";
 import { sendTitanEmail } from "./email";
 import { invokeLLM } from "./_core/llm";
+import { verifyPassword } from "./localAuth";
+import { sdk } from "./_core/sdk";
+import type { User } from "../drizzle/schema";
 
 const cnpjSchema = z.string().transform(normalizeCnpj).refine((value) => value.length === 14, "CNPJ deve conter 14 dígitos");
 const leadStageSchema = z.enum(["new", "enrichment", "actionable", "contacted", "qualified", "diagnosis", "scoping", "proposal", "negotiation", "approved", "won", "lost", "nurture", "discarded"]);
@@ -23,11 +26,28 @@ function requireProfile(ctx: { user: { role: string; profile: string } }, allowe
   const profile = ctx.user.role === "admin" ? "admin" : ctx.user.profile;
   if (!allowed.includes(profile as never)) throw new TRPCError({ code: "FORBIDDEN", message: "Perfil sem permissão para esta operação." });
 }
+function toPublicUser(user: User | null) {
+  if (!user) return null;
+  const { passwordHash: _passwordHash, openId: _openId, loginId: _loginId, ...safeUser } = user;
+  return safeUser;
+}
 
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query(opts => toPublicUser(opts.ctx.user)),
+    login: publicProcedure.input(z.object({ loginId: z.string().trim().min(3).max(80), password: z.string().min(1).max(200) })).mutation(async ({ ctx, input }) => {
+      const user = await getUserByLoginId(input.loginId);
+      const valid = Boolean(user && user.loginMethod === "local" && await verifyPassword(input.password, user.passwordHash));
+      if (!valid || !user) {
+        await recordLocalAuthEvent({ action: "login_failed", loginId: input.loginId });
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Login ou senha inválidos." });
+      }
+      const sessionToken = await sdk.signSession({ openId: user.openId, appId: "local", name: user.name || input.loginId });
+      ctx.res.cookie(COOKIE_NAME, sessionToken, { ...getSessionCookieOptions(ctx.req), maxAge: 365 * 24 * 60 * 60 * 1000 });
+      await recordLocalAuthEvent({ action: "login_succeeded", userId: user.id, loginId: input.loginId });
+      return { success: true } as const;
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

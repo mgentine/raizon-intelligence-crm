@@ -67,10 +67,18 @@ async function startServer() {
     legacyHeaders: false,
     message: { error: "Muitas tentativas de autenticação. Aguarde alguns minutos e tente novamente." },
   });
+  const localAuthRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: { error: "Muitas tentativas de login. Aguarde alguns minutos e tente novamente." },
+  });
   // Evidências aceitam até 5 MB; 8 MB suporta a codificação base64 sem deixar 50 MB disponíveis ao parser.
   app.use(express.json({ limit: "8mb" }));
   app.use(express.urlencoded({ limit: "8mb", extended: true }));
   app.use("/api/oauth", oauthRateLimit);
+  app.use("/api/trpc/auth.login", localAuthRateLimit);
   app.use("/api/trpc", apiRateLimit);
   registerStorageProxy(app);
   registerOAuthRoutes(app);

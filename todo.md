@@ -670,3 +670,14 @@
 
 - [x] Unificar qualificação e conversão Lead → Opportunity em uma única transação para impedir estado parcial
 - [x] Migrar patches e overrides do package.json para pnpm-workspace.yaml e eliminar warnings de configuração obsoleta
+
+
+# Autenticação local — credenciais aprovadas
+
+- [ ] Auditar o fluxo atual de sessão Manus OAuth, cookies, contexto e modelo users antes da autenticação local
+- [ ] Adicionar loginId e passwordHash com migration aditiva e aplicar no banco
+- [ ] Implementar hash/verificação de senha, login local e criação de sessão HTTP-only
+- [ ] Provisionar o administrador local inicial a partir dos secrets aprovados, sem senha em texto puro
+- [ ] Integrar a tela inicial com login local e opção Manus OAuth
+- [ ] Validar login, persistência de sessão, RBAC, logout, rate limit e regressões OAuth
+- [ ] Documentar limitações e criar checkpoint da autenticação local validada

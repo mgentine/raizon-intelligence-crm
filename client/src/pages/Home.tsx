@@ -42,7 +42,9 @@ function formatDate(date: Date | string | null | undefined) {
 
 
 export default function Home() {
-  const { user, loading, isAuthenticated, logout } = useAuth();
+  const { user, loading, isAuthenticated, logout, refresh } = useAuth();
+  const [localLogin, setLocalLogin] = useState({ loginId: "", password: "" });
+  const [localLoginError, setLocalLoginError] = useState("");
   const [activeNav, setActiveNav] = useState(() => new URLSearchParams(window.location.search).get("view") || "Visão geral");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(() => new URLSearchParams(window.location.search).get("mobileMenu") === "1");
   useEffect(() => {
@@ -98,6 +100,7 @@ export default function Home() {
   const forceActsError = new URLSearchParams(window.location.search).get("forceActsError") === "1";
   const forceActsLoading = new URLSearchParams(window.location.search).get("forceActsLoading") === "1";
   const stats = trpc.dashboard.stats.useQuery(undefined, { enabled: isAuthenticated });
+  const localLoginMutation = trpc.auth.login.useMutation({ onSuccess: async () => { setLocalLoginError(""); setLocalLogin({ loginId: "", password: "" }); await refresh(); }, onError: (error) => setLocalLoginError(error.message) });
   const activities = trpc.dashboard.activities.useQuery({ companyId: activityContext.companyId ? Number(activityContext.companyId) : undefined, opportunityId: activityContext.opportunityId ? Number(activityContext.opportunityId) : undefined }, { enabled: isAuthenticated });
   const recurring = trpc.dashboard.recurring.useQuery(undefined, { enabled: isAuthenticated });
   const cetesbLeadStatus = trpc.dashboard.cetesbLeadStatus.useQuery(undefined, { enabled: isAuthenticated && activeNav === "Visão geral" });
@@ -171,7 +174,7 @@ export default function Home() {
 
   if (loading) return <div className="min-h-screen bg-[#f7f8f6] flex items-center justify-center text-[#16221f]">Carregando ambiente seguro…</div>;
   if (!isAuthenticated) {
-    return <main className="min-h-screen bg-[#f7f8f6] flex items-center justify-center p-6"><div className="w-full max-w-lg bg-white border border-[#dfe5e0] p-10"><div className="flex items-center gap-3 mb-10"><img src="/manus-storage/logo-raizon-ambiental-transparent_b5f512db.png" alt="Raizon Ambiental" className="h-14 w-auto object-contain"/><div><div className="font-black tracking-tight text-xl">INTELLIGENCE CRM</div><div className="text-[10px] tracking-[.24em] text-[#68756f]">PLATAFORMA OPERACIONAL</div></div></div><div className="h-1 w-16 bg-[#e13b32] mb-7"/><h1 className="text-4xl font-black tracking-tight text-[#16221f]">Inteligência regulatória aplicada à venda.</h1><p className="mt-5 text-[#68756f] leading-relaxed">Centralize empresas, licenças, outorgas, oportunidades e rotinas comerciais em um único ambiente operacional.</p><Button className="mt-8 w-full h-12 bg-[#16221f] hover:bg-[#273832] text-white" onClick={() => startLogin()}>Entrar na plataforma <ChevronRight className="ml-2 h-4 w-4"/></Button><p className="mt-6 text-xs text-[#87918c]">Acesso protegido por autenticação corporativa.</p></div></main>;
+    return <main className="min-h-screen bg-[#f7f8f6] flex items-center justify-center p-6"><div className="w-full max-w-lg bg-white border border-[#dfe5e0] p-8 sm:p-10"><div className="flex items-center gap-3 mb-8"><img src="/manus-storage/logo-raizon-ambiental-transparent_b5f512db.png" alt="Raizon Ambiental" className="h-14 w-auto object-contain"/><div><div className="font-black tracking-tight text-xl">INTELLIGENCE CRM</div><div className="text-[10px] tracking-[.24em] text-[#68756f]">PLATAFORMA OPERACIONAL</div></div></div><div className="h-1 w-16 bg-[#e13b32] mb-7"/><h1 className="text-3xl font-black tracking-tight text-[#16221f]">Acesse seu ambiente</h1><p className="mt-3 text-[#68756f] leading-relaxed">Entre com seu login corporativo ou continue com a autenticação Manus.</p><form className="mt-7 space-y-4" onSubmit={(event) => { event.preventDefault(); setLocalLoginError(""); localLoginMutation.mutate(localLogin); }}><div><label className="text-sm font-semibold text-[#16221f]">Login</label><Input className="mt-1" autoComplete="username" value={localLogin.loginId} onChange={(event) => setLocalLogin((current) => ({ ...current, loginId: event.target.value }))} placeholder="Seu login"/></div><div><label className="text-sm font-semibold text-[#16221f]">Senha</label><Input className="mt-1" type="password" autoComplete="current-password" value={localLogin.password} onChange={(event) => setLocalLogin((current) => ({ ...current, password: event.target.value }))} placeholder="Sua senha"/></div>{localLoginError && <p className="text-sm text-[#b42318]" role="alert">{localLoginError}</p>}<Button type="submit" disabled={localLoginMutation.isPending} className="w-full h-12 bg-[#16221f] hover:bg-[#273832] text-white">{localLoginMutation.isPending ? "Validando…" : "Entrar com login e senha"}</Button></form><div className="my-6 flex items-center gap-3 text-xs text-[#87918c]"><span className="h-px flex-1 bg-[#dfe5e0]"/>ou<span className="h-px flex-1 bg-[#dfe5e0]"/></div><Button variant="outline" className="w-full h-12 border-[#16221f] text-[#16221f]" onClick={() => startLogin()}>Continuar com Manus OAuth <ChevronRight className="ml-2 h-4 w-4"/></Button><p className="mt-5 text-xs text-[#87918c]">Acesso protegido. Senhas nunca são armazenadas em texto puro.</p></div></main>;
   }
 
   const pageTitle = activeNav === "Visão geral" ? "Visão geral" : activeNav;

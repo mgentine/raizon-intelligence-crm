@@ -7,6 +7,7 @@ import { SignJWT, jwtVerify } from "jose";
 import type { User } from "../../drizzle/schema";
 import * as db from "../db";
 import { ENV } from "./env";
+import { isLocalOpenId } from "../localAuth";
 import type {
   ExchangeTokenRequest,
   ExchangeTokenResponse,
@@ -276,6 +277,8 @@ class SDKServer {
       throw ForbiddenError("Invalid session cookie");
     }
 
+    const signedInAt = new Date();
+
     if (session.openId.startsWith(CRON_OPEN_ID_PREFIX)) {
       const userInfo = await this.getUserInfoWithJwt(sessionToken ?? "");
       const taskUid = userInfo.taskUid ?? null;
@@ -285,8 +288,14 @@ class SDKServer {
       return buildCronUser(userInfo);
     }
 
+    if (isLocalOpenId(session.openId)) {
+      const localUser = await db.getUserByOpenId(session.openId);
+      if (!localUser || localUser.loginMethod !== "local") throw ForbiddenError("Invalid local session");
+      await db.upsertUser({ openId: localUser.openId, lastSignedIn: signedInAt });
+      return localUser;
+    }
+
     const sessionUserId = session.openId;
-    const signedInAt = new Date();
     let user = await db.getUserByOpenId(sessionUserId);
 
     // If user not in DB, sync from OAuth server automatically

@@ -38,6 +38,7 @@ import { validateProposalTransition, buildProposalSourceMap, canCreateProposalFr
 import { canTransitionExecution, canCloseExecution, type ExecutionStatus } from "../shared/executionRules";
 import { calculateCommercialMetrics, isEligibleForProposalFollowUp } from "../shared/intelligenceRules";
 import { buildCompanyImportPreviewCandidate, compareCompanyImportCandidate, type ImportRow } from "../shared/importRules";
+import { hashPassword } from "./localAuth";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -493,6 +494,36 @@ export async function getUserByOpenId(openId: string) {
   if (!db) return undefined;
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
   return result[0];
+}
+
+export async function getUserByLoginId(loginId: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(users).where(eq(users.loginId, loginId)).limit(1);
+  return result[0];
+}
+
+export async function provisionLocalAdmin(loginId: string, password: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const passwordHash = await hashPassword(password);
+  return db.transaction(async (tx) => {
+    const [existing] = await tx.select().from(users).where(eq(users.loginId, loginId)).limit(1).for("update");
+    if (existing) {
+      await tx.update(users).set({ passwordHash, role: "admin", profile: "commercial", loginMethod: "local", updatedAt: new Date() }).where(eq(users.id, existing.id));
+      return existing.id;
+    }
+    const result = await tx.insert(users).values({ openId: `local:bootstrap:${loginId}`, loginId, passwordHash, name: "Administrador Raizon", loginMethod: "local", role: "admin", profile: "commercial" });
+    const userId = Number(result[0].insertId);
+    await writeAuditEvent(tx, { entityType: "user", entityId: userId, action: "local_admin_provisioned", origin: "bootstrap", afterSnapshot: { loginId, role: "admin", profile: "commercial", passwordStoredAs: "scrypt_hash" } });
+    return userId;
+  });
+}
+
+export async function recordLocalAuthEvent(input: { action: "login_succeeded" | "login_failed"; userId?: number | null; loginId: string }) {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(auditEvents).values({ entityType: "auth", entityId: input.userId ?? 0, action: input.action, origin: "local_auth", metadata: serializeAuditSnapshot({ loginId: input.loginId }) });
 }
 
 export async function listManagedUsers() {
