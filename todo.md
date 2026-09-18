@@ -432,7 +432,7 @@
 
 # Decisão de escopo — autenticação
 
-- [ ] Implementar autenticação própria com login/senha, recuperação de acesso e MFA — adiado por decisão do usuário; manter Manus OAuth no escopo atual
+- [x] Implementar autenticação local com login/senha; recuperação de acesso e MFA permanecem adiados por decisão de escopo, mantendo Manus OAuth disponível
 
 # Melhoria do painel de propostas
 
@@ -674,10 +674,10 @@
 
 # Autenticação local — credenciais aprovadas
 
-- [ ] Auditar o fluxo atual de sessão Manus OAuth, cookies, contexto e modelo users antes da autenticação local
-- [ ] Adicionar loginId e passwordHash com migration aditiva e aplicar no banco
-- [ ] Implementar hash/verificação de senha, login local e criação de sessão HTTP-only
-- [ ] Provisionar o administrador local inicial a partir dos secrets aprovados, sem senha em texto puro
-- [ ] Integrar a tela inicial com login local e opção Manus OAuth
-- [ ] Validar login, persistência de sessão, RBAC, logout, rate limit e regressões OAuth
-- [ ] Documentar limitações e criar checkpoint da autenticação local validada
+- [x] Auditar o fluxo atual de sessão Manus OAuth, cookies, contexto e modelo users antes da autenticação local
+- [x] Adicionar loginId e passwordHash com migration aditiva e aplicar no banco
+- [x] Implementar hash/verificação de senha, login local e criação de sessão HTTP-only
+- [x] Provisionar o administrador local inicial a partir dos secrets aprovados, sem senha em texto puro
+- [x] Integrar a tela inicial com login local e opção Manus OAuth
+- [x] Validar login, persistência de sessão, RBAC, logout, rate limit e regressões OAuth
+- [x] Documentar limitações e criar checkpoint da autenticação local validada
