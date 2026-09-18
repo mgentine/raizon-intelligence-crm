@@ -25,7 +25,7 @@
 - [x] Corrigir incompatibilidades de tipos do Recharts 3 nos gráficos existentes e validar o build
 - [x] Documentar controles ativos, controles não aplicáveis e lacunas de segurança antes da publicação do piloto
 
-- [ ] Autenticação com login, senha, recuperação de acesso e controle por perfis
+- [x] Autenticação local com login, senha e controle por perfis; recuperação de acesso permanece congelada por decisão de escopo
 - [x] Layout autenticado com navegação para dashboard, leads, empresas, atos regulatórios, oportunidades, atividades e configurações
 - [x] Modelo canônico de empresas por CNPJ
 - [x] Cadastro de unidades operacionais e contatos
@@ -50,7 +50,7 @@
 
 # Gaps identificados na revisão
 
-- [ ] Implementar autenticação própria com login/senha, recuperação de acesso e autorização por perfis aplicada na UI e nas procedures
+- [x] Implementar autenticação própria com login/senha e autorização por perfis aplicada na UI e nas procedures; recuperação de acesso permanece bloqueada até decisão futura
 - [x] Criar módulo operacional de leads separado da base de empresas
 - [x] Criar CRUD completo de unidades, contatos e atos regulatórios, incluindo evidências
 - [x] Completar o funil integral da Raizon com propostas, responsáveis, perda, próximas ações e histórico por empresa/oportunidade
