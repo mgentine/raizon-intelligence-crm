@@ -347,6 +347,8 @@ export async function updateExecutionProjectStatus(id: number, status: string, a
     if (status === "closed") {
       const checklist = await tx.select({ required: projectChecklist.required, status: projectChecklist.status }).from(projectChecklist).where(eq(projectChecklist.projectId, id)).for("update");
       if (!canCloseExecution("accepted", checklist)) throw new Error("Não é possível encerrar enquanto houver documentos obrigatórios pendentes.");
+      const tasks = await tx.select({ status: projectTasks.status }).from(projectTasks).where(eq(projectTasks.projectId, id)).for("update");
+      if (tasks.some((task) => !["done", "cancelled"].includes(task.status))) throw new Error("Não é possível encerrar enquanto houver tarefas abertas.");
       const blockers = await tx.select({ id: projectBlockers.id }).from(projectBlockers).where(and(eq(projectBlockers.projectId, id), eq(projectBlockers.status, "open"))).for("update");
       if (blockers.length) throw new Error("Não é possível encerrar enquanto houver blockers abertos.");
     }
@@ -398,8 +400,9 @@ export async function createProjectEvidence(input: { projectId: number; taskId?:
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return db.transaction(async (tx) => {
-    const [project] = await tx.select({ id: executionProjects.id }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1);
+    const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, input.projectId)).limit(1).for("update");
     if (!project) throw new Error("Projeto de execução não encontrado.");
+    if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível anexar evidências em projeto encerrado ou cancelado.");
     if (input.taskId) {
       const [task] = await tx.select({ id: projectTasks.id }).from(projectTasks).where(and(eq(projectTasks.id, input.taskId), eq(projectTasks.projectId, input.projectId))).limit(1);
       if (!task) throw new Error("A tarefa informada não pertence ao projeto de execução.");
@@ -411,16 +414,18 @@ export async function createProjectEvidence(input: { projectId: number; taskId?:
   });
 }
 
-export async function updateProjectChecklistStatus(id: number, status: string, notes?: string) {
+export async function updateProjectChecklistStatus(id: number, status: string, notes?: string, actorId?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   return withTransactionRetry(() => db.transaction(async (tx) => {
-    const [item] = await tx.select({ id: projectChecklist.id, projectId: projectChecklist.projectId }).from(projectChecklist).where(eq(projectChecklist.id, id)).limit(1).for("update");
+    const [item] = await tx.select({ id: projectChecklist.id, projectId: projectChecklist.projectId, title: projectChecklist.title, status: projectChecklist.status, notes: projectChecklist.notes }).from(projectChecklist).where(eq(projectChecklist.id, id)).limit(1).for("update");
     if (!item) throw new Error("Item de checklist não encontrado.");
     const [project] = await tx.select({ id: executionProjects.id, status: executionProjects.status }).from(executionProjects).where(eq(executionProjects.id, item.projectId)).limit(1).for("update");
     if (!project) throw new Error("Projeto de execução não encontrado.");
     if (["closed", "cancelled"].includes(project.status)) throw new Error("Não é possível alterar checklist em projeto encerrado ou cancelado.");
-    await tx.update(projectChecklist).set({ status: status as any, notes, updatedAt: new Date() }).where(eq(projectChecklist.id, id));
+    const now = new Date();
+    await tx.update(projectChecklist).set({ status: status as any, notes, updatedAt: now }).where(eq(projectChecklist.id, id));
+    await writeAuditEvent(tx, { entityType: "project_checklist", entityId: id, action: "status_changed", actorId, beforeSnapshot: { projectId: item.projectId, title: item.title, status: item.status, notes: item.notes }, afterSnapshot: { projectId: item.projectId, title: item.title, status, notes: notes ?? null } });
     return { success: true } as const;
   }));
 }

@@ -162,3 +162,20 @@ Não foram realizados teste de concorrência com alteração real em banco opera
 **Conclusão técnica:** o fluxo não apresenta uma falha estrutural P0 de atomicidade na criação de projeto, mas ainda não deve ser considerado totalmente governado para operação normal. Os controles de proposta e criação de execução são fortes; as principais lacunas estão na prova da entrega/aceite, na imutabilidade pós-encerramento e na rastreabilidade de checklist.
 
 **Recomendação:** manter o escopo em piloto controlado e corrigir primeiro os achados P1. A correção deve ser acompanhada por testes de regressão e uma homologação com proposta efetivamente aceita, sem utilizar a proposta 58/2026 nem fabricar aceite ou encerramento histórico.
+
+## 8. Correções aplicadas após os achados
+
+Após a inspeção, foram aplicadas correções objetivas e não destrutivas:
+
+- `createProjectEvidence` agora bloqueia anexos em projetos `closed` ou `cancelled` e adquire lock do projeto antes da validação.
+- `updateProjectChecklistStatus` agora recebe o `actorId` autenticado e grava evento `project_checklist/status_changed` com snapshots anterior e posterior na mesma transação.
+- `updateExecutionProjectStatus` agora bloqueia o encerramento quando existe tarefa diferente de `done` ou `cancelled`.
+- Foram adicionados testes regressivos para tarefa aberta no encerramento e evidência após encerramento.
+
+**Validação após correção:** TypeScript aprovado, `git diff --check` aprovado e 125 testes em 28 arquivos aprovados.
+
+Os pontos relacionados a comprovação formal de entrega/aceite, atualização automática da etapa da oportunidade, valor mínimo, política de datas e allowlist de arquivos permanecem documentados como decisões ou endurecimentos adicionais. Eles não foram implementados automaticamente para não inventar regra comercial nem alterar registros históricos sem autorização.
+
+## 9. Estado atualizado da auditoria
+
+Com as correções acima, os achados **P1-01, P1-02 e P1-04 foram tratados no código**. O achado **P1-03 permanece parcialmente aberto por depender do critério operacional de evidência de entrega e aceite**. O CRM continua recomendado para **piloto controlado**, não para operação normal irrestrita, até que esse critério seja definido e homologado com uma proposta efetivamente aceita.

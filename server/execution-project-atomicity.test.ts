@@ -55,7 +55,7 @@ const fakeDb = { transaction: vi.fn(transaction) };
 
 vi.mock("drizzle-orm/mysql2", () => ({ drizzle: vi.fn(() => fakeDb) }));
 
-import { createProjectTask, updateExecutionProjectStatus, updateProjectChecklistStatus, updateProjectTaskStatus, updateProposalDetails, updateProposalStatus } from "./db";
+import { createProjectEvidence, createProjectTask, updateExecutionProjectStatus, updateProjectChecklistStatus, updateProjectTaskStatus, updateProposalDetails, updateProposalStatus } from "./db";
 
 const acceptedCandidate = {
   id: 44,
@@ -134,6 +134,18 @@ describe("aceite de proposta e setup atômico de execução", () => {
     expect(state.committedUpdates).toEqual([]);
   });
 
+  it("não encerra projeto enquanto houver tarefa aberta", async () => {
+    state.selectResults = [
+      [{ id: 701, status: "accepted", acceptanceNotes: "Aceite registrado", deliveredAt: new Date(), acceptedAt: new Date(), closedAt: null }],
+      [{ required: 1, status: "approved" }],
+      [{ status: "in_progress" }],
+    ];
+
+    await expect(updateExecutionProjectStatus(701, "closed")).rejects.toThrow("tarefas abertas");
+
+    expect(state.committedUpdates).toEqual([]);
+  });
+
   it("não cria tarefa em projeto já encerrado", async () => {
     state.selectResults = [[{ id: 701, status: "closed" }]];
 
@@ -150,5 +162,13 @@ describe("aceite de proposta e setup atômico de execução", () => {
     state.selectResults = [[{ id: 812, projectId: 701 }], [{ id: 701, status: "closed" }]];
     await expect(updateProjectChecklistStatus(812, "approved")).rejects.toThrow("Não é possível alterar checklist");
     expect(state.committedUpdates).toEqual([]);
+  });
+
+  it("não anexa evidência em projeto encerrado", async () => {
+    state.selectResults = [[{ id: 701, status: "closed" }]];
+
+    await expect(createProjectEvidence({ projectId: 701, title: "Entrega", fileName: "entrega.pdf", mimeType: "application/pdf", fileKey: "key", fileUrl: "url", uploadedBy: 9 })).rejects.toThrow("anexar evidências");
+
+    expect(state.committedInserts).toEqual([]);
   });
 });
