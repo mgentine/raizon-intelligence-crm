@@ -27,9 +27,14 @@
 
 * { border-color: hsl(var(--border)); }
 html, body, #root { min-height: 100%; }
+html, body { overflow-x: hidden; }
 body { margin: 0; font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; background: #f7f8f6; color: #16221f; }
-button, input, textarea, select { font: inherit; }
+button, input, textarea, select { font: inherit; max-width: 100%; }
 button { cursor: pointer; }
+img, svg, canvas { max-width: 100%; }
+.crm-page-content > * { min-width: 0; }
+.crm-page-content input[type="file"] { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.recharts-responsive-container { min-width: 0; }
 
 .operation-feedback {
   position: fixed;
@@ -69,6 +74,13 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 767px) {
+  .crm-header { height: auto; min-height: 4.5rem; }
+  .crm-page-content { padding: 1rem; }
+  .crm-page-content h1 { font-size: 1.5rem; }
+  .crm-page-content h2 { overflow-wrap: anywhere; }
+  .crm-page-content .grid { min-width: 0; }
+  .crm-page-content .grid > * { min-width: 0; }
+  .crm-page-content table { min-width: 38rem; }
   input, select, textarea {
     font-size: 16px;
   }
@@ -189,6 +201,15 @@ button { cursor: pointer; }
   .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:has(> .space-y-3:empty) {
     display: none;
   }
+}
+
+@media (max-width: 420px) {
+  .crm-header { padding-left: .75rem; padding-right: .75rem; }
+  .crm-header h1 { font-size: 1.25rem; }
+  .crm-header .text-\[10px\] { letter-spacing: .08em; }
+  .crm-page-content .grid.grid-cols-2 { gap: .75rem; }
+  .crm-page-content .grid.grid-cols-2 > * { padding: 1rem; }
+  .crm-page-content .grid.grid-cols-2 .text-3xl { font-size: 1.65rem; }
 }
 
 /* Grade exclusiva de cartões estáticos de Configurações que possuem botão inoperante; controles operacionais possuem seções próprias. */
